@@ -1,0 +1,33 @@
+{
+  "name": "spamwarden",
+  "version": "0.68.0",
+  "description": "Lightweight client-side JavaScript library for real-time spam detection. Trained on Thai spam data using Bernoulli Naive Bayes.",
+  "main": "dist/spamwarden.min.js",
+  "browser": "dist/spamwarden.min.js",
+  "files": [
+    "dist/spamwarden.min.js",
+    "dist/spamwarden.js"
+  ],
+  "scripts": {
+    "build": "node build.js",
+    "test": "node -e \"const sw = require('./dist/spamwarden.min.js'); const r1 = sw.spamcheck('สมัครสมาชิกวันนี้ รับโบนัส ฝากเงิน'); const r2 = sw.spamcheck('Hello world'); if (!r1.isSpam) { console.error('FAIL: spam not detected'); process.exit(1); } if (r2.isSpam) { console.error('FAIL: safe detected as spam'); process.exit(1); } console.log('PASS');\"",
+    "version": "node -e \"console.log(require('./dist/spamwarden.min.js').version)\""
+  },
+  "keywords": [
+    "spam-detection",
+    "thai-nlp",
+    "client-side",
+    "naive-bayes",
+    "moderation"
+  ],
+  "author": "RedSocs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RedSocs/spam-warden.git"
+  },
+  "homepage": "https://github.com/RedSocs/spam-warden#readme",
+  "bugs": {
+    "url": "https://github.com/RedSocs/spam-warden/issues"
+  }
+}

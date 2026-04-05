@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Build & Test ────────────────────────────────────────────────
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build
+        run: node build.js
+
+      - name: Run smoke tests
+        run: node -e "
+          const sw = require('./dist/spamwarden.js');
+          const r1 = sw.spamcheck('สมัครสมาชิกวันนี้ รับโบนัส ฝากเงิน');
+          const r2 = sw.spamcheck('Hello, the weather is nice today.');
+          console.log('Spam:', r1.isSpam, '(' + (r1.prob * 100).toFixed(0) + '%)');
+          console.log('Safe:', r2.isSpam, '(' + ((1 - r2.prob) * 100).toFixed(0) + '%)');
+          console.log('Version:', sw.version);
+          if (!r1.isSpam) { process.exit(1); }
+          if (r2.isSpam) { process.exit(1); }
+          console.log('All tests passed.');
+        "
+
+      - name: Check output sizes
+        run: |
+          echo "Uncompressed: $(wc -c < dist/spamwarden.js) bytes"
+          echo "Minified:     $(wc -c < dist/spamwarden.min.js) bytes"
+          echo "Gzipped:      $(gzip -c dist/spamwarden.min.js | wc -c) bytes"
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: spam-warden-dist
+          path: dist/
+
+  # ── Release ──────────────────────────────────────────────────────
+  release:
+    name: Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build
+        run: node build.js
+
+      - name: Package dist
+        run: |
+          tar czf spam-warden-dist.tar.gz -C dist .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: spam-warden-dist.tar.gz
+          generate_release_notes: true

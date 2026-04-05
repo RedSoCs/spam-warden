@@ -2,7 +2,19 @@
 
 Lightweight, client-side JavaScript library for detecting spam and sentence hijacking in real-time. Trained on the model from [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler), bundled for zero-dependency browser usage.
 
+[![CI](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml/badge.svg)](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/spamwarden.svg)](https://www.npmjs.com/package/spamwarden)
+
 ## Quick Start
+
+### Install
+
+```bash
+# npm
+npm install spamwarden
+
+# Or download from CDN / GitHub releases
+```
 
 ### In the Browser
 
@@ -151,3 +163,31 @@ spam-warden/
 ├── SPEC.md              # Technical specification
 └── README.md            # This file
 ```
+
+## CI/CD & Releases
+
+### Versioning
+
+```bash
+# Show current version
+./version.sh
+
+# Create release tag
+./version.sh v0.70
+
+# Push tag to trigger release
+git push origin main --tags
+```
+
+### npm
+
+```bash
+# Build, then publish
+npm run build
+npm publish --access public
+```
+
+### GitHub Actions
+
+- **CI** — Runs on every push/PR: builds, smoke tests, uploads dist artifacts
+- **Release** — Triggered by `v*` tags: packages dist, creates GitHub Release
