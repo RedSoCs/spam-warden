@@ -30,7 +30,7 @@ npm install @_redsocs/spam-warden
   const result = window.spamwarden.spamcheck("สมัครสมาชิกวันนี้ รับโบนัส ฟรี!");
   console.log(result.isSpam);   // true
   console.log(result.prob);     // 1.0
-  console.log(result.version);  // "v0.68"
+  console.log(result.version);  // "v0.69"
 </script>
 ```
 
@@ -66,7 +66,7 @@ console.log(r.isSpam); // true
 | `isSpam` | `boolean` | `true` if detected as spam |
 | `prob` | `number` | Spam probability (0.0–1.0) |
 | `reason` | `string?` | Present if hard-rule triggered: `"currency_symbol"` or `"spam_link"` |
-| `version` | `string` | Model version (e.g., `"v0.68"`) |
+| `version` | `string` | Model version (e.g., `"v0.69"`) |
 
 ### `spamwarden.isSpam(text) → boolean`
 
@@ -126,7 +126,7 @@ Softmax → probability
 |----------|-------|
 | **Origin** | [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler) (Rust, Bernoulli NB) |
 | **Features** | ~63,000 tokens (whitespace + trigrams + quadgrams) |
-| **Version** | v0.68 (680 training samples) |
+| **Version** | v0.69 (680 training samples) |
 | **Hard Rules** | Currency symbols (`$€£฿`) → auto-spam; Spam links (`line.me`, `@line`, `lin.ee`) → auto-spam |
 
 ### Train Your Own Model
