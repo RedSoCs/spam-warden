@@ -176,33 +176,3 @@ spam-warden/
 ├── SPEC.md              # Technical specification
 └── README.md            # This file
 ```
-
-## CI/CD & Releases
-
-### Versioning
-
-```bash
-# Show current version
-./version.sh
-
-# Create release tag
-./version.sh v0.70
-
-# Push tag to trigger release
-git push origin main --tags
-```
-
-### npm
-
-```bash
-# Build, then publish
-npm run build
-npm publish --access public
-```
-
-> **Note:** The package is published under the scoped name `@_redsocs/spam-warden`. Install with `npm install @_redsocs/spam-warden`.
-
-### GitHub Actions
-
-- **CI** — Runs on every push/PR: builds, smoke tests, uploads dist artifacts
-- **Release** — Triggered by `v*` tags: packages dist, creates GitHub Release
