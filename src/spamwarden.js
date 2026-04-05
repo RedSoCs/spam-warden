@@ -1,177 +1,157 @@
-// SpamWarden.js — Client-side spam detection engine
-// Trained model from spam-labeler (Bernoulli NB, v0.68)
-// Zero dependencies. Pure vanilla JS.
+/**
+ * SpamWarden.js — Client-side spam detection engine
+ * Trained model from spam-labeler (Bernoulli NB, v0.68)
+ * Zero dependencies. Pure vanilla JS.
+ */
 
-(function () {
-  "use strict";
+// ── Model Data (auto-injected by build.js) ─────────────────────────
+const modelData = MODEL_DATA_PLACEHOLDER;
 
-  // ── Embedded Model ──────────────────────────────────────────────
-  // This block is auto-replaced by build.sh with the actual model.json content.
-  // The variable MODEL_DATA must be a JS object with:
-  //   { version, vocabulary, class_log_prior, feature_log_prob, classes }
-  var MODEL_DATA = MODEL_DATA_PLACEHOLDER;
+// ── SpamWarden Module ──────────────────────────────────────────────
 
-  // ── Bernoulli Naive Bayes Classifier ─────────────────────────────
+const SpamWarden = {
+  // Store the vocab internally
+  _vocab: modelData.vocabulary,
+  _classLogPrior: modelData.class_log_prior,
+  _featureLogProb: modelData.feature_log_prob,
+  _classes: modelData.classes,
+  _version: modelData.version,
+  _nFeatures: Object.keys(modelData.vocabulary).length,
+  _absentLogProb: null,
 
-  function BernoulliNB(data) {
-    this.classLogPrior = data.class_log_prior;
-    this.featureLogProb = data.feature_log_prob;
-    this.classes = data.classes;
-    this.vocab = data.vocabulary;
-    this.version = data.version;
-    this.nClasses = this.classes.length;
-    this.nFeatures = Object.keys(this.vocab).length;
+  /**
+   * Initialize: precompute absent-feature log probabilities.
+   * Call once before using spamcheck().
+   */
+  init: function () {
+    if (this._absentLogProb !== null) return;
 
-    // Precompute log(1 - exp(logProb)) for absent features
-    // This avoids recomputing it on every prediction.
-    this.absentLogProb = [];
-    for (var c = 0; c < this.nClasses; c++) {
-      this.absentLogProb[c] = new Float64Array(this.nFeatures);
-      for (var j = 0; j < this.nFeatures; j++) {
-        var p = Math.exp(this.featureLogProb[c][j]);
-        this.absentLogProb[c][j] = Math.log(Math.max(1.0 - p, 1e-300));
+    this._absentLogProb = [];
+    const nClasses = this._classes.length;
+
+    for (let c = 0; c < nClasses; c++) {
+      this._absentLogProb[c] = new Float64Array(this._nFeatures);
+      for (let j = 0; j < this._nFeatures; j++) {
+        const p = Math.exp(this._featureLogProb[c][j]);
+        this._absentLogProb[c][j] = Math.log(Math.max(1.0 - p, 1e-300));
       }
     }
-  }
 
-  // ── Vectorizer (matches spam-labeler export_model.rs) ────────────
-  // 1. Whitespace tokens (lowercased)
-  // 2. Trigrams (3 chars)
-  // 3. Quadgrams (4 chars)
+    console.log(`[SpamWarden] Model ${this._version} loaded: ${Object.keys(this._vocab).length} features`);
+  },
 
-  BernoulliNB.prototype.transform = function (text) {
-    var features = new Uint8Array(this.nFeatures);
-    var t = text.toLowerCase();
+  /**
+   * Vectorize text into feature indices (matches spam-labeler export_model.rs).
+   * 1. Whitespace tokens (lowercased)
+   * 2. Character trigrams
+   * 3. Character quadgrams
+   */
+  _transform: function (text) {
+    const features = new Uint8Array(this._nFeatures);
+    const t = text.toLowerCase();
 
     // Whitespace tokens
-    var tokens = t.split(/\s+/);
-    for (var i = 0; i < tokens.length; i++) {
-      var cleaned = tokens[i].replace(/\s/g, "");
-      if (cleaned.length > 0 && cleaned in this.vocab) {
-        features[this.vocab[cleaned]] = 1;
+    const tokens = t.split(/\s+/);
+    for (let i = 0; i < tokens.length; i++) {
+      const cleaned = tokens[i].replace(/\s/g, '');
+      if (cleaned.length > 0 && cleaned in this._vocab) {
+        features[this._vocab[cleaned]] = 1;
       }
     }
 
     // Trigrams
-    var chars = t.split("");
-    var n = chars.length;
-    for (var i = 0; i <= n - 3; i++) {
-      var trigram = chars[i] + chars[i + 1] + chars[i + 2];
-      if (trigram in this.vocab) {
-        features[this.vocab[trigram]] = 1;
+    const n = t.length;
+    for (let i = 0; i <= n - 3; i++) {
+      const trigram = t.substring(i, i + 3);
+      if (trigram in this._vocab) {
+        features[this._vocab[trigram]] = 1;
       }
     }
 
     // Quadgrams
-    for (var i = 0; i <= n - 4; i++) {
-      var quadgram = chars[i] + chars[i + 1] + chars[i + 2] + chars[i + 3];
-      if (quadgram in this.vocab) {
-        features[this.vocab[quadgram]] = 1;
+    for (let i = 0; i <= n - 4; i++) {
+      const quadgram = t.substring(i, i + 4);
+      if (quadgram in this._vocab) {
+        features[this._vocab[quadgram]] = 1;
       }
     }
 
     return features;
-  };
+  },
 
-  // ── Prediction ───────────────────────────────────────────────────
-  // Returns { isSpam: boolean, prob: number, version: string }
+  /**
+   * Main detection function.
+   * @param {string} input - The text to analyze.
+   * @returns {{ isSpam: boolean, prob: number, reason?: string, version: string }}
+   */
+  spamcheck: function (input) {
+    if (!input || typeof input !== 'string') {
+      return { isSpam: false, prob: 0, version: this._version };
+    }
 
-  BernoulliNB.prototype.predict = function (text) {
-    var features = this.transform(text);
-    var scores = new Float64Array(this.nClasses);
+    // Hard rules — auto-flag as spam
+    const currencySymbols = ['$', '€', '£', '฿', '¥', '₹', '₽', '₿', '₮', '₩', '₱', '₫'];
+    for (let i = 0; i < currencySymbols.length; i++) {
+      if (input.indexOf(currencySymbols[i]) !== -1) {
+        return { isSpam: true, prob: 1.0, reason: 'currency_symbol', version: this._version };
+      }
+    }
 
-    for (var c = 0; c < this.nClasses; c++) {
-      var s = this.classLogPrior[c];
-      for (var j = 0; j < this.nFeatures; j++) {
+    const spamLinks = ['line.me', '@line', 'lin.ee', 'bit.ly', 'shorturl', 'tinyurl', 'liff.line'];
+    const lower = input.toLowerCase();
+    for (let i = 0; i < spamLinks.length; i++) {
+      if (lower.indexOf(spamLinks[i]) !== -1) {
+        return { isSpam: true, prob: 0.95, reason: 'spam_link', version: this._version };
+      }
+    }
+
+    // Initialize if not done
+    this.init();
+
+    // Bernoulli NB prediction
+    const features = this._transform(input);
+    const nClasses = this._classes.length;
+    const scores = new Float64Array(nClasses);
+
+    for (let c = 0; c < nClasses; c++) {
+      let s = this._classLogPrior[c];
+      for (let j = 0; j < features.length; j++) {
         if (features[j] === 1) {
-          s += this.featureLogProb[c][j];
+          s += this._featureLogProb[c][j];
         } else {
-          s += this.absentLogProb[c][j];
+          s += this._absentLogProb[c][j];
         }
       }
       scores[c] = s;
     }
 
-    // Softmax to get probability
-    var maxScore = Math.max(scores[0], scores[1]);
-    var exp0 = Math.exp(scores[0] - maxScore);
-    var exp1 = Math.exp(scores[1] - maxScore);
-    var sum = exp0 + exp1;
-    var spamProb = sum > 0 ? exp1 / sum : 0.5;
+    // Softmax
+    const maxScore = Math.max(scores[0], scores[1]);
+    const exp0 = Math.exp(scores[0] - maxScore);
+    const exp1 = Math.exp(scores[1] - maxScore);
+    const sum = exp0 + exp1;
+    const spamProb = sum > 0 ? exp1 / sum : 0.5;
 
-    // Class 1 = spam
     return {
       isSpam: scores[1] > scores[0],
       prob: spamProb,
-      version: this.version,
+      version: this._version,
     };
-  };
+  },
+};
 
-  // ── Hard Rules (zero-false-negative guardrails) ──────────────────
+// ── Global Exposure ─────────────────────────────────────────────────
 
-  var CURRENCY_SYMBOLS = ["$", "€", "£", "฿", "¥", "₹", "₽", "₿", "₮", "₩", "₱", "₫"];
-  var SPAM_LINK_PATTERNS = ["line.me", "@line", "lin.ee", "bit.ly", "shorturl", "tinyurl", "liff.line"];
+if (typeof window !== 'undefined') {
+  window.spamwarden = SpamWarden;
+}
 
-  function hasCurrencySymbol(text) {
-    for (var i = 0; i < CURRENCY_SYMBOLS.length; i++) {
-      if (text.indexOf(CURRENCY_SYMBOLS[i]) !== -1) return true;
-    }
-    return false;
-  }
+// ── Module Exports ──────────────────────────────────────────────────
 
-  function hasSpamLink(text) {
-    var lower = text.toLowerCase();
-    for (var i = 0; i < SPAM_LINK_PATTERNS.length; i++) {
-      if (lower.indexOf(SPAM_LINK_PATTERNS[i]) !== -1) return true;
-    }
-    return false;
-  }
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = SpamWarden;
+}
 
-  // ── Public API ───────────────────────────────────────────────────
-
-  var model = new BernoulliNB(MODEL_DATA);
-
-  /**
-   * Check if text is spam.
-   * @param {string} text - UTF-8 string to analyze.
-   * @returns {{ isSpam: boolean, prob: number, reason?: string, version: string }}
-   */
-  function spamcheck(text) {
-    if (!text || typeof text !== "string") {
-      return { isSpam: false, prob: 0, version: model.version };
-    }
-
-    // Hard rules — auto-flag as spam
-    if (hasCurrencySymbol(text)) {
-      return { isSpam: true, prob: 1.0, reason: "currency_symbol", version: model.version };
-    }
-    if (hasSpamLink(text)) {
-      return { isSpam: true, prob: 0.95, reason: "spam_link", version: model.version };
-    }
-
-    return model.predict(text);
-  }
-
-  /**
-   * Quick boolean-only check for conditional usage.
-   * @param {string} text
-   * @returns {boolean}
-   */
-  function spamcheckBool(text) {
-    return spamcheck(text).isSpam;
-  }
-
-  // Expose on window (browser) or module (Node/CommonJS)
-  var API = {
-    spamcheck: spamcheck,
-    isSpam: spamcheckBool,
-    version: model.version,
-  };
-
-  if (typeof window !== "undefined") {
-    window.spamwarden = API;
-  }
-  if (typeof module !== "undefined" && module.exports) {
-    module.exports = API;
-  }
-})();
+if (typeof define === 'function' && define.amd) {
+  define(function () { return SpamWarden; });
+}

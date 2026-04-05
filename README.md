@@ -20,13 +20,25 @@ npm install spamwarden
 ### In the Browser
 
 ```html
+<!-- Option 1: From RedSocs CDN -->
+<script src="https://redsocs.com/js/spam-warden.js"></script>
+
+<!-- Option 2: Self-hosted -->
 <script src="dist/spamwarden.min.js"></script>
+
 <script>
-  const result = spamwarden.spamcheck("สมัครสมาชิกวันนี้ รับโบนัส ฟรี!");
+  const result = window.spamwarden.spamcheck("สมัครสมาชิกวันนี้ รับโบนัส ฟรี!");
   console.log(result.isSpam);   // true
-  console.log(result.prob);     // 0.98
+  console.log(result.prob);     // 1.0
   console.log(result.version);  // "v0.68"
 </script>
+```
+
+### As ES Module
+
+```js
+import SpamWarden from './dist/spamwarden.min.js';
+SpamWarden.spamcheck("Welcome bonus! Deposit now");
 ```
 
 ### Quick Boolean Check
