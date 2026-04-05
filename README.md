@@ -173,6 +173,5 @@ spam-warden/
 ├── model.json           # Trained model from spam-labeler
 ├── build.js             # Node.js build script
 ├── build.sh             # Shell wrapper
-├── SPEC.md              # Technical specification
 └── README.md            # This file
 ```
