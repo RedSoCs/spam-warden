@@ -4,6 +4,7 @@ Lightweight, client-side JavaScript library for detecting spam and sentence hija
 
 [![CI](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml/badge.svg)](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/spamwarden.svg)](https://www.npmjs.com/package/spamwarden)
+[![Version](https://img.shields.io/github/v/tag/RedSocs/spam-warden?label=version&color=blue)](https://github.com/RedSocs/spam-warden/releases)
 
 ## Quick Start
 
