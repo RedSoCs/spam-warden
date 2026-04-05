@@ -24,17 +24,7 @@ jobs:
         run: node build.js
 
       - name: Run smoke tests
-        run: node -e "
-          const sw = require('./dist/spamwarden.js');
-          const r1 = sw.spamcheck('สมัครสมาชิกวันนี้ รับโบนัส ฝากเงิน');
-          const r2 = sw.spamcheck('Hello, the weather is nice today.');
-          console.log('Spam:', r1.isSpam, '(' + (r1.prob * 100).toFixed(0) + '%)');
-          console.log('Safe:', r2.isSpam, '(' + ((1 - r2.prob) * 100).toFixed(0) + '%)');
-          console.log('Version:', sw.version);
-          if (!r1.isSpam) { process.exit(1); }
-          if (r2.isSpam) { process.exit(1); }
-          console.log('All tests passed.');
-        "
+        run: node test.js
 
       - name: Check output sizes
         run: |
