@@ -49,6 +49,12 @@ if (spamwarden.isSpam(userInput)) {
 }
 ```
 
+### Check Model Version
+
+```js
+console.log(spamwarden.version); // "v0.68"
+```
+
 ### In Node.js
 
 ```js
@@ -75,6 +81,22 @@ Convenience wrapper — returns only the boolean result.
 ### `spamwarden.version → string`
 
 Current model version string.
+
+## Tests
+
+```bash
+# Run full test suite (91 tests)
+node tests/test.js
+
+# Run quick smoke test
+npm test
+```
+
+Test data lives in `tests/`:
+- `tests/spam.*.txt` — one spam phrase per line
+- `tests/safe.*.txt` — one safe phrase per line
+
+Known false positives are tracked in the test runner.
 
 ## Build
 
@@ -173,5 +195,10 @@ spam-warden/
 ├── model.json           # Trained model from spam-labeler
 ├── build.js             # Node.js build script
 ├── build.sh             # Shell wrapper
+├── TEST-REPORT.md       # Test results report
+├── tests/
+│   ├── test.js          # Full test suite (91 tests)
+│   ├── spam.*.txt       # Spam test data
+│   └── safe.*.txt       # Safe test data
 └── README.md            # This file
 ```
