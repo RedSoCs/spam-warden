@@ -26,6 +26,9 @@ jobs:
       - name: Run smoke tests
         run: node test.js
 
+      - name: Run full test suite
+        run: node tests/test.js
+
       - name: Check output sizes
         run: |
           echo "Uncompressed: $(wc -c < dist/spamwarden.js) bytes"
