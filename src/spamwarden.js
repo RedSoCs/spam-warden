@@ -138,6 +138,22 @@ const SpamWarden = {
       version: this._version,
     };
   },
+  /**
+   * Convenience wrapper — returns only the boolean result.
+   * @param {string} text
+   * @returns {boolean}
+   */
+  isSpam: function (text) {
+    return this.spamcheck(text).isSpam;
+  },
+
+  /**
+   * Current model version string.
+   * @type {string}
+   */
+  get version() {
+    return this._version;
+  },
 };
 
 // ── Global Exposure ─────────────────────────────────────────────────
