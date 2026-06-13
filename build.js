@@ -9,20 +9,22 @@ const zlib = require('zlib');
 
 const ROOT = path.resolve(__dirname);
 const MODEL = path.join(ROOT, 'model.json');
-const SRC = path.join(ROOT, 'src', 'spamwarden.js');
+const DEFAULT_SRC = path.join(ROOT, 'src', 'spamwarden.js');
+const SRC = process.env.SW_SRC ? path.resolve(process.env.SW_SRC) : DEFAULT_SRC;
 const OUT = path.join(ROOT, 'dist', 'spamwarden.js');
 const MIN = path.join(ROOT, 'dist', 'spamwarden.min.js');
 
 console.log('=========================================');
 console.log('  SpamWarden.js — Build');
+console.log(`  Source: ${path.relative(ROOT, SRC)}`);
 console.log('=========================================\n');
 
 if (!fs.existsSync(MODEL)) {
-  console.error('Error: model.json not found. Copy from spam-labeler/extension/model.json');
+  console.error('Error: model.json not found.');
   process.exit(1);
 }
 if (!fs.existsSync(SRC)) {
-  console.error('Error: src/spamwarden.js not found.');
+  console.error(`Error: Source file not found: ${SRC}`);
   process.exit(1);
 }
 
@@ -34,8 +36,8 @@ if (!fs.existsSync(path.join(ROOT, 'dist'))) {
 
 console.log('[1/3] Bundling model.json into spamwarden.js...');
 const modelJson = fs.readFileSync(MODEL, 'utf-8');
-const src = fs.readFileSync(SRC, 'utf-8');
-const bundled = src.replace('MODEL_DATA_PLACEHOLDER', modelJson);
+const srcCode = fs.readFileSync(SRC, 'utf-8');
+const bundled = srcCode.replace('MODEL_DATA_PLACEHOLDER', modelJson);
 fs.writeFileSync(OUT, bundled);
 
 const outSize = fs.statSync(OUT).size;
@@ -46,26 +48,26 @@ console.log(`  Size:   ${(outSize / 1024).toFixed(0)} KB`);
 
 console.log('\n[2/3] Minifying...');
 
-try {
-  // Try terser
-  const { minify } = require('terser');
-  minify(bundled, { compress: true, mangle: true }).then((result) => {
+async function build() {
+  try {
+    // Try terser
+    const { minify } = require('terser');
+    const result = await minify(bundled, { 
+      compress: true, 
+      mangle: true,
+      format: { comments: false }
+    });
     fs.writeFileSync(MIN, result.code);
-    reportSizes(OUT, MIN);
-  });
-} catch (e) {
-  // Fallback: simple minification
-  const simpleMinified = bundled
-    .replace(/\/\/.*$/gm, '')
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/\n\s*\n/g, '\n')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-  fs.writeFileSync(MIN, simpleMinified);
-  console.log(`  Terser not installed — simple minification applied`);
-  console.log(`  For production: npm install terser`);
+  } catch (e) {
+    // Fallback: Safe copy (no minification)
+    console.log(`  Terser not available, using unminified copy.`);
+    fs.writeFileSync(MIN, bundled);
+  }
+  
   reportSizes(OUT, MIN);
 }
+
+build();
 
 function reportSizes(outPath, minPath) {
   const outBytes = fs.statSync(outPath).size;
@@ -82,7 +84,7 @@ function reportSizes(outPath, minPath) {
   console.log(`  Gzipped:      ${gzSize.toLocaleString()} bytes (${(gzSize / 1024).toFixed(0)} KB)`);
 
   // Smoke test
-  console.log('\n  Smoke test:');
+  console.log('\n  Smoke test (dist/spamwarden.js):');
   try {
     delete require.cache[require.resolve(outPath)];
     const sw = require(outPath);
@@ -90,7 +92,7 @@ function reportSizes(outPath, minPath) {
     const r2 = sw.spamcheck('Hello, the weather is nice today.');
     console.log(`  Spam:   ${r1.isSpam} (${(r1.prob * 100).toFixed(0)}%)`);
     console.log(`  Safe:   ${r2.isSpam} (${((1 - r2.prob) * 100).toFixed(0)}%)`);
-    console.log(`  Version: ${sw._version}`);
+    console.log(`  Version: ${sw.version}`);
   } catch (e) {
     console.log(`  (Cannot test — ${e.message})`);
   }

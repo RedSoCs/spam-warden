@@ -1,204 +1,98 @@
 # SpamWarden.js
 
-Lightweight, client-side JavaScript library for detecting spam and sentence hijacking in real-time. Trained on the model from [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler), bundled for zero-dependency browser usage.
+Lightweight, client-side JavaScript library for real-time spam detection and automated form protection. Optimized for Thai text and high-performance browser environments.
 
 [![CI](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml/badge.svg)](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40redsocs%2Fspam-warden.svg)](https://www.npmjs.com/package/@redsocs/spam-warden)
-[![Socket Badge](https://badge.socket.dev/npm/package/@redsocs/spam-warden/latest)](https://socket.dev/npm/package/%40redsocs%2Fspam-warden)
 
-## Quick Start
+# What is this?
 
-### Install
+**SpamWarden.js** is a zero-dependency, client-side engine that detects spam directly in the user's browser. It uses a **Bernoulli Naive Bayes** model trained specifically on Thai spam patterns (gambling, loans, "fast money" scams).
 
-```bash
-# npm
-npm install @redsocs/spam-warden
+By running in the browser, it allows you to **block spam before it ever hits your database**, saving server resources and keeping your data clean.
 
-# Or download from CDN / GitHub releases
-```
+# Quickstart
 
-### In the Browser
+### 1. The "No-Code" Way (Auto-Blocking)
+
+Add this script to your page. It will automatically find your form and block submission if spam is detected.
 
 ```html
-<!-- Option 1: From RedSocs CDN -->
-<script src="https://cdn.redsocs.com/js/spam-warden.min.js"></script>
+<script src="https://cdn.redsocs.com/js/spamwarden.min.js?client=U0lURV9UT0tFTnxteS1mb3JtLWlkfG15LWlucHV0LWlk"></script>
+```
 
-<!-- Option 2: Self-hosted -->
+_Note: The `client` parameter is a Base64 string of `siteToken|formId|inputId`._
+
+### 2. Manual Configuration
+
+```html
 <script src="dist/spamwarden.min.js"></script>
-
 <script>
-  const result = window.spamwarden.spamcheck("สมัครสมาชิกวันนี้ รับโบนัส ฟรี!");
-  console.log(result.isSpam);   // true
-  console.log(result.prob);     // 1.0
-  console.log(result.version);  // "v0.69"
+  spamwarden.configure({
+    siteToken: "YOUR_TOKEN",
+    formId: "contact-form",
+    inputId: "message-field",
+    autoReport: true, // Send telemetry to api.redsocs.com
+    onSpam: (result) => {
+      alert("Please do not send spam!");
+    },
+  });
 </script>
 ```
 
-### As ES Module
+### 3. API Usage (Node or Browser)
 
-```js
-import SpamWarden from './dist/spamwarden.min.js';
-SpamWarden.spamcheck("Welcome bonus! Deposit now");
-```
-
-### Quick Boolean Check
-
-```js
-if (spamwarden.isSpam(userInput)) {
-  // block or flag
+```javascript
+const result = spamwarden.spamcheck("สมัครสมาชิกวันนี้ รับโบนัส ฟรี!");
+if (result.isSpam) {
+  console.log("Blocked:", result.reason || "AI match");
+  console.log("Confidence:", result.prob);
 }
 ```
 
-### Check Model Version
+# Scope
 
-```js
-console.log(spamwarden.version); // "v0.68"
-```
+SpamWarden is designed for **interactive web elements**:
 
-### In Node.js
+- **Contact Forms:** Prevent bot and manual spam submissions.
+- **Comment Sections:** Real-time feedback for users before they post.
+- **Chat Inputs:** Instant filtering of malicious links and currency-heavy spam.
+- **Privacy-First Apps:** Since detection happens locally, user data doesn't leave the browser unless explicitly reported.
 
-```js
-const spamwarden = require("./dist/spamwarden.min.js");
-const r = spamwarden.spamcheck("Welcome bonus! Deposit now get 200% match");
-console.log(r.isSpam); // true
-```
+# What's inside?
 
-## API
+- **Hybrid Detection Engine:**
+  - **Hard Rules:** Instant blocking for currency symbols (`$€£฿`) and known spam link patterns (`line.me`, `bit.ly`).
+  - **Thai-Optimized Tokenizer:** Extracts whitespace tokens, **trigrams**, and **quadgrams** to handle the space-less nature of the Thai language.
+  - **Bernoulli NB Model:** A compact AI model trained on thousands of real-world spam samples.
+- **Telemetry System:** Optional auto-reporting of spam hits to `api.redsocs.com` for global threat intelligence.
+- **Auto-Interceptor:** Event listeners that hook into DOM forms to provide "Drop-in" protection.
 
-### `spamwarden.spamcheck(text) → object`
+# Why this exists?
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `isSpam` | `boolean` | `true` if detected as spam |
-| `prob` | `number` | Spam probability (0.0–1.0) |
-| `reason` | `string?` | Present if hard-rule triggered: `"currency_symbol"` or `"spam_link"` |
-| `version` | `string` | Model version (e.g., `"v0.69"`) |
+Traditional spam filters (like Akismet or ReCaptcha) often:
 
-### `spamwarden.isSpam(text) → boolean`
+1. Require a round-trip to a server (latency).
+2. Are expensive for high-volume sites.
+3. Over-collect user data (privacy concerns).
+4. Struggle with specific Thai-language spam patterns.
 
-Convenience wrapper — returns only the boolean result.
+**SpamWarden** exists to provide a **local, fast, and Thai-centric** alternative that stops spam at the source: the user's input field.
 
-### `spamwarden.version → string`
+# About
 
-Current model version string.
+- **Version:** 0.7.0 (v2 Engine)
+- **Author:** [RedSocs](https://github.com/RedSocs)
+- **License:** MIT
+- **Model Origin:** Trained via [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler)
 
-## Tests
+---
 
-```bash
-# Run full test suite (91 tests)
-node tests/test.js
+### Technical Specs
 
-# Run quick smoke test
-npm test
-```
-
-Test data lives in `tests/`:
-- `tests/spam.*.txt` — one spam phrase per line
-- `tests/safe.*.txt` — one safe phrase per line
-
-Known false positives are tracked in the test runner.
-
-## Build
-
-```bash
-# 1. Copy model from spam-labeler
-cp ../spam-labeler/extension/model.json .
-
-# 2. Build (bundles model into JS)
-node build.js
-# or: ./build.sh
-```
-
-Output:
-
-| File | Size |
-|------|------|
-| `dist/spamwarden.js` | 3.5 MB (uncompressed) |
-| `dist/spamwarden.min.js` | 61 KB (minified) |
-| `dist/spamwarden.min.js` (gzipped) | **27 KB** |
-
-### Optional: Better Minification
-
-```bash
-npm install terser
-node build.js   # now uses terser instead of simple minification
-```
-
-## How It Works
-
-```
-User posts text
-    ↓
-spamwarden.spamcheck(text)
-    ↓
-Hard rules check (currency symbols, spam links)
-    ↓
-Vectorizer: whitespace tokens + trigrams + quadgrams
-    ↓
-Bernoulli Naive Bayes prediction (class 0 = safe, 1 = spam)
-    ↓
-Softmax → probability
-    ↓
-{ isSpam, prob, version }
-```
-
-### Model
-
-| Property | Value |
-|----------|-------|
-| **Origin** | [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler) (Rust, Bernoulli NB) |
-| **Features** | ~63,000 tokens (whitespace + trigrams + quadgrams) |
-| **Version** | v0.69 (680 training samples) |
-| **Hard Rules** | Currency symbols (`$€£฿`) → auto-spam; Spam links (`line.me`, `@line`, `lin.ee`) → auto-spam |
-
-### Train Your Own Model
-
-The model in this repo was trained by [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler). To customize for your own use case:
-
-```bash
-# 1. Clone the training repo
-git clone https://github.com/RedSocs/spam-labeler.git
-
-# 2. Add your own training data
-cp your-spam.txt spam-labeler/data/spam.txt
-cp your-safe.txt spam-labeler/data/safe.txt
-
-# 3. Retrain and export
-cd spam-labeler
-cargo run --release --bin export_model
-cp extension/model.json ../spam-warden/model.json
-
-# 4. Rebuild SpamWarden
-cd ../spam-warden
-node build.js
-```
-
-See the [spam-labeler README](https://github.com/RedSocs/spam-labeler) for the full training pipeline.
-
-## Privacy
-
-All processing happens **in-memory in the browser**. No data is sent to any server.
-
-## Related
-
-- [**RedSocs/spam-labeler**](https://github.com/RedSocs/spam-labeler) — Rust-based training pipeline, TUI app, and Firefox extension for collecting and training the spam detection model.
-
-## Project Structure
-
-```
-spam-warden/
-├── src/
-│   └── spamwarden.js    # Library source (MODEL_DATA_PLACEHOLDER)
-├── dist/
-│   ├── spamwarden.js    # Bundled (model inlined, ~3.5 MB)
-│   └── spamwarden.min.js # Minified for production (~61 KB, 27 KB gzipped)
-├── model.json           # Trained model from spam-labeler
-├── build.js             # Node.js build script
-├── build.sh             # Shell wrapper
-├── TEST-REPORT.md       # Test results report
-├── tests/
-│   ├── test.js          # Full test suite (91 tests)
-│   ├── spam.*.txt       # Spam test data
-│   └── safe.*.txt       # Safe test data
-└── README.md            # This file
-```
+| Property          | Value                    |
+| ----------------- | ------------------------ |
+| **Minified Size** | ~63 KB (including model) |
+| **Gzipped Size**  | **~27 KB**               |
+| **Dependencies**  | 0 (Vanilla JS)           |
+| **Vocabulary**    | ~63,000 features         |

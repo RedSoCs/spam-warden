@@ -40,7 +40,6 @@ jobs:
         with:
           name: spam-warden-dist
           path: dist/
-
   # ── Release ──────────────────────────────────────────────────────
   release:
     name: Release
@@ -65,7 +64,7 @@ jobs:
         run: |
           # Creates a header with the GitHub tag (e.g., v1.0.0)
           HEADER="/*! SpamWarden ${{ github.ref_name }} | (c) RedSocs */"
-          
+
           # Prepend the header to the minified file
           echo "$HEADER" > header.txt
           cat header.txt dist/spamwarden.min.js > temp.js
@@ -95,11 +94,3 @@ jobs:
           # 2. Overwrite the "latest" copy (/js/spam-warden.min.js)
           aws s3 cp dist/spamwarden.min.js s3://${{ secrets.R2_BUCKET_NAME }}/js/spam-warden.min.js \
             --endpoint-url https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
-
-
-
-
-
-
-
-            
