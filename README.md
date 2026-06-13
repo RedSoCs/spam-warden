@@ -3,8 +3,8 @@
 Lightweight, client-side JavaScript library for detecting spam and sentence hijacking in real-time. Trained on the model from [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler), bundled for zero-dependency browser usage.
 
 [![CI](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml/badge.svg)](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/%40_redsocs%2Fspam-warden.svg)](https://www.npmjs.com/package/@_redsocs/spam-warden)
-[![Socket Badge](https://badge.socket.dev/npm/package/@_redsocs/spam-warden/latest)](https://socket.dev/npm/package/%40_redsocs%2Fspam-warden)
+[![npm](https://img.shields.io/npm/v/%40redsocs%2Fspam-warden.svg)](https://www.npmjs.com/package/@redsocs/spam-warden)
+[![Socket Badge](https://badge.socket.dev/npm/package/@redsocs/spam-warden/latest)](https://socket.dev/npm/package/%40redsocs%2Fspam-warden)
 
 ## Quick Start
 
@@ -12,7 +12,7 @@ Lightweight, client-side JavaScript library for detecting spam and sentence hija
 
 ```bash
 # npm
-npm install @_redsocs/spam-warden
+npm install @redsocs/spam-warden
 
 # Or download from CDN / GitHub releases
 ```
@@ -21,7 +21,7 @@ npm install @_redsocs/spam-warden
 
 ```html
 <!-- Option 1: From RedSocs CDN -->
-<script src="https://redsocs.com/js/spam-warden.js"></script>
+<script src="https://cdn.redsocs.com/js/spam-warden.min.js"></script>
 
 <!-- Option 2: Self-hosted -->
 <script src="dist/spamwarden.min.js"></script>
