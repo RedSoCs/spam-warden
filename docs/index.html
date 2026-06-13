@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamWarden Demo — ระบบป้องกันสแปมภาษาไทย</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 150px; }
+        button { background: #3498db; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #2980b9; }
+        .log-container { margin-top: 30px; background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 4px; font-family: 'Courier New', Courier, monospace; font-size: 14px; }
+        .log-title { font-weight: bold; margin-bottom: 10px; color: #3498db; border-bottom: 1px solid #34495e; }
+        .spam-tag { color: #e74c3c; font-weight: bold; }
+        .safe-tag { color: #2ecc71; font-weight: bold; }
+        .explanation { background: #e8f4fd; border-left: 5px solid #3498db; padding: 15px; margin-bottom: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>SpamWarden Live Demo</h1>
+    
+    <div class="explanation">
+        <strong>💡 สำหรับเจ้าหน้าที่ (Technical Note for Staff):</strong><br>
+        ทำไมเราต้องระบุ <code>formId</code> และ <code>inputId</code>?<br>
+        1. <strong>formId: "contact-form"</strong> — เปรียบเสมือนการระบุ "ชื่อประตู" เพื่อให้โปรแกรมรู้ว่าต้องไปเฝ้าที่ประตูไหน เมื่อมีการกดส่งข้อมูล (Submit) โปรแกรมจะเข้าไปตรวจสอบทันที<br>
+        2. <strong>inputId: "message-field"</strong> — เปรียบเสมือนการระบุ "กล่องข้อความ" เพื่อให้โปรแกรมรู้ว่าต้องอ่านข้อความจากกล่องไหนมาตรวจหาว่าเป็นสแปมหรือไม่<br>
+        <em>* หากระบุไม่ถูกต้อง โปรแกรมจะหาเป้าหมายไม่เจอและไม่สามารถป้องกันระบบได้</em>
+    </div>
+
+    <!-- 
+        TOPOLOGY EXPLANATION:
+        The 'id' attributes below are the "anchors" for the AI.
+        form id="contact-form"  <-- This matches the 'formId' in script
+        textarea id="message-field" <-- This matches the 'inputId' in script
+    -->
+    <form id="contact-form">
+        <div class="form-group">
+            <label for="name">ชื่อผู้ติดต่อ (Name):</label>
+            <input type="text" id="name" placeholder="ระบุชื่อของคุณ">
+        </div>
+
+        <div class="form-group">
+            <label for="message-field">ข้อความ (Message):</label>
+            <textarea id="message-field" placeholder="ลองพิมพ์ข้อความสแปม เช่น 'สมัครสมาชิกวันนี้ รับโบนัสฟรี 100%' หรือข้อความทั่วไป..."></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn">ส่งข้อมูล (Send Message)</button>
+    </form>
+
+    <div class="log-container">
+        <div class="log-title">Warden Status Log:</div>
+        <div id="log-output">System Ready. Waiting for input...</div>
+    </div>
+</div>
+
+<!-- โหลดไฟล์ SpamWarden จาก CDN (Load latest version) -->
+<script src="https://cdn.redsocs.com/js/spam-warden.min.js"></script>
+
+<script>
+    // ── CONFIGURATION DETAIL ────────────────────────────────────────
+    // เราเชื่อมโยงโปรแกรมเข้ากับ Form ในหน้าเว็บโดยตรง
+    spamwarden.configure({
+        siteToken: "DEMO_MODE",
+        formId: "contact-form",  // ระบุ ID ของ Form ที่ต้องการป้องกัน
+        inputId: "message-field", // ระบุ ID ของช่องกรอกข้อความที่ต้องการตรวจ
+        autoReport: false,        // ปิดการส่งรายงานจริงในหน้า Demo
+        onSpam: (result) => {
+            updateLog(`<span class="spam-tag">[BLOCK]</span> ตรวจพบสแปม! เหตุผล: ${result.reason || 'AI Match'} (${(result.prob * 100).toFixed(1)}%)`);
+            alert("❌ ระบบระบุว่าข้อความนี้เป็นสแปมและได้ทำการระงับการส่งข้อมูลเรียบร้อยแล้ว");
+        }
+    });
+
+    const inputArea = document.getElementById('message-field');
+    const logOutput = document.getElementById('log-output');
+
+    // ตรวจสอบแบบ Real-time ขณะพิมพ์ (Real-time analysis)
+    inputArea.addEventListener('input', () => {
+        const text = inputArea.value;
+        if (!text) {
+            updateLog("Waiting for input...");
+            return;
+        }
+
+        const result = spamwarden.spamcheck(text);
+        const tag = result.isSpam ? '<span class="spam-tag">[SPAM]</span>' : '<span class="safe-tag">[SAFE]</span>';
+        updateLog(`${tag} ความน่าจะเป็น: ${(result.prob * 100).toFixed(1)}% | เวอร์ชั่นโมเดล: ${result.version}`);
+    });
+
+    function updateLog(msg) {
+        logOutput.innerHTML = msg;
+    }
+
+    // ป้องกันการ Submit จริงในหน้า Demo (Prevent actual redirect)
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+        if (!spamwarden.isSpam(inputArea.value)) {
+            e.preventDefault();
+            updateLog('<span class="safe-tag">[SUCCESS]</span> ข้อความปลอดภัย! (ในระบบจริงข้อมูลจะถูกส่งไปยัง Server)');
+            alert("✅ ข้อความผ่านการตรวจสอบ! (หน้า Demo นี้จะไม่มีการส่งข้อมูลจริง)");
+        }
+    });
+</script>
+
+</body>
+</html>
