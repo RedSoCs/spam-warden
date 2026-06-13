@@ -88,6 +88,13 @@ jobs:
           files: spam-warden-dist.tar.gz
           generate_release_notes: true
 
+      # ── NPM Publish ──────────────────────────────────────────────
+      - name: Publish to NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish
+
       # ── Cloudflare R2 Upload ─────────────────────────────────────
       - name: Upload to Cloudflare R2
         env:
