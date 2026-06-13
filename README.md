@@ -81,7 +81,7 @@ Traditional spam filters (like Akismet or ReCaptcha) often:
 
 # About
 
-- **Version:** 0.70 (v2 Engine)
+- **Version:** 0.70.0 (v2 Engine)
 - **Author:** [RedSocs](https://github.com/RedSocs)
 - **License:** MIT
 - **Model Origin:** Trained via [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler)
