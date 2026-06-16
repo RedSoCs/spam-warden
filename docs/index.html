@@ -720,6 +720,72 @@
             background-color: #e2e8f0;
             color: #0f172a;
         }
+
+        /* --- Zero-Code Webboard Integration Styles --- */
+        .integrator-section {
+            margin-top: 40px;
+        }
+        .url-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .url-bar input {
+            flex: 1;
+            padding: 14px 16px;
+            font-size: 1rem;
+            background: var(--bg-color);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+        }
+        .scan-terminal {
+            background: #0d1117;
+            border-radius: 6px;
+            padding: 16px;
+            color: #c9d1d9;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            font-size: 0.85rem;
+            min-height: 120px;
+            display: none;
+            text-align: left;
+        }
+        .scan-line {
+            margin: 0 0 8px 0;
+            opacity: 0;
+            animation: scanFadeIn 0.3s forwards;
+        }
+        .scan-line.success {
+            color: #3fb950;
+        }
+        .scan-line.highlight {
+            color: #58a6ff;
+        }
+        .scan-line.warning {
+            color: #d29922;
+        }
+        @keyframes scanFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        .snippet-result {
+            margin-top: 24px;
+            display: none;
+            animation: scanFadeIn 0.5s forwards;
+            text-align: left;
+        }
+        .snippet-result p {
+            margin: 0 0 12px 0;
+            color: var(--text-main);
+        }
+        .snippet-result code {
+            background: var(--spam-bg);
+            color: var(--spam-text);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 
@@ -922,18 +988,6 @@
                         </p>
                     </div>
 
-                    <div class="rh-banner" style="
-                background: var(--spam-bg);
-                border: 1px solid #f5c2c7;
-                margin-bottom: 0;
-              ">
-                        <span style="color: var(--spam-text)"><strong>ใช้ WordPress อยู่ใช่ไหม?</strong> ถ้าใช่
-                            คุณควรได้รับการป้องกันที่ระดับ Server-side
-                            เพื่อความปลอดภัยสูงสุด</span>
-                        <a href="#" style="color: var(--spam-text); text-decoration: underline">ทดลองใช้ SpamWarden WP
-                            (Early Access) →</a>
-                    </div>
-
                     <h3>แล้วทำไมยังควรใช้เวอร์ชัน JS อยู่?</h3>
                     <p>
                         เพราะมันคือ
@@ -947,7 +1001,7 @@
                 </div>
 
                 <!-- Section 4: Features & DLP Matrix (Synced with v5) -->
-                <div id="installation" class="container content-section">
+                <div class="container content-section">
                     <h2>Privacy-First: ระบบ Auto-DLP และการ Mask ข้อมูล</h2>
                     <p>
                         เพื่อให้เป็นไปตามมาตรฐานการรักษาข้อมูลส่วนบุคคล
@@ -1011,13 +1065,71 @@
                             เข้าไปในฟอร์มสาธารณะหรือไม่ (เพื่อการตรวจสอบความปลอดภัยและ
                             Compliance)</em>
                     </p>
+                </div>
 
-                    <hr style="
-                border: 0;
-                border-top: 1px solid var(--border-light);
-                margin: 40px 0;
-              " />
+                <!-- Section 5: Zero-Code Webboard Integration Section -->
+                <div class="container content-section integrator-section">
+                    <h2>🛡️ Zero-Code Webboard Integration (ระบบจำลอง)</h2>
+                    <p>
+                        วาง URL ของเว็บฟอร์ม/เว็บบอร์ดของคุณเพื่อวิเคราะห์โครงสร้าง DOM และสร้างสคริปต์กรองสแปมอัตโนมัติ (Auto-Blocking Drop-in Script) ที่ผูกกับโดเมนของคุณโดยเฉพาะ
+                    </p>
+                    <p style="color: #d9534f; font-weight: bold; font-size: 0.95rem; margin-top: -12px;">
+                        ⚠️ หมายเหตุ: ส่วนนี้เป็นแบบจำลอง (Mockup) และรองรับการสแกนเฉพาะเว็บไซต์ที่มีโดเมนลงท้ายด้วย .ac.th และ .go.th เท่านั้น
+                    </p>
 
+                    <!-- Live Demo Preview -->
+                    <div style="margin: 24px 0 32px; text-align: center;">
+                        <img src="https://cdn.redsocs.com/assets/siem-endpoint-spamblock-demo.gif" alt="SIEM Endpoint & Spam Block Demo" style="width: 100%; max-width: 900px; border-radius: 6px; display: block; margin: 0 auto;" />
+                    </div>
+
+                    <div class="url-bar">
+                        <input type="text" id="target-url"
+                            placeholder="เช่น http://www.baannongbuaschool.ac.th/webboard/postq.php" autocomplete="off" />
+                        <button id="scan-btn" class="btn btn-primary" style="padding: 12px 24px;">
+                            สแกนและสร้างสคริปต์
+                        </button>
+                    </div>
+
+                    <!-- Config Parameters Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; background: var(--bg-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-light); text-align: left;">
+                        <div>
+                            <label style="display: block; font-weight: bold; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-main);">PII / DLP Auditing (sdFlag)</label>
+                            <select id="config-sd-flag" style="width: 100%; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-light); background: var(--surface); color: var(--text-main); font-size: 0.9rem;">
+                                <option value="1">1 (เปิดใช้งาน DLP - แนะนำ)</option>
+                                <option value="0">0 (ตรวจสอบ Spam อย่างเดียว)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: bold; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-main);">SIEM Endpoint (Optional)</label>
+                            <input type="text" id="config-siem-endpoint" placeholder="เช่น api.yourdomain.com/v1/telemetry" style="width: 100%; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-light); background: var(--surface); color: var(--text-main); font-size: 0.9rem;" />
+                        </div>
+                    </div>
+
+                    <div id="scan-error-bar" class="sd-indicator is-spam" style="display: none; margin-top: -12px; margin-bottom: 24px; font-size: 0.95rem; padding: 12px 16px; border-radius: 6px; border: 1px solid rgba(220, 36, 76, 0.25); font-weight: 500; text-align: left; align-items: center; gap: 8px;">
+                        <span>⚠️</span>
+                        <span id="scan-error-msg"></span>
+                    </div>
+
+                    <div id="scan-terminal" class="scan-terminal" style="margin-bottom: 24px;"></div>
+
+                    <div id="snippet-result" class="snippet-result">
+                        <p>
+                            วิเคราะห์สำเร็จ! คัดลอกและนำสคริปต์นี้ไปวางก่อนแท็กปิด <code>&lt;/body&gt;</code> ของโดเมน <span id="domain-highlight" style="color: var(--primary); font-weight: bold;">your site</span>:
+                        </p>
+                        <div class="payload-container">
+                            <button class="copy-btn" id="copy-snippet-btn">Copy</button>
+                            <pre id="snippet-display" style="background: transparent; color: var(--code-text); padding: 16px; margin: 0; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.85rem; overflow-x: auto; text-align: left; border: none; white-space: pre;"></pre>
+                        </div>
+                        <div style="margin-top: 24px; text-align: center;">
+                            <a href="https://redsocs.com/spam-warden" target="_blank" class="btn btn-primary" style="font-size: 1.05rem; padding: 14px 28px; justify-content: center; box-shadow: 0 4px 12px rgba(220, 36, 76, 0.25);">
+                                รับการป้องกันฟรี
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: ตัวเลือกการติดตั้ง (Installation) -->
+                <div id="installation" class="container content-section">
                     <h2>ตัวเลือกการติดตั้ง (Installation)</h2>
 
                     <h3>1. แบบ "No-Code" ผ่าน CDN (แนะนำ)</h3>
@@ -1077,7 +1189,16 @@
 
                 <!-- NCSA Compliance Section -->
                 <div class="container content-section">
-                    <h2>🛡️ สอดคล้องกับมาตรฐาน NCSA Web Standard 1.0</h2>
+                    <h2>🛡️ สอดคล้องกับมาตรฐาน NCSA Web Standard 1.0 <span style="color: #d9534f; font-size: 1.3rem;">(จะครบกำหนดใน 92 วัน)</span></h2>
+                    <p style="color: #d9534f; font-weight: bold; margin-bottom: 4px;">
+                        ⚠️ วันครบกำหนดตามข้อบังคับ: 16 กันยายน 2569 (เหลือเวลาดำเนินการอีก 92 วัน)
+                    </p>
+                    <p style="color: darkblue; font-size: 0.95rem; margin-top: 0; margin-bottom: 16px; font-weight: bold; line-height: 1.6;">
+                        อ้างอิง:<br />
+                        • <a href="https://cdn.redsocs.com/assets/NCSA_Website_Security_Standard_2568.pdf" target="_blank" style="color: darkblue; text-decoration: underline;">NCSA_Website_Security_Standard_2568.pdf</a><br />
+                        • <a href="https://cdn.redsocs.com/assets/2025-%E0%B8%A1%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%90%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%A7%E0%B9%87%E0%B8%9A%E0%B9%84%E0%B8%8B%E0%B8%95%E0%B9%8C%20%E0%B8%9E.%E0%B8%A8.%202668-%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%2047-69.docx" target="_blank" style="color: darkblue; text-decoration: underline;">มาตรฐานเว็บไซต์ พ.ศ. 2568 (หน้า 47-69)</a><br />
+                        • <a href="https://cdn.redsocs.com/html/ncsa-check.html" target="_blank" style="color: darkblue; text-decoration: underline;">แบบฟอร์มเพื่อใช้ในการตรวจสอบ ภาคผนวก ค</a>
+                    </p>
                     <p>
                         SpamWarden
                         ถูกออกแบบมาเพื่อตอบสนองต่อข้อกำหนดด้านความมั่นคงปลอดภัยไซเบอร์แห่งชาติ
@@ -1174,17 +1295,54 @@
                     <div class="faq-list">
                         <div class="faq-item">
                             <div class="faq-question">
-                                เครื่องมือนี้ช่วยให้เว็บไซต์ผ่านเกณฑ์ NCSA Web Standard 1.0
-                                หรือไม่?
+                                เครื่องมือนี้ช่วยให้เว็บไซต์ผ่านเกณฑ์ NCSA Web Standard หรือการประเมินสถานะความมั่นคงปลอดภัยสำหรับเว็บไซต์ภาครัฐหรือไม่?
                             </div>
                             <div class="faq-answer">
-                                ใช่! SpamWarden มีสถาปัตยกรรมที่สอดคล้องกับ NCSA Web Standard
-                                อย่างมาก โดยเฉพาะในเรื่องของ
-                                <strong>Supply Chain Security</strong>
-                                (เพราะไม่ต้องโหลดไลบรารีภายนอกอื่นๆ เลย) และ
-                                <strong>Data Minimization</strong>
-                                (เพราะวิเคราะห์ข้อความบนเครื่องของผู้ใช้ และเซ็นเซอร์ข้อมูล
-                                PII ทั้งหมดก่อนส่ง Log เข้า SOC ของคุณ)
+                                <p style="margin-top: 0; margin-bottom: 16px; font-weight: 500; color: var(--text-main); line-height: 1.6;">
+                                    ช่วยได้โดยตรงและตรงจุดมากครับ! สถาปัตยกรรมของ SpamWarden ถูกออกแบบมาเพื่อตอบรับกับแบบตรวจรายการความมั่นคงปลอดภัยฯ โดยเฉพาะในประเด็นต่อไปนี้:
+                                </p>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+                                    <!-- Item 1 -->
+                                    <div style="background: var(--bg-color); border-left: 4px solid var(--primary); padding: 14px 16px; border-radius: 0 6px 6px 0; border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+                                        <div style="font-weight: 600; color: var(--text-main); margin-bottom: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                            <span style="background: rgba(220, 36, 76, 0.1); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; letter-spacing: 0.03em;">GOV-SEC-04</span>
+                                            <span>ตอบโจทย์ข้อ 6.4 (ป้องกันภัยหน้าบ้าน)</span>
+                                        </div>
+                                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                                            โมเดลของเราที่ถูกฝึกด้วยข้อมูลสแปมกว่า 30 หมวดหมู่ครอบคลุมภัยคุกคามของปี 2026 จะช่วยสกัดกั้นและป้องกัน SEO Hijacking รวมถึงการฝังบทความเว็บพนัน บนหน้าเว็บรัฐได้อย่างเด็ดขาดตั้งแต่ระดับหน้าบ้าน
+                                        </div>
+                                    </div>
+
+                                    <!-- Item 2 -->
+                                    <div style="background: var(--bg-color); border-left: 4px solid #3fb950; padding: 14px 16px; border-radius: 0 6px 6px 0; border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+                                        <div style="font-weight: 600; color: var(--text-main); margin-bottom: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                            <span style="background: rgba(63, 185, 80, 0.1); color: #2ea44f; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; letter-spacing: 0.03em;">GOV-SEC-09</span>
+                                            <span>ตอบโจทย์ข้อ 6.9 (Data Minimization)</span>
+                                        </div>
+                                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                                            ระบบทำงานด้วยหลัก Data Minimization แบบ 100% ผ่านการเซ็นเซอร์ข้อมูลอ่อนไหว (PII Masking) ฝั่ง Client ก่อนส่ง Log เข้า SOC ทำให้การบริหารจัดการ Log ของคุณสะอาดและปลอดภัย
+                                        </div>
+                                    </div>
+
+                                    <!-- Item 3 -->
+                                    <div style="background: var(--bg-color); border-left: 4px solid #0969da; padding: 14px 16px; border-radius: 0 6px 6px 0; border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+                                        <div style="font-weight: 600; color: var(--text-main); margin-bottom: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                            <span style="background: rgba(9, 105, 218, 0.1); color: #0969da; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; letter-spacing: 0.03em;">SUPPLY-CHAIN</span>
+                                            <span>โปร่งใสระดับโครงสร้าง (Supply Chain Security)</span>
+                                        </div>
+                                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                                            สคริปต์ทำงานแบบ Standalone ไม่ดึงไลบรารีภายนอกมาโหลดให้เสี่ยงช่องโหว่ แถมยังเป็น Open Source 100% ทำให้ทีม Security Advisor ของคุณตรวจสอบซอร์สโค้ดได้อย่างโปร่งใส
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <p style="margin-bottom: 0; font-weight: 600; color: var(--primary); font-size: 0.95rem; line-height: 1.6;">
+                                    คุณสามารถนำไปใช้ปกป้องเว็บไซต์หน่วยงานได้ทันที แบบไม่มีค่าใช้จ่ายครับ<br />
+                                    <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">
+                                        ดูรายละเอียดเพิ่มเติม: <a href="https://cdn.redsocs.com/html/ncsa-check.html" target="_blank" style="color: darkblue; text-decoration: underline; font-weight: 600;">แบบฟอร์มเพื่อใช้ในการตรวจสอบ ภาคผนวก ค</a>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1197,6 +1355,29 @@
                                 เพื่อรักษาความเป็นส่วนตัวตามมาตรฐาน PDPA
                                 และจะส่งไปที่อื่นต่อเมื่อคุณเพิ่ม SIEM endpoint
                                 ของคุณเองเท่านั้น
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                ทำไมต้องใช้ระบบการตรวจจับฝั่ง Client-side (เบราว์เซอร์) แทนที่จะไปตรวจจับที่ Server-side หรือใช้บริการอย่าง reCAPTCHA?
+                            </div>
+                            <div class="faq-answer">
+                                มีประโยชน์หลัก 4 ประการที่ตอบโจทย์ภารกิจความมั่นคงปลอดภัยและประสบการณ์ผู้ใช้งานเว็บไซต์ในปัจจุบัน:<br /><br />
+                                <strong>• บล็อกก่อนถึงฐานข้อมูล (Resource Saving):</strong> การสกัดกั้นสแปมและบอทตั้งแต่เบราว์เซอร์ทำให้ไม่มีข้อมูลขยะถูกบันทึกหรือส่งคำขอที่เป็นอันตรายเข้าสู่ระบบหลังบ้าน ช่วยลดภาระฐานข้อมูลและ Bandwidth ของเซิร์ฟเวอร์หลักได้อย่างมหาศาล<br /><br />
+                                <strong>• ความเป็นส่วนตัวสูงสุด (Privacy-First):</strong> การประมวลผลเกิดขึ้นภายในระบบจำลองฝั่งผู้ใช้ทั้งหมด 100% ไม่มีการส่งเนื้อหาข้อความหรือพฤติกรรมส่วนบุคคลของผู้ใช้งานไปยังบริการคลาวด์ภายนอก ช่วยให้องค์กรปฏิบัติตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA) ได้อย่างไร้รอยต่อ<br /><br />
+                                <strong>• ไม่มีผลกระทบด้านความเร็ว (Zero Latency):</strong> เอนจินทำงานเสร็จสิ้นภายในเสี้ยววินาที (&lt; 1 มิลลิวินาที) ทันทีที่ผู้ใช้ป้อนข้อมูล โดยไม่ต้องรอการเชื่อมต่อเครือข่ายข้ามประเทศ (Round-trip)<br /><br />
+                                <strong>• เป็นมิตรต่อผู้ใช้งาน (Zero Friction):</strong> แตกต่างจากบริการ reCAPTCHA/CAPTCHA ทั่วไปที่บังคับให้ผู้ใช้ต้องคลิกรูปภาพหรือตอบคำถามน่ารำคาญ ซึ่งทำให้ผู้เข้าชมเว็บไซต์ทั่วไปกรอกข้อมูลไม่สำเร็จหรือละทิ้งเว็บไป
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                โมเดลของ SpamWarden มีวิธีการอย่างไรในการแยกแยะสแปมภาษาไทย และป้องกันไม่ให้บล็อกข้อความปกติผิดพลาด (False Positives)?
+                            </div>
+                            <div class="faq-answer">
+                                โมเดล Machine Learning ของเราใช้แนวคิดแบบ <strong>Present-Only Naive Bayes</strong> ร่วมกับเทคนิคการประมวลผลภาษาธรรมชาติภาษาไทย (Thai NLP) โดยเฉพาะ:<br /><br />
+                                <strong>• Thai Tokenizer & N-Grams:</strong> เนื่องจากภาษาไทยไม่มีการเว้นวรรคระหว่างคำ เอนจินจึงสร้างคำค้นหาแบบผสมผสานทั้ง Trigrams (กลุ่มคำ 3 ตัวอักษร) และ Quadgrams (กลุ่มคำ 4 ตัวอักษร) ช่วยตรวจจับคำหลบเลี่ยงคำหยาบคายและคำสแปม (เช่น "รับเงินด่วน", "แทงบอล") ได้อย่างแม่นยำ<br /><br />
+                                <strong>• ระบบวิเคราะห์ Present-Only:</strong> โมเดลจะวิเคราะห์เฉพาะคำที่ "ตรวจพบจริง" ในเนื้อหาเท่านั้น เพื่อป้องกันปัญหาความเอนเอียง (Bias) ที่คำปกติทั่วไปโดนจัดประเภทเป็นสแปมเพราะไม่เคยมีอยู่ในชุดข้อมูลฝึกฝน<br /><br />
+                                <strong>• Length-Calibrated Offset:</strong> มีการปรับเกณฑ์การตัดสินใจแบบแปรผันตามความยาวของข้อความจริง ($5.5 + 0.49 \times N$ ของคำที่ตรงกับฟีเจอร์) เพื่อชดเชยค่าความมั่นใจ ส่งผลให้ข้อความยาวๆ เช่น การพิมพ์บทความหรือการเขียนคำร้องเรียนปกติทางภาครัฐไม่ถูกบล็อกโดยสิ้นเชิง ในขณะที่สแปมลิงก์สั้นๆ จะถูกคัดกรองออกทันที
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1260,13 +1441,17 @@
                         หากเครื่องมือนี้เป็นประโยชน์ในการปกป้องฐานข้อมูลของคุณ
                         ขอเชิญร่วมสนับสนุนทุนวิจัย security และค่าเซิร์ฟเวอร์ของเราได้ที่:
                     </p>
-                    <a href="https://buymeacoffee.com/redsocs" target="_blank" class="btn btn-primary"
-                        style="margin-top: 16px">☕ เลี้ยงกาแฟทีมงาน</a>
+                    <a href="https://buymeacoffee.com/redsocs?new=1" target="_blank" class="btn btn-primary"
+                        style="margin-top: 16px">☕ เลี้ยงกาแฟทีมงาน / สนับสนุน (Sponsor)</a>
                 </div>
             </div>
 
             <footer id="site-footer">
                 <div class="footer-content">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; text-align: center; line-height: 1.5;">
+                        สำหรับติดต่อสอบถามและการสนับสนุนระดับองค์กร (Inquiry & Enterprise Support): 
+                        <a href="mailto:pichit@redsocs.com" style="color: var(--primary); text-decoration: underline; font-weight: 500;">pichit[at]redsocs.com</a>
+                    </div>
                     <ul class="footer-links">
                         <li>
                             <div style="display: flex; align-items: center; gap: 8px">
@@ -1485,6 +1670,124 @@
                     engineInfo.innerText = `Engine: ${spamwarden.version} | ${Object.keys(spamwarden._vocab || {}).length} Features`;
                 }
             };
+
+            // --- Zero-Code Integrator Logic ---
+            const scanBtn = document.getElementById("scan-btn");
+            const targetUrlInput = document.getElementById("target-url");
+            const terminal = document.getElementById("scan-terminal");
+            const snippetResult = document.getElementById("snippet-result");
+            const domainHighlight = document.getElementById("domain-highlight");
+            const snippetDisplay = document.getElementById("snippet-display");
+            const copySnippetBtn = document.getElementById("copy-snippet-btn");
+            const scanErrorBar = document.getElementById("scan-error-bar");
+            const scanErrorMsg = document.getElementById("scan-error-msg");
+
+            function showScanError(msg) {
+                if (scanErrorBar && scanErrorMsg) {
+                    scanErrorMsg.innerText = msg;
+                    scanErrorBar.style.display = "flex";
+                }
+            }
+
+            function hideScanError() {
+                if (scanErrorBar) {
+                    scanErrorBar.style.display = "none";
+                }
+            }
+
+            function addTerminalLine(text, cssClass = "", delay = 0) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const p = document.createElement("p");
+                        p.className = `scan-line ${cssClass}`;
+                        p.innerText = `> ${text}`;
+                        terminal.appendChild(p);
+                        terminal.scrollTop = terminal.scrollHeight;
+                        resolve();
+                    }, delay);
+                });
+            }
+
+            if (scanBtn && targetUrlInput && terminal) {
+                scanBtn.addEventListener("click", async () => {
+                    hideScanError();
+                    let rawUrl = targetUrlInput.value.trim();
+                    if (!rawUrl) {
+                        showScanError("กรุณากรอก URL เพื่อเริ่มต้นการสแกน");
+                        return;
+                    }
+
+                    if (!rawUrl.startsWith("http://") && !rawUrl.startsWith("https://")) {
+                        rawUrl = "http://" + rawUrl;
+                    }
+
+                    let domain = "";
+                    try {
+                        const urlObj = new URL(rawUrl);
+                        domain = urlObj.hostname;
+                    } catch (e) {
+                        showScanError("รูปแบบ URL ไม่ถูกต้อง กรุณากรอก URL ที่ถูกต้อง (เช่น example.ac.th)");
+                        return;
+                    }
+
+                    if (!domain.endsWith(".ac.th") && !domain.endsWith(".go.th")) {
+                        showScanError("ระบบจำลองนี้รองรับเฉพาะโดเมนที่ลงท้ายด้วย .ac.th และ .go.th เท่านั้น");
+                        return;
+                    }
+
+                    // Reset UI
+                    terminal.innerHTML = "";
+                    terminal.style.display = "block";
+                    snippetResult.style.display = "none";
+                    scanBtn.disabled = true;
+                    scanBtn.innerText = "กำลังสแกน...";
+
+                    const formIdVal = "postq-form";
+                    const inputIdVal = "message-input";
+                    const sdFlagVal = document.getElementById("config-sd-flag").value;
+                    const siemEndpointVal = document.getElementById("config-siem-endpoint").value.trim();
+
+                    // Simulate scanning sequence
+                    await addTerminalLine(`Establishing connection to ${domain}...`, "", 200);
+                    await addTerminalLine(`Analyzing DOM structure...`, "", 600);
+                    await addTerminalLine(`Found form element [id="${formIdVal}"].`, "highlight", 800);
+                    await addTerminalLine(`Located input field [id="${inputIdVal}"].`, "highlight", 500);
+                    if (siemEndpointVal) {
+                        await addTerminalLine(`Configuring SIEM endpoint: ${siemEndpointVal}`, "highlight", 400);
+                    }
+                    await addTerminalLine(`Generating client config key (sdFlag: ${sdFlagVal})...`, "", 700);
+                    await addTerminalLine(`Configuration ready. Auto-Interceptor enabled.`, "success", 600);
+
+                    // Create real pipe-delimited client configuration token: formId|inputId|sdFlag|siemEndpoint
+                    const configParts = [formIdVal, inputIdVal, sdFlagVal];
+                    if (siemEndpointVal) {
+                        configParts.push(siemEndpointVal);
+                    }
+                    const configStr = configParts.join("|");
+                    const base64Token = btoa(unescape(encodeURIComponent(configStr))).replace(/=/g, "");
+                    const htmlScriptTag = `&lt;script src="https://cdn.redsocs.com/js/spamwarden.min.js?client=<span style="color: #3fb950; font-size: 1.05rem; font-weight: bold; word-break: break-all;">${base64Token}</span>"&gt;&lt;/script&gt;`;
+
+                    domainHighlight.innerText = domain;
+                    snippetDisplay.innerHTML = htmlScriptTag;
+                    snippetResult.style.display = "block";
+
+                    scanBtn.disabled = false;
+                    scanBtn.innerText = "สแกนและสร้างสคริปต์";
+                });
+
+                copySnippetBtn.addEventListener("click", () => {
+                    const textToCopy = snippetDisplay.innerText;
+                    if (textToCopy) {
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            const originalText = copySnippetBtn.innerText;
+                            copySnippetBtn.innerText = "Copied!";
+                            setTimeout(() => {
+                                copySnippetBtn.innerText = originalText;
+                            }, 2000);
+                        });
+                    }
+                });
+            }
         </script>
     </div>
 </body>

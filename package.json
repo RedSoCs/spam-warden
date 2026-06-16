@@ -1,6 +1,6 @@
 {
   "name": "@redsocs/spam-warden",
-  "version": "0.70.0",
+  "version": "0.70.1",
   "description": "Lightweight client-side JavaScript library for real-time spam detection. Trained on Thai spam data using Bernoulli Naive Bayes.",
   "main": "dist/spamwarden.min.js",
   "browser": "dist/spamwarden.min.js",
@@ -11,7 +11,8 @@
   "scripts": {
     "build": "node build.js",
     "lazy": "node lazy.js",
-    "test": "node -e \"const sw = require('./dist/spamwarden.min.js'); const r1 = sw.spamcheck('สมัครสมาชิกวันนี้ รับโบนัส ฝากเงิน'); const r2 = sw.spamcheck('Hello world'); if (!r1.isSpam) { console.error('FAIL: spam not detected'); process.exit(1); } if (r2.isSpam) { console.error('FAIL: safe detected as spam'); process.exit(1); } console.log('PASS');\"",
+    "test": "node tests/test.js",
+    "test-server": "node tests/simulate/server.js",
     "version": "node -e \"console.log(require('./dist/spamwarden.min.js').version)\""
   },
   "publishConfig": {

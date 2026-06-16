@@ -80,8 +80,10 @@ const SpamWarden = {
     let hasPasted = false;
 
     const bindForm = () => {
-      const form = document.getElementById(formId);
-      const input = document.getElementById(inputId);
+      // Priority: ID > Name
+      const form = document.getElementById(formId) || document.querySelector(`form[name="${formId}"]`);
+      const input = document.getElementById(inputId) || document.querySelector(`[name="${inputId}"]`);
+
       if (form && input) {
         
         // Track paste events
@@ -90,16 +92,11 @@ const SpamWarden = {
         });
 
         form.addEventListener("submit", (e) => {
-          const result = this.spamcheck(input.value);
-          result.pasted = hasPasted; // Inject flag before reporting
+          const result = this.spamcheck(input.value, { pasted: hasPasted });
+          result.pasted = hasPasted; // Inject flag before callback
 
           if (result.isSpam) {
             e.preventDefault();
-
-            // Re-trigger report with the pasted flag since _finishCheck didn't know about it at generation
-            if (this._config.autoReport) {
-                this._report(input.value, result, hasPasted);
-            }
 
             if (this._config.onSpam) { this._config.onSpam(result); } 
             else { alert("Submission Blocked: Spam detected."); }
@@ -194,6 +191,7 @@ const SpamWarden = {
     const sanitizedSample = this._sanitizeData(sampleRaw);
 
     const payload = {
+      client: this._config.siteToken || null,
       url: typeof window !== "undefined" ? this._defang(window.location.href) : "node",
       rule: result.reason || "ML",
       prob: Math.round(result.prob * 100),
@@ -220,7 +218,11 @@ const SpamWarden = {
 
   _send: function(url, data) {
     if (!url) return;
-    const finalUrl = url.indexOf("://") === -1 ? "https://" + url : url;
+    let finalUrl = url;
+    if (url.indexOf("://") === -1) {
+      const isLocal = /(^localhost|^127\.0\.0\.1)(:\d+)?(\/|$)/i.test(url);
+      finalUrl = (isLocal ? "http://" : "https://") + url;
+    }
     if (typeof navigator !== "undefined" && navigator.sendBeacon) {
       try {
         const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
@@ -318,13 +320,15 @@ const SpamWarden = {
     return { isSpam: false, prob: 0, reason: "safe", version: this._version };
   },
 
-  spamcheck: function(input) {
+  spamcheck: function(input, opts) {
     if (!input || typeof input !== "string") { return { isSpam: false, prob: 0, version: this._version }; }
     
+    const pasted = (typeof opts === "object" && opts !== null) ? !!opts.pasted : !!opts;
+
     // Perform light check first (Fast Fail)
     const lightResult = this.lightcheck(input);
     if (lightResult.isSpam) {
-      return this._finishCheck(input, lightResult);
+      return this._finishCheck(input, lightResult, pasted);
     }
     
     // Heavy ML processing (Present-Only Naive Bayes)
@@ -339,9 +343,9 @@ const SpamWarden = {
       }
       scores[c] = s;
     }
-    // Apply a calibrated log-likelihood ratio threshold offset (8.0)
-    // to filter out safe-word overlaps and prevent false positives.
-    scores[1] -= 8.0;
+    // Apply a calibrated length-dependent log-likelihood ratio threshold offset
+    // to filter out safe-word overlaps and prevent false positives on longer texts.
+    scores[1] -= (5.5 + 0.49 * presentFeatures.length);
 
     const maxScore = Math.max(scores[0], scores[1]);
     const exp0 = Math.exp(scores[0] - maxScore);
@@ -350,14 +354,14 @@ const SpamWarden = {
     const spamProb = sum > 0 ? exp1 / sum : 0.5;
     const isSpam = scores[1] > scores[0];
     const result = { isSpam: isSpam, prob: spamProb, version: this._version };
-    return this._finishCheck(input, result);
+    return this._finishCheck(input, result, pasted);
   },
 
 
-  _finishCheck: function(input, result) {
+  _finishCheck: function(input, result, pastedFlag = false) {
     const hasSD = this._sanitizeData(input).sd;
     if (this._config.autoReport && (result.isSpam || (this._config.reportSD && hasSD))) {
-      this._report(input, result);
+      this._report(input, result, pastedFlag);
     }
     return result;
   },
@@ -397,6 +401,7 @@ if (typeof document !== "undefined" && document.currentScript) {
               siemEndpointRaw;
           }
 
+          SpamWarden._config.siteToken = base64ConfigRaw;
           SpamWarden._config.reportSD = sdFlag === "1";
           SpamWarden._config.autoReport = true;
           SpamWarden._config.isTrusted = true;

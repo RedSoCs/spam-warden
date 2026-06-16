@@ -25,32 +25,104 @@ if (!fs.existsSync(TARGET_DIR)) {
 }
 
 // 2. Scan Downloads for files matching spam.\d+.txt or safe.\d+.txt
-console.log(`[1/5] Scanning ${DOWNLOADS_DIR} for raw download files...`);
+console.log(`[1/6] Scanning ${DOWNLOADS_DIR} for raw download files...`);
 const files = fs.readdirSync(DOWNLOADS_DIR);
 const targetPattern = /^(spam|safe)\.\d+\.txt$/;
 const filesToMove = files.filter(file => targetPattern.test(file));
 
 if (filesToMove.length === 0) {
-  console.log('  ℹ No new spam.*.txt or safe.*.txt files found in Downloads. Skipping move.');
+  console.log('  ℹ No new spam.*.txt or safe.*.txt files found in Downloads. Skipping import.');
 } else {
   console.log(`  Found ${filesToMove.length} files to import.`);
+  
+  // Set up tests/data directory and extract raw-data.zip if needed
+  const dataDir = path.join(__dirname, 'tests/data');
+  const zipFile = path.join(__dirname, 'tests/raw-data.zip');
+  
+  if (fs.existsSync(zipFile)) {
+    const needsExtract = !fs.existsSync(dataDir) || 
+      fs.readdirSync(dataDir).filter(f => f.endsWith('.txt')).length === 0;
+    if (needsExtract) {
+      console.log('  Extracting current test data from raw-data.zip first...');
+      fs.mkdirSync(dataDir, { recursive: true });
+      const { execSync } = require('child_process');
+      try {
+        execSync(`unzip -o "${zipFile}" -d "${dataDir}"`);
+      } catch (err) {
+        console.warn('  ⚠️ Warning: Failed to extract raw-data.zip:', err.message);
+      }
+    }
+  }
+
+  // Find active safe/spam benchmark filenames
+  const testFiles = fs.existsSync(dataDir) ? fs.readdirSync(dataDir) : [];
+  let activeSafeFile = testFiles.find(f => f.startsWith('safe-') && f.endsWith('.txt'));
+  let activeSpamFile = testFiles.find(f => f.startsWith('spam-') && f.endsWith('.txt'));
+
+  // Fallbacks if not found
+  if (!activeSafeFile) {
+    const d = new Date();
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    activeSafeFile = `safe-${day}${month}${year}.txt`;
+  }
+  if (!activeSpamFile) {
+    const d = new Date();
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    activeSpamFile = `spam-${day}${month}${year}.txt`;
+  }
+
+  const safeTestPath = path.join(dataDir, activeSafeFile);
+  const spamTestPath = path.join(dataDir, activeSpamFile);
+
   filesToMove.forEach(file => {
     const srcPath = path.join(DOWNLOADS_DIR, file);
     const destPath = path.join(TARGET_DIR, file);
     try {
-      // copyFileSync + unlinkSync handles moving across different mount points/devices safely
+      // 1. Concat contents to tests/data benchmark first
+      const content = fs.readFileSync(srcPath, 'utf-8');
+      if (file.startsWith('safe')) {
+        fs.appendFileSync(safeTestPath, '\n' + content.trim());
+        console.log(`  ✓ Concatenated ${file} -> tests/data/${activeSafeFile}`);
+      } else if (file.startsWith('spam')) {
+        fs.appendFileSync(spamTestPath, '\n' + content.trim());
+        console.log(`  ✓ Concatenated ${file} -> tests/data/${activeSpamFile}`);
+      }
+
+      // 2. Move to spam-labeler (copyFileSync + unlinkSync)
       fs.copyFileSync(srcPath, destPath);
       fs.unlinkSync(srcPath);
       console.log(`  ✓ Moved: ${file} -> spam-labeler/.../raw/`);
     } catch (err) {
-      console.error(`  ❌ Failed to move ${file}: ${err.message}`);
+      console.error(`  ❌ Failed to process ${file}: ${err.message}`);
       process.exit(1);
     }
   });
+
+  // B. Update tests/raw-data.zip and clean up extracted tests/data
+  console.log('\n[2/6] Synchronizing benchmark tests/raw-data.zip...');
+  const { execSync } = require('child_process');
+  try {
+    execSync(`zip -j "${zipFile}" "${safeTestPath}" "${spamTestPath}"`);
+    console.log('  ✓ Updated tests/raw-data.zip successfully.');
+  } catch (err) {
+    console.error('  ❌ Failed to update raw-data.zip:', err.message);
+    process.exit(1);
+  }
+
+  try {
+    fs.rmSync(dataDir, { recursive: true, force: true });
+    console.log('  ✓ Cleaned up temporary tests/data directory.');
+  } catch (err) {
+    console.warn('  ⚠️ Warning: Failed to clean up tests/data directory:', err.message);
+  }
 }
 
 // 3. Execute retrain.sh in spam-labeler
-console.log('\n[2/5] Executing retrain.sh in spam-labeler...');
+console.log('\n[3/6] Executing retrain.sh in spam-labeler...');
 const retrainScript = path.join(SPAM_LABELER_DIR, 'retrain.sh');
 if (!fs.existsSync(retrainScript)) {
   console.error(`❌ retrain.sh not found at: ${retrainScript}`);
@@ -70,7 +142,7 @@ if (retrainResult.status !== 0) {
 console.log('  ✓ Retraining completed successfully.');
 
 // 4. Copy and Ungzip model.json.gz from spam-labeler to spam-warden
-console.log('\n[3/5] Extracting new model.json...');
+console.log('\n[4/6] Extracting new model.json...');
 const modelGzPath = path.join(SPAM_LABELER_DIR, 'extension/model.json.gz');
 const destModelPath = path.resolve(__dirname, 'model.json');
 
@@ -90,7 +162,7 @@ try {
 }
 
 // 5. Rebuild spam-warden library with the new model
-console.log('\n[4/5] Rebuilding spam-warden with the new model...');
+console.log('\n[5/6] Rebuilding spam-warden with the new model...');
 const buildResult = spawnSync('npm', ['run', 'build'], {
   cwd: __dirname,
   stdio: 'inherit',
@@ -104,7 +176,7 @@ if (buildResult.status !== 0) {
 console.log('  ✓ Rebuild completed successfully.');
 
 // 6. Run tests
-console.log('\n[5/5] Running tests in spam-warden...');
+console.log('\n[6/6] Running tests in spam-warden...');
 const testResult = spawnSync('npm', ['test'], {
   cwd: __dirname,
   stdio: 'inherit',
