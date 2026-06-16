@@ -42,7 +42,7 @@ fi
 
 # 3. Update package.json and package-lock.json version
 echo "Updating package.json & package-lock.json..."
-npm version "$VERSION" --no-git-tag-version
+npm version "$VERSION" --no-git-tag-version --allow-same-version
 
 # 4. Update version in README.md
 echo "Updating README.md..."
