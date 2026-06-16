@@ -82,14 +82,22 @@ if (filesToMove.length === 0) {
     const srcPath = path.join(DOWNLOADS_DIR, file);
     const destPath = path.join(TARGET_DIR, file);
     try {
-      // 1. Concat contents to tests/data benchmark first
-      const content = fs.readFileSync(srcPath, 'utf-8');
-      if (file.startsWith('safe')) {
-        fs.appendFileSync(safeTestPath, '\n' + content.trim());
-        console.log(`  ✓ Concatenated ${file} -> tests/data/${activeSafeFile}`);
-      } else if (file.startsWith('spam')) {
-        fs.appendFileSync(spamTestPath, '\n' + content.trim());
-        console.log(`  ✓ Concatenated ${file} -> tests/data/${activeSpamFile}`);
+      // 1. Filter out comment lines and concat contents to tests/data benchmark first
+      const rawContent = fs.readFileSync(srcPath, 'utf-8');
+      const filteredContent = rawContent
+        .split('\n')
+        .map(l => l.trim())
+        .filter(l => l.length > 0 && !l.startsWith('#'))
+        .join('\n');
+
+      if (filteredContent.length > 0) {
+        if (file.startsWith('safe')) {
+          fs.appendFileSync(safeTestPath, '\n' + filteredContent);
+          console.log(`  ✓ Concatenated ${file} -> tests/data/${activeSafeFile}`);
+        } else if (file.startsWith('spam')) {
+          fs.appendFileSync(spamTestPath, '\n' + filteredContent);
+          console.log(`  ✓ Concatenated ${file} -> tests/data/${activeSpamFile}`);
+        }
       }
 
       // 2. Move to spam-labeler (copyFileSync + unlinkSync)

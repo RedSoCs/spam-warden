@@ -147,7 +147,7 @@ if (!spamFile || !fs.existsSync(spamFile)) {
 const spamLines = fs.readFileSync(spamFile, 'utf-8')
   .split('\n')
   .map(l => l.trim())
-  .filter(l => l.length > 0);
+  .filter(l => l.length > 0 && !l.startsWith('#'));
 
 let spamDetected = 0;
 let spamTotalProb = 0;
@@ -173,7 +173,7 @@ if (!safeFile || !fs.existsSync(safeFile)) {
 const safeLines = fs.readFileSync(safeFile, 'utf-8')
   .split('\n')
   .map(l => l.trim())
-  .filter(l => l.length > 0);
+  .filter(l => l.length > 0 && !l.startsWith('#'));
 
 // Known false positives: texts that are safe but contain spam-like vocabulary.
 // Line 9: anti-scam service ("เช็กคนโกง") — contains words like โอน, โกง
