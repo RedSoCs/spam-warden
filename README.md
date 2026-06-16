@@ -125,7 +125,7 @@ You can spin up a local simulation server to test the DOM auto-blocking behavior
 
 # About
 
-- **Version:** 0.70.1 (v2 Engine)
+- **Version:** 1.0.4 (v2 Engine)
 - **Author:** [RedSocs](https://github.com/RedSocs)
 - **License:** MIT
 - **Model Origin:** Trained via [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler)

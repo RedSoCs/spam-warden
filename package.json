@@ -1,6 +1,6 @@
 {
   "name": "@redsocs/spam-warden",
-  "version": "0.70.1",
+  "version": "1.0.4",
   "description": "Lightweight client-side JavaScript library for real-time spam detection. Trained on Thai spam data using Bernoulli Naive Bayes.",
   "main": "dist/spamwarden.min.js",
   "browser": "dist/spamwarden.min.js",
