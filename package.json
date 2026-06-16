@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "build": "node build.js",
+    "lazy": "node lazy.js",
     "test": "node -e \"const sw = require('./dist/spamwarden.min.js'); const r1 = sw.spamcheck('สมัครสมาชิกวันนี้ รับโบนัส ฝากเงิน'); const r2 = sw.spamcheck('Hello world'); if (!r1.isSpam) { console.error('FAIL: spam not detected'); process.exit(1); } if (r2.isSpam) { console.error('FAIL: safe detected as spam'); process.exit(1); } console.log('PASS');\"",
     "version": "node -e \"console.log(require('./dist/spamwarden.min.js').version)\""
   },

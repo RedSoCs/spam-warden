@@ -303,7 +303,7 @@ const SpamWarden = {
     for (let i = 0; i < tokens.length; i++) {
       const t = tokens[i];
       if (t && this._checkFilter(t)) {
-        return { isSpam: true, prob: 0.95, reason: "spam_link", version: this._version };
+        return { isSpam: true, prob: 0.95, reason: "SL", version: this._version };
       }
     }
 
@@ -311,7 +311,7 @@ const SpamWarden = {
     const currencySymbols = ["$", "€", "£", "฿", "¥", "₹", "₽", "₿", "₮", "₩", "₱", "₫"];
     for (let i = 0; i < currencySymbols.length; i++) {
       if (input.indexOf(currencySymbols[i]) !== -1) {
-        return { isSpam: true, prob: 1.0, reason: "currency_symbol", version: this._version };
+        return { isSpam: true, prob: 1.0, reason: "CS", version: this._version };
       }
     }
     
@@ -327,22 +327,18 @@ const SpamWarden = {
       return this._finishCheck(input, lightResult);
     }
     
-    // Heavy ML processing (Present-Only Naive Bayes)
+    // Heavy ML processing
     this.init();
     const presentFeatures = this._transform(input);
     const nClasses = this._classes.length;
     const scores = new Float64Array(nClasses);
     for (let c = 0; c < nClasses; c++) {
-      let s = this._classLogPrior[c];
+      let s = this._baseScore[c];
       for (let k = 0; k < presentFeatures.length; k++) {
-        s += this._featureLogProb[c][presentFeatures[k]];
+        s += this._featureWeight[c][presentFeatures[k]];
       }
       scores[c] = s;
     }
-    // Apply a calibrated log-likelihood ratio threshold offset (8.0)
-    // to filter out safe-word overlaps and prevent false positives.
-    scores[1] -= 8.0;
-
     const maxScore = Math.max(scores[0], scores[1]);
     const exp0 = Math.exp(scores[0] - maxScore);
     const exp1 = Math.exp(scores[1] - maxScore);

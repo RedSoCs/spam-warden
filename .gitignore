@@ -1,2 +1,4 @@
 /dist
 node_modules/
+tests/data/safe-*
+tests/data/spam-*

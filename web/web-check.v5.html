@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpamWarden.js | Diagnostics & Documentation</title>
+    <link href="https://fonts.cdnfonts.com/css/mona-sans" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-color: #f2f4f7;
+            --surface: #ffffff;
+            --text-main: #00071ae6;
+            --text-muted: #585f73;
+            --border: #dde1e5;
+            --border-light: #e8eaed;
+            --primary: #dc244c;
+            --primary-hover: #be003a;
+            --safe-bg: #e6f4ea;
+            --safe-text: #137333;
+            --spam-bg: #fce8e6;
+            --spam-text: #c5221f;
+            --warning-bg: #fff8eb;
+            --warning-border: #f5c06a;
+            --code-bg: #0d1117;
+            --code-text: #c9d1d9;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                "Mona-Sans",
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                sans-serif;
+            font-weight: 400;
+            background-color: var(--bg-color);
+            background-size: 80px 80px;
+            background-image:
+                linear-gradient(to right, #e6eaf5 1px, transparent 1px),
+                linear-gradient(to bottom, #e6eaf5 1px, transparent 1px);
+            background-position: calc(50% - 40.5px) 50px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .layout {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 60px 20px;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--surface);
+            padding: 24px 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+        }
+
+        .container.no-padding {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* --- Content & Typography Styles --- */
+        .content-section {
+            padding: 40px;
+        }
+
+        .content-section h2 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .content-section h3 {
+            font-size: 1.2rem;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .content-section p {
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+
+        .alert-warning {
+            background: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 20px;
+            border-radius: 4px;
+            margin: 24px 0;
+        }
+
+        .alert-warning p {
+            color: #8c6011;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--border-light);
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #f8f9fb;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 16px;
+            border-radius: 6px;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        /* --- App Specific Styles --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .engine-badge {
+            background: #f1f3f5;
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+            resize: vertical;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(220, 36, 76, 0.1);
+        }
+
+        .metrics-bar {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .metric-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .metric-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        .status-pill {
+            padding: 1px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .is-spam {
+            background: var(--spam-bg);
+            color: var(--spam-text);
+        }
+
+        .is-safe {
+            background: var(--safe-bg);
+            color: var(--safe-text);
+        }
+
+        .payload-container {
+            position: relative;
+            background: var(--code-bg);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        pre.app-pre {
+            background: transparent;
+            color: var(--code-text);
+            padding: 16px;
+            margin: 0;
+            height: 380px;
+            overflow: auto;
+            border: none;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 0.8rem;
+        }
+
+        .sd-indicator {
+            margin-top: 12px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .sd-true {
+            background: #fff4e5;
+            color: #b25205;
+            border: 1px solid #ffd8a8;
+        }
+
+        .sd-false {
+            background: #f8f9fb;
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+        }
+
+        .benchmark-section {
+            margin-top: 24px;
+            background: #f8f9fb;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+        }
+
+        button.action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background 0.2s;
+        }
+
+        button.action-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* --- Red Hat Style CTA Section --- */
+        .cta-section {
+            padding: 48px 40px;
+            background: var(--surface);
+        }
+
+        .rh-banner {
+            background: #f4f4f4;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+            margin-bottom: 48px;
+        }
+
+        .rh-banner span {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .rh-banner a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .rh-banner a:hover {
+            text-decoration: underline;
+        }
+
+        .rh-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 64px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .rh-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .rh-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+
+        .rh-left h2 {
+            font-size: 2.4rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin: 0 0 20px 0;
+            letter-spacing: -0.01em;
+        }
+
+        .rh-left p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin: 0 0 32px 0;
+            color: var(--text-main);
+        }
+
+        .rh-left p a {
+            color: #0066cc;
+            text-decoration: none;
+            border-bottom: 1px dotted #0066cc;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fb;
+        }
+
+        .rh-right {
+            border-left: 6px solid var(--primary);
+            padding-left: 24px;
+            margin-top: 12px;
+        }
+
+        .rh-right p.stat {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin: 0 0 16px 0;
+        }
+
+        .rh-right p.source {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* --- Footer Styles --- */
+        #site-footer {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid var(--border-light);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .footer-links li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .footer-links li a:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <div class="wrapper">
+            <!-- Hero Section -->
+            <div class="container cta-section">
+                <div class="rh-banner">
+                    <span><strong>Free JS Integration:</strong> Generate your drop-in
+                        client code today.</span>
+                    <a href="#installation">Get the snippet &rarr;</a>
+                </div>
+
+                <div class="rh-grid">
+                    <div class="rh-left">
+                        <h2>
+                            SpamWarden is the leading provider of client-side payload
+                            analysis
+                        </h2>
+                        <p>
+                            Enterprises and government sectors trust our fast, lightweight
+                            engine of machine learning models, PII masking, and data
+                            extraction to secure applications quickly and cost-effectively
+                            without leaving the client browser.
+                        </p>
+
+                        <div class="cta-buttons">
+                            <a href="#diagnostics" class="btn btn-primary">Test Engine</a>
+                            <a href="https://github.com/RedSoCs/spam-warden" target="_blank" class="btn btn-secondary">
+                                <svg height="20" viewBox="0 0 16 16" width="20" style="fill: currentColor">
+                                    <path
+                                        d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.82-.28-1.37-.59-1.63 1.95-.22 3.99-.96 3.99-4.34 0-.96-.34-1.74-.91-2.35.09-.22.4-1.12-.09-2.32 0 0-.74-.24-2.42.91-.7-.2-1.45-.3-2.2-.3-.75 0-1.5.1-2.2.3-1.68-1.15-2.42-.91-2.42-.91-.49 1.2-.18 2.1.09 2.32-.57.61-.91 1.39-.91 2.35 0 3.37 2.03 4.12 3.98 4.34-.23.2-.44.55-.52 1.07-.47.21-1.65.57-2.37-.67-.14-.24-.45-.4-.73-.42-.29 0-.36.19-.01.35.19.08.38.35.51.64.18.53.68.85 1.58.73.01.44.01.88.01 1.25 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8z">
+                                    </path>
+                                </svg>
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="rh-right">
+                        <p class="stat">
+                            Zero external dependencies. Sub-millisecond latency. Strict
+                            client-side privacy.
+                        </p>
+                        <p class="source">Powered by Bernoulli Naive Bayes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagnostics App -->
+            <div id="diagnostics" class="container">
+                <header>
+                    <h1>Interactive Diagnostics Console</h1>
+                    <div id="engine-info" class="engine-badge">v0.91 Model</div>
+                </header>
+
+                <div class="layout-grid">
+                    <div class="column">
+                        <div class="section-label">
+                            Test Content
+                            <div id="status-pill"></div>
+                        </div>
+                        <textarea id="input-field" placeholder="Paste message here to verify detection..."></textarea>
+                        <p style="
+                  font-size: 0.75rem;
+                  color: var(--text-muted);
+                  margin-top: 8px;
+                ">
+                            PII Masking and Alphanumeric Actor extraction active.
+                        </p>
+
+                        <div class="metrics-bar">
+                            <div class="metric-card">
+                                <span class="metric-label">Latency</span>
+                                <span id="lat-val" class="metric-value">-</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-label">Spam Prob.</span>
+                                <span id="prob-val" class="metric-value">0%</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-label">Trigger Rule</span>
+                                <span id="rule-val" class="metric-value">-</span>
+                            </div>
+                        </div>
+
+                        <div class="benchmark-section">
+                            <div class="section-label">Performance Benchmark</div>
+                            <button class="action-btn" onclick="stressTest()">
+                                Run 100x Cycles
+                            </button>
+                            <span id="bench-text" style="
+                    font-size: 0.75rem;
+                    color: var(--text-muted);
+                    margin-left: 12px;
+                  ">Click to measure engine throughput.</span>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="section-label">Raw SIEM Payload</div>
+                        <div class="payload-container">
+                            <pre id="payload-display" class="app-pre">
+                                // Waiting for input...</pre>
+                        </div>
+                        <div id="sd-flag" class="sd-indicator sd-false">
+                            Sensitive Data (sd): <b id="sd-val">false</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Brutal Truth (Upsell) -->
+            <div class="container content-section">
+                <h2>⚠️ The Brutal Truth: Client-Side Limitations</h2>
+                <p>
+                    <strong>Let's be clear about what this library is—and what it
+                        isn't.</strong>
+                </p>
+                <p>
+                    SpamWarden.js acts as an intelligent, frictionless frontend shield
+                    and early warning system. It is highly effective at stopping
+                    automated browser bots, scripts, and low-effort copy-paste spammers
+                    from polluting your forms.
+                </p>
+
+                <div class="alert-warning">
+                    <p>
+                        However, client-side JavaScript cannot protect your backend from
+                        dedicated attackers. A competent threat actor can simply inspect
+                        network traffic, extract your endpoint, and fire direct POST
+                        requests to your server, completely bypassing the browser.
+                    </p>
+                </div>
+
+                <div class="rh-banner" style="
+              background: var(--spam-bg);
+              border: 1px solid #f5c2c7;
+              margin-bottom: 0;
+            ">
+                    <span style="color: var(--spam-text)"><strong>Running a WordPress site?</strong> You need
+                        server-side
+                        enforcement.</span>
+                    <a href="#" style="color: var(--spam-text); text-decoration: underline">Get SpamWarden WP (Early
+                        Access) &rarr;</a>
+                </div>
+
+                <h3>Why use this JS version?</h3>
+                <p>
+                    It is the ultimate <strong>Threat Intelligence Sensor</strong>.
+                    Deploying this snippet gives you instant visibility into frontend
+                    attack vectors, allowing you to monitor telemetry in your SIEM
+                    without exposing your primary database to raw spam.
+                </p>
+            </div>
+
+            <!-- Features & DLP Matrix -->
+            <div id="installation" class="container content-section">
+                <h2>Privacy-First: Auto-DLP & PII Masking</h2>
+                <p>
+                    To ensure compliance when monitoring forms,
+                    <strong>data never leaves the browser unmasked</strong>. The engine
+                    automatically strips and tags Credit Cards, Emails, and Phone
+                    Numbers before sending telemetry.
+                </p>
+
+                <h3>The <code>sdFlag</code> Telemetry Matrix</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>Input Condition</th>
+                            <th>Action Triggered</th>
+                            <th>PII Handling</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>0 (Spam Only)</strong></td>
+                            <td>Clean Message (No PII)</td>
+                            <td>Ignored</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>0 (Spam Only)</strong></td>
+                            <td>Clean Message + PII</td>
+                            <td>Ignored</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>0 (Spam Only)</strong></td>
+                            <td>Spam Message</td>
+                            <td><strong>Reported via Beacon</strong></td>
+                            <td>Masked (Always)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1 (DLP Audit)</strong></td>
+                            <td>Clean Message (No PII)</td>
+                            <td>Ignored</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1 (DLP Audit)</strong></td>
+                            <td>Clean Message + PII</td>
+                            <td><strong>Reported (DLP Alert)</strong></td>
+                            <td>Masked (Always)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1 (DLP Audit)</strong></td>
+                            <td>Spam Message</td>
+                            <td><strong>Reported via Beacon</strong></td>
+                            <td>Masked (Always)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.9rem; color: var(--text-muted)">
+                    <em>Use Case: Set sdFlag = 1 if you need an audit trail of users
+                        attempting to submit sensitive PII into unencrypted or
+                        public-facing forms.</em>
+                </p>
+
+                <hr style="
+              border: 0;
+              border-top: 1px solid var(--border-light);
+              margin: 40px 0;
+            " />
+
+                <h2>Installation Options</h2>
+
+                <h3>1. The "No-Code" CDN (Recommended)</h3>
+                <p>
+                    Generate your custom Base64 configuration string above. Inject the
+                    script to automatically bind to your DOM, intercept bad submissions,
+                    and fire telemetry.
+                </p>
+                <div class="code-block">
+                    &lt;script
+                    src="https://cdn.redsocs.com/js/spamwarden.min.js?client=BASE64_CONFIG_STRING"&gt;&lt;/script&gt;
+                </div>
+
+                <h3>2. NPM Package for Bundlers</h3>
+                <div class="code-block">npm install @redsocs/spam-warden</div>
+                <div class="code-block">
+                    import spamwarden from '@redsocs/spam-warden';
+                    spamwarden.configure({ siemEndpoint:
+                    "https://api.yourdomain.com/v1/telemetry", autoReport: true,
+                    reportSD: true // Enables DLP Audit Mode }); const result =
+                    spamwarden.spamcheck("คลิกเพื่อรับเงินด่วน
+                    https://lin.ee/badactor"); console.log(result.isSpam); // true
+                </div>
+            </div>
+
+            <!-- About RedSocs -->
+            <div class="container content-section">
+                <h2>🏴‍☠️ About RedSocs</h2>
+                <p>
+                    <strong>We stop government casino ads funded by your tax.</strong>
+                </p>
+                <p>
+                    Through RedSocs, my team and I hunt down the malware, hijacks, and
+                    spam taking over public sector websites. My passion? Stopping the
+                    internet from turning into a total dumpster fire.
+                    <code>spam-warden</code> is just one of the tools we've developed
+                    for this purpose.
+                </p>
+                <p>
+                    If this library saved your database from a flood of junk, consider
+                    supporting our ongoing research and server costs:
+                </p>
+                <a href="https://buymeacoffee.com/redsocs" target="_blank" class="btn btn-primary"
+                    style="margin-top: 16px">☕ Buy us a coffee</a>
+            </div>
+        </div>
+
+        <footer id="site-footer">
+            <ul class="footer-links">
+                <li>
+                    <a href="https://redsocs.com/spam-warden">SpamWarden Engine</a>
+                </li>
+                <li>
+                    <a href="https://github.com/RedSoCs/spam-warden">GitHub Repository</a>
+                </li>
+                <li><a href="https://redsocs.com/terms/">Terms of Use</a></li>
+                <li>
+                    <span style="color: var(--text-muted); font-size: 0.85rem">© 2026 RedSocs.com</span>
+                </li>
+            </ul>
+        </footer>
+    </div>
+
+    <!-- Script Integration (Assuming local dist for preview) -->
+    <script src="dist/spamwarden.min.js"></script>
+    <script>
+        const input = document.getElementById("input-field");
+        const display = document.getElementById("payload-display");
+        const latVal = document.getElementById("lat-val");
+        const probVal = document.getElementById("prob-val");
+        const ruleVal = document.getElementById("rule-val");
+        const statusPill = document.getElementById("status-pill");
+        const sdFlag = document.getElementById("sd-flag");
+        const sdVal = document.getElementById("sd-val");
+
+        if (typeof spamwarden !== "undefined") {
+            spamwarden.configure({
+                autoReport: true,
+                isTrusted: true,
+                siteToken: "WEB_DIAG_LOCAL",
+                customReporter: (payload) => {
+                    display.innerText = JSON.stringify(payload, null, 2);
+                    sdVal.innerText = payload.sd;
+                    sdFlag.className = payload.sd
+                        ? "sd-indicator sd-true"
+                        : "sd-indicator sd-false";
+                },
+            });
+
+            input.addEventListener("input", () => {
+                const text = input.value;
+                if (!text) {
+                    display.innerText = "// Waiting for input...";
+                    statusPill.innerHTML = "";
+                    latVal.innerText = "-";
+                    probVal.innerText = "0%";
+                    ruleVal.innerText = "-";
+                    return;
+                }
+
+                const t0 = performance.now();
+                const res = spamwarden.spamcheck(text);
+                const t1 = performance.now();
+
+                latVal.innerText = `${(t1 - t0).toFixed(3)}ms`;
+                probVal.innerText = `${(res.prob * 100).toFixed(1)}%`;
+                ruleVal.innerText = res.reason || "ML";
+
+                if (res.isSpam) {
+                    statusPill.innerHTML =
+                        '<span class="status-pill is-spam">BLOCK</span>';
+                } else {
+                    statusPill.innerHTML =
+                        '<span class="status-pill is-safe">PASS</span>';
+                }
+
+                spamwarden._report(text, res);
+            });
+        }
+
+        function stressTest() {
+            if (typeof spamwarden === "undefined") return;
+            const text = input.value || "ด่วน! สมัครวันนี้รับโบนัสฟรี 100%";
+            const t0 = performance.now();
+            for (let i = 0; i < 100; i++) spamwarden.spamcheck(text);
+            const t1 = performance.now();
+            document.getElementById("bench-text").innerHTML =
+                `100 runs: <b>${(t1 - t0).toFixed(2)}ms</b> (Avg: ${((t1 - t0) / 100).toFixed(4)}ms/run)`;
+        }
+    </script>
+</body>
+
+</html>

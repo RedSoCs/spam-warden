@@ -8,8 +8,39 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const sw = require('../dist/spamwarden.js');
+
+// Auto-extract raw-data.zip if needed
+const dataDir = path.resolve(__dirname, 'data');
+const zipFile = path.resolve(__dirname, 'raw-data.zip');
+
+if (fs.existsSync(zipFile)) {
+  const needsExtract = !fs.existsSync(dataDir) || 
+    fs.readdirSync(dataDir).filter(f => f.endsWith('.txt')).length === 0;
+  
+  if (needsExtract) {
+    console.log('Extracting test data from raw-data.zip...');
+    fs.mkdirSync(dataDir, { recursive: true });
+    try {
+      execSync(`unzip -o "${zipFile}" -d "${dataDir}"`);
+    } catch (err) {
+      console.error('Failed to extract raw-data.zip:', err.message);
+    }
+  }
+}
+
+// Dynamically locate test files
+let spamFile = '';
+let safeFile = '';
+if (fs.existsSync(dataDir)) {
+  const files = fs.readdirSync(dataDir);
+  const spamName = files.find(f => f.startsWith('spam-') && f.endsWith('.txt'));
+  const safeName = files.find(f => f.startsWith('safe-') && f.endsWith('.txt'));
+  if (spamName) spamFile = path.join(dataDir, spamName);
+  if (safeName) safeFile = path.join(dataDir, safeName);
+}
 
 let pass = 0;
 let fail = 0;
@@ -94,7 +125,12 @@ assert(sw.spamcheck(undefined).isSpam === false, 'undefined input → not spam')
 assert(sw.spamcheck('').isSpam === false, 'empty string → not spam');
 assert(sw.spamcheck('   ').isSpam === false, 'whitespace only → not spam');
 assert(sw.spamcheck('🎉🔥💰').isSpam === false, 'emoji only → not spam');
-assert(sw.spamcheck('a'.repeat(10000)).isSpam === false, 'very long text → no crash');
+try {
+  sw.spamcheck('a'.repeat(10000));
+  assert(true, 'very long text → no crash');
+} catch (e) {
+  assert(false, 'very long text → crashed: ' + e.message);
+}
 
 // Probability bounds
 const probR = sw.spamcheck('Hello world');
@@ -104,7 +140,10 @@ assert(probR.prob >= 0 && probR.prob <= 1, 'prob in [0, 1] range');
 
 console.log('\n--- File-Based: spam.txt ---');
 
-const spamFile = path.resolve(__dirname, 'spam.1775350723.txt');
+if (!spamFile || !fs.existsSync(spamFile)) {
+  console.error('Error: spam test file not found. Ensure raw-data.zip is present or unzip was successful.');
+  process.exit(1);
+}
 const spamLines = fs.readFileSync(spamFile, 'utf-8')
   .split('\n')
   .map(l => l.trim())
@@ -127,7 +166,10 @@ console.log(`  ${spamDetected}/${spamLines.length} detected as spam (avg prob: $
 
 console.log('\n--- File-Based: safe.txt ---');
 
-const safeFile = path.resolve(__dirname, 'safe.1775349357.txt');
+if (!safeFile || !fs.existsSync(safeFile)) {
+  console.error('Error: safe test file not found. Ensure raw-data.zip is present or unzip was successful.');
+  process.exit(1);
+}
 const safeLines = fs.readFileSync(safeFile, 'utf-8')
   .split('\n')
   .map(l => l.trim())

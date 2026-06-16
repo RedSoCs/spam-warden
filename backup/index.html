@@ -1,12 +1,10 @@
-<!doctype html>
-<html lang="th">
-
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html>
+<html lang="th"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpamWarden.js | ระบบวิเคราะห์และป้องกันสแปมภาษาไทย</title>
-    <link href="assets/css2.css" rel="stylesheet" />
+    <link href="index_files/css2.css" rel="stylesheet">
     <style>
         :root {
             --bg-color: #f2f4f7;
@@ -764,17 +762,14 @@
 
                             <div class="cta-buttons">
                                 <a href="https://redsocs.com/spam-warden" target="_blank" class="btn btn-primary">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                                     </svg>
                                     รับการป้องกันสแปมขั้นพื้นฐาน
                                 </a>
-                                <a href="https://github.com/RedSoCs/spam-warden" target="_blank"
-                                    class="btn btn-secondary">
+                                <a href="https://github.com/RedSoCs/spam-warden" target="_blank" class="btn btn-secondary">
                                     <svg height="20" viewBox="0 0 16 16" width="20" style="fill: currentColor">
-                                        <path
-                                            d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.82-.28-1.37-.59-1.63 1.95-.22 3.99-.96 3.99-4.34 0-.96-.34-1.74-.91-2.35.09-.22.4-1.12-.09-2.32 0 0-.74-.24-2.42.91-.7-.2-1.45-.3-2.2-.3-.75 0-1.5.1-2.2.3-1.68-1.15-2.42-.91-2.42-.91-.49 1.2-.18 2.1.09 2.32-.57.61-.91 1.39-.91 2.35 0 3.37 2.03 4.12 3.98 4.34-.23.2-.44.55-.52 1.07-.47.21-1.65.57-2.37-.67-.14-.24-.45-.4-.73-.42-.29 0-.36.19-.01.35.19.08.38.35.51.64.18.53.68.85 1.58.73.01.44.01.88.01 1.25 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8z">
+                                        <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.82-.28-1.37-.59-1.63 1.95-.22 3.99-.96 3.99-4.34 0-.96-.34-1.74-.91-2.35.09-.22.4-1.12-.09-2.32 0 0-.74-.24-2.42.91-.7-.2-1.45-.3-2.2-.3-.75 0-1.5.1-2.2.3-1.68-1.15-2.42-.91-2.42-.91-.49 1.2-.18 2.1.09 2.32-.57.61-.91 1.39-.91 2.35 0 3.37 2.03 4.12 3.98 4.34-.23.2-.44.55-.52 1.07-.47.21-1.65.57-2.37-.67-.14-.24-.45-.4-.73-.42-.29 0-.36.19-.01.35.19.08.38.35.51.64.18.53.68.85 1.58.73.01.44.01.88.01 1.25 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8z">
                                         </path>
                                     </svg>
                                     GitHub
@@ -784,8 +779,8 @@
 
                         <div class="rh-right">
                             <p class="stat">
-                                ไม่ต้องพึ่งพา API ภายนอก<br />
-                                ความหน่วงต่ำกว่ามิลลิวินาที<br />
+                                ไม่ต้องพึ่งพา API ภายนอก<br>
+                                ความหน่วงต่ำกว่ามิลลิวินาที<br>
                                 ปกป้องความเป็นส่วนตัวขั้นสูงสุด
                             </p>
                             <p class="source">ขับเคลื่อนด้วย Bernoulli Naive Bayes</p>
@@ -797,9 +792,7 @@
                 <div id="diagnostics" class="container">
                     <header>
                         <h1>Interactive Diagnostics Console</h1>
-                        <div id="engine-info" class="engine-badge">
-                            Engine: v0.91 | 68830 Features
-                        </div>
+                        <div id="engine-info" class="engine-badge">Engine: v0.91 | 68830 Features</div>
                     </header>
 
                     <div class="layout-grid">
@@ -808,36 +801,35 @@
                                 ป้อนข้อความเพื่อทดสอบ
                                 <div id="status-pill"></div>
                             </div>
-                            <textarea id="input-field" placeholder="วางข้อความที่นี่เพื่อตรวจสอบ...">
-                                บแทงหวยออนไลน์
-                                จ่ายจริง เชื่อถือได้ ที่ดีที่สุดในปี 2026
-                                การเลือกเว็บไซต์แทงหวยออนไลน์ที่น่าเชื่อถือ
-                                และมีคุณภาพเป็นสิ่งสำคัญที่ผู้เล่นทุกคนควรให้ความสำคัญ
-                                เพื่อให้มั่นใจได้ว่าการลงทุนของคุณจะปลอดภัย
-                                และได้รับประสบการณ์การแทงหวยที่ดีที่สุด ดังนั้น เราได้รวบรวม 10
-                                เว็บแทงหวยออนไลน์ยอดนิยมที่ดีที่สุดในปี 2026
-                                ซึ่งได้รับการรีวิวและการยอมรับจากผู้ใช้งานมากมาย ดังนี้: รัฐบาลไทย,
-                                หวยลาว, หวยฮานอย, หวยยี่กี, หวยหุ้น, หวยมาเลย์, หวยใต้ดิน, หวยออมสิน,
-                                และหวย ธ.ก.ส.
+                            <textarea id="input-field" placeholder="วางข้อความที่นี่เพื่อตรวจสอบ...">บแทงหวยออนไลน์
+ จ่ายจริง เชื่อถือได้ ที่ดีที่สุดในปี 2026 
+การเลือกเว็บไซต์แทงหวยออนไลน์ที่น่าเชื่อถือ
+และมีคุณภาพเป็นสิ่งสำคัญที่ผู้เล่นทุกคนควรให้ความสำคัญ 
+เพื่อให้มั่นใจได้ว่าการลงทุนของคุณจะปลอดภัย
+และได้รับประสบการณ์การแทงหวยที่ดีที่สุด ดังนั้น เราได้รวบรวม 10 
+เว็บแทงหวยออนไลน์ยอดนิยมที่ดีที่สุดในปี 2026
+ซึ่งได้รับการรีวิวและการยอมรับจากผู้ใช้งานมากมาย ดังนี้: รัฐบาลไทย, 
+หวยลาว, หวยฮานอย, หวยยี่กี, หวยหุ้น, หวยมาเลย์, หวยใต้ดิน, หวยออมสิน, 
+และหวย ธ.ก.ส.
 
-                                แนะนำ 10 เว็บแทงหวยออนไลน์ ที่ดีที่สุด ได้แก่ 77LOTTO,Huay
-                                Ork,UFALOTTO,POWERBALL,lotto.net, SBO2UPOP1
-                                , SBO123, Thai09, lotto888 และ แทงหวย24 ซื้อหวยออนไลน์ ที่ไหนดี ,
-                                เว็บหวย ดีที่สุด ,เว็บหวยออนไลน์ , เป็นหนึ่งใน เว็บหวย
-                                ที่ให้บริการผ่านทางออนไลน์ โดยเปิดให้ แทงหวย ตลอด 24 ชั่วโมง ความโดดเด่น
-                                ของ เรา คือ แทงหวยออนไลน์ ไม่มีขั้นต่ำ การซื้อหวย , การแทงหวย ,
-                                กับเรามีความลื่นไหล ,ไม่สดุดหวยรวย ‘, ซื้อหวยบาลละ 950
-                                ,เว็บหวยใหม่มาเเรง ,ในปีนี้ , ซื้อหวยรัฐบาล ซเท่าไรจ่ายไม่อั้น ,
-                                เล่นได้ทุกวัน มีหวยออนไลน์ มากมาย ,
-                                เว็บแท่งหวย , เว็บแท่งหวยออนไลน์ , แท่งหวย , ซือหวย , ให้เลือกซื้อ
-                                ซื้อหวยVIP จ่ายเติม , ชื้อหวยไม่อั้น , หวยออก , เว็บรวย , สมัครเว็บรวย ,
-                                แทงหวยเว็บรวย , ซื้อหวยเว็บรวย , เว็บรวยจ่ายดีไหม , เว็บหวยโกง ,
-                                เว็บไหนโกงบ้าง , เว็บหวยเว็บไหนจ่ายจริงบ้างครับ , แฉเว็บหวยโกง , แทงหวย
-                                ใต้ดิน ,
-                                หวยลาว ซื้อหวยลาว , ซื้อหวย 3 ตัวบน , สมัครหวย สมัครแทงหวยออนไลน์ ,
-                                ซื้อหวยหุ้น ,ซื้อหวยรัฐบาล,ซื้อหวยกับเราไม่ยากเลย,
-                                lottoweekly , lucky , lucky77 , luckyvip77 , ซื้อหวยผ่านเเอพ
-                                ,มีหวยมากมาย, หว</textarea>
+แนะนำ 10 เว็บแทงหวยออนไลน์ ที่ดีที่สุด ได้แก่ 77LOTTO,Huay 
+Ork,UFALOTTO,POWERBALL,lotto.net, SBO2UPOP1
+, SBO123, Thai09, lotto888 และ แทงหวย24 ซื้อหวยออนไลน์ ที่ไหนดี , 
+เว็บหวย ดีที่สุด ,เว็บหวยออนไลน์ , เป็นหนึ่งใน เว็บหวย
+ที่ให้บริการผ่านทางออนไลน์ โดยเปิดให้ แทงหวย ตลอด 24 ชั่วโมง ความโดดเด่น
+ ของ เรา คือ แทงหวยออนไลน์ ไม่มีขั้นต่ำ การซื้อหวย , การแทงหวย ,
+กับเรามีความลื่นไหล ,ไม่สดุดหวยรวย ‘, ซื้อหวยบาลละ 950 
+,เว็บหวยใหม่มาเเรง ,ในปีนี้ , ซื้อหวยรัฐบาล ซเท่าไรจ่ายไม่อั้น , 
+เล่นได้ทุกวัน มีหวยออนไลน์ มากมาย ,
+เว็บแท่งหวย , เว็บแท่งหวยออนไลน์ , แท่งหวย , ซือหวย , ให้เลือกซื้อ 
+ซื้อหวยVIP จ่ายเติม , ชื้อหวยไม่อั้น , หวยออก , เว็บรวย , สมัครเว็บรวย ,
+แทงหวยเว็บรวย , ซื้อหวยเว็บรวย , เว็บรวยจ่ายดีไหม , เว็บหวยโกง , 
+เว็บไหนโกงบ้าง , เว็บหวยเว็บไหนจ่ายจริงบ้างครับ , แฉเว็บหวยโกง , แทงหวย 
+ใต้ดิน , 
+หวยลาว ซื้อหวยลาว , ซื้อหวย 3 ตัวบน , สมัครหวย สมัครแทงหวยออนไลน์ , 
+ซื้อหวยหุ้น ,ซื้อหวยรัฐบาล,ซื้อหวยกับเราไม่ยากเลย,
+lottoweekly , lucky , lucky77 , luckyvip77 , ซื้อหวยผ่านเเอพ 
+,มีหวยมากมาย, หว</textarea>
                             <p style="
                     font-size: 0.75rem;
                     color: var(--text-muted);
@@ -880,20 +872,11 @@
                             <div class="section-label">Raw SIEM Payload</div>
                             <div class="payload-container">
                                 <button id="copy-btn" class="copy-btn">Copy</button>
-                                <pre id="payload-display" class="app-pre">
-                                    // รอการป้อนข้อมูล...</pre>
+                                <pre id="payload-display" class="app-pre">                                    // รอการป้อนข้อมูล...</pre>
                             </div>
 
-                            <div id="status-bar" class="sd-indicator sd-false" style="margin-top: 8px; text-align: center; font-weight: bold; font-size: 0.95rem; padding: 10px 12px;">
-                                สถานะข้อความ (Status): <span id="status-bar-val">WAITING</span>
-                            </div>
-                            <div style="display: flex; gap: 8px; margin-top: 8px;">
-                                <div id="sd-flag" class="sd-indicator sd-false" style="flex: 1; margin: 0; text-align: center;">
-                                    พบข้อมูลส่วนตัว (sd): <b id="sd-val">false</b>
-                                </div>
-                                <div id="paste-flag" class="sd-indicator sd-false" style="flex: 1; margin: 0; text-align: center;">
-                                    มีการคัดลอกวาง (paste): <b id="paste-val">false</b>
-                                </div>
+                            <div id="sd-flag" class="sd-indicator sd-false">
+                                พบข้อมูลส่วนตัว (sd): <b id="sd-val">false</b>
                             </div>
                         </div>
                     </div>
@@ -913,7 +896,7 @@
 
                     <div class="alert-warning">
                         <p>
-                            <strong>แต่ในโลกความเป็นจริง...</strong><br />
+                            <strong>แต่ในโลกความเป็นจริง...</strong><br>
                             การป้องกันด้วย JavaScript ฝั่ง Client
                             ไม่สามารถกันแฮกเกอร์ที่ตั้งใจโจมตีระบบหลังบ้าน (Backend) ได้
                             คนที่มีความรู้ทางเทคนิคสักหน่อยสามารถดักดู Network Traffic
@@ -1016,7 +999,7 @@
                 border: 0;
                 border-top: 1px solid var(--border-light);
                 margin: 40px 0;
-              " />
+              ">
 
                     <h2>ตัวเลือกการติดตั้ง (Installation)</h2>
 
@@ -1030,10 +1013,7 @@
                     <div class="code-block">
                         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                         <span class="hl-tag">&lt;script</span>
-                        <span class="hl-attr">src</span>=<span
-                            class="hl-string">"https://cdn.redsocs.com/js/spamwarden.min.js?client=<span
-                                style="color: #fff; font-weight: bold">BASE64_CONFIG_STRING</span>"</span><span
-                            class="hl-tag">&gt;&lt;/script&gt;</span>
+                        <span class="hl-attr">src</span>=<span class="hl-string">"https://cdn.redsocs.com/js/spamwarden.min.js?client=<span style="color: #fff; font-weight: bold">BASE64_CONFIG_STRING</span>"</span><span class="hl-tag">&gt;&lt;/script&gt;</span>
                     </div>
                     <div style="margin-top: -10px; margin-bottom: 24px">
                         <a href="https://redsocs.com/spam-warden" target="_blank" style="
@@ -1045,7 +1025,8 @@
                   align-items: center;
                   gap: 4px;
                 ">
-                            <span>→</span> รับ Token การตั้งค่าเพื่อปกป้องเว็บไซต์ของคุณฟรี
+                            <span>→</span> รับ Token
+                            การตั้งค่าเพื่อปกป้องเว็บไซต์ของคุณฟรี
                         </a>
                     </div>
 
@@ -1058,133 +1039,62 @@
                         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                         <span class="hl-keyword">import</span> spamwarden
                         <span class="hl-keyword">from</span>
-                        <span class="hl-string">'@redsocs/spam-warden'</span>;<br /><br />
-                        spamwarden.<span class="hl-func">configure</span>({<br />
+                        <span class="hl-string">'@redsocs/spam-warden'</span>;<br><br>
+                        spamwarden.<span class="hl-func">configure</span>({<br>
                         &nbsp;&nbsp;siemEndpoint:
-                        <span class="hl-string">"https://api.yourdomain.com/v1/telemetry"</span>,<br />
+                        <span class="hl-string">"https://api.yourdomain.com/v1/telemetry"</span>,<br>
                         &nbsp;&nbsp;autoReport:
-                        <span class="hl-keyword">true</span>,<br />
+                        <span class="hl-keyword">true</span>,<br>
                         &nbsp;&nbsp;reportSD: <span class="hl-keyword">true</span>
-                        <span class="hl-comment">// เปิดใช้งานโหมด DLP Audit</span><br />
-                        });<br /><br />
-                        <span class="hl-keyword">const</span> result = spamwarden.<span
-                            class="hl-func">spamcheck</span>(<span class="hl-string">"คลิกเพื่อรับเงินด่วน
-                            https://lin.ee/abc"</span>);<br />
+                        <span class="hl-comment">// เปิดใช้งานโหมด DLP Audit</span><br>
+                        });<br><br>
+                        <span class="hl-keyword">const</span> result = spamwarden.<span class="hl-func">spamcheck</span>(<span class="hl-string">"คลิกเพื่อรับเงินด่วน
+                            https://lin.ee/abc"</span>);<br>
                         console.<span class="hl-func">log</span>(result.isSpam);
                         <span class="hl-comment">// true</span>
                     </div>
                 </div>
 
                 <!-- NCSA Compliance Section -->
-                <div class="container content-section">
-                    <h2>🛡️ สอดคล้องกับมาตรฐาน NCSA Web Standard 1.0</h2>
-                    <p>
-                        SpamWarden
-                        ถูกออกแบบมาเพื่อตอบสนองต่อข้อกำหนดด้านความมั่นคงปลอดภัยไซเบอร์แห่งชาติ
-                        โดยเฉพาะสำหรับหน่วยงานโครงสร้างพื้นฐานสำคัญทางสารสนเทศ (CII)
-                        และเว็บไซต์ภาครัฐ:
-                    </p>
-
-                    <div class="layout-grid" style="
-                margin-top: 24px;
-                gap: 16px;
-                grid-template-columns: 1fr 1fr;
-              ">
-                        <div style="
-                  background: var(--bg-color);
-                  padding: 20px;
-                  border-radius: 6px;
-                  border: 1px solid var(--border-light);
-                ">
-                            <h3 style="
-                    margin-top: 0;
-                    font-size: 1.1rem;
-                    color: var(--primary);
-                  ">
-                                1. Data Minimization (PDPA)
-                            </h3>
-                            <p style="font-size: 0.95rem; margin-bottom: 0">
-                                ประมวลผลบน Client-Side 100%
-                                ข้อมูลผู้ใช้ไม่ถูกส่งออกนอกเบราว์เซอร์ พร้อมระบบ Masking
-                                ข้อมูลส่วนบุคคล (PII) อัตโนมัติก่อนส่ง Log
-                            </p>
-                        </div>
-                        <div style="
-                  background: var(--bg-color);
-                  padding: 20px;
-                  border-radius: 6px;
-                  border: 1px solid var(--border-light);
-                ">
-                            <h3 style="
-                    margin-top: 0;
-                    font-size: 1.1rem;
-                    color: var(--primary);
-                  ">
-                                2. Zero Dependencies
-                            </h3>
-                            <p style="font-size: 0.95rem; margin-bottom: 0">
-                                ลดความเสี่ยง Supply Chain Attack ด้วยสถาปัตยกรรมแบบ Standalone
-                                ไม่มี External Library หรือ API ภายนอกที่ต้องพึ่งพา
-                            </p>
-                        </div>
-                        <div style="
-                  background: var(--bg-color);
-                  padding: 20px;
-                  border-radius: 6px;
-                  border: 1px solid var(--border-light);
-                ">
-                            <h3 style="
-                    margin-top: 0;
-                    font-size: 1.1rem;
-                    color: var(--primary);
-                  ">
-                                3. Defacement Protection
-                            </h3>
-                            <p style="font-size: 0.95rem; margin-bottom: 0">
-                                เป็นเกราะป้องกันหน้าบ้าน (Frontend Shield)
-                                สกัดกั้นบอทและสคริปต์อัตโนมัติที่พยายามฝังลิงก์การพนันหรือเปลี่ยนหน้าเว็บ
-                            </p>
-                        </div>
-                        <div style="
-                  background: var(--bg-color);
-                  padding: 20px;
-                  border-radius: 6px;
-                  border: 1px solid var(--border-light);
-                ">
-                            <h3 style="
-                    margin-top: 0;
-                    font-size: 1.1rem;
-                    color: var(--primary);
-                  ">
-                                4. Native SIEM Telemetry
-                            </h3>
-                            <p style="font-size: 0.95rem; margin-bottom: 0">
-                                ส่งข้อมูลภัยคุกคามตรงเข้า SOC ของหน่วยงานได้ทันทีผ่าน
-                                <code>siemEndpoint</code>
-                                ช่วยให้ปฏิบัติตามกฎการเฝ้าระวังและตอบสนองเหตุการณ์ (Incident
-                                Response)
-                            </p>
-                        </div>
+            <div class="container content-section">
+                <h2>🛡️ สอดคล้องกับมาตรฐาน NCSA Web Standard 1.0</h2>
+                <p>
+                    SpamWarden 
+ถูกออกแบบมาเพื่อตอบสนองต่อข้อกำหนดด้านความมั่นคงปลอดภัยไซเบอร์แห่งชาติ 
+โดยเฉพาะสำหรับหน่วยงานโครงสร้างพื้นฐานสำคัญทางสารสนเทศ (CII) 
+และเว็บไซต์ภาครัฐ:
+                </p>
+                
+                <div class="layout-grid" style="margin-top: 24px; gap: 16px; grid-template-columns: 1fr 1fr;">
+                    <div style="background: var(--bg-color); padding: 20px; border-radius: 6px; border: 1px solid var(--border-light);">
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary);">1. Data Minimization (PDPA)</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 0;">ประมวลผลบน Client-Side 100% ข้อมูลผู้ใช้ไม่ถูกส่งออกนอกเบราว์เซอร์ พร้อมระบบ Masking ข้อมูลส่วนบุคคล (PII) อัตโนมัติก่อนส่ง Log</p>
+                    </div>
+                    <div style="background: var(--bg-color); padding: 20px; border-radius: 6px; border: 1px solid var(--border-light);">
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary);">2. Zero Dependencies</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 0;">ลดความเสี่ยง Supply Chain Attack ด้วยสถาปัตยกรรมแบบ Standalone ไม่มี External Library หรือ API ภายนอกที่ต้องพึ่งพา</p>
+                    </div>
+                    <div style="background: var(--bg-color); padding: 20px; border-radius: 6px; border: 1px solid var(--border-light);">
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary);">3. Defacement Protection</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 0;">เป็นเกราะป้องกันหน้าบ้าน (Frontend Shield) สกัดกั้นบอทและสคริปต์อัตโนมัติที่พยายามฝังลิงก์การพนันหรือเปลี่ยนหน้าเว็บ</p>
+                    </div>
+                    <div style="background: var(--bg-color); padding: 20px; border-radius: 6px; border: 1px solid var(--border-light);">
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary);">4. Native SIEM Telemetry</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 0;">ส่งข้อมูลภัยคุกคามตรงเข้า SOC ของหน่วยงานได้ทันทีผ่าน <code>siemEndpoint</code> ช่วยให้ปฏิบัติตามกฎการเฝ้าระวังและตอบสนองเหตุการณ์ (Incident Response)</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- FAQ Section (Restored) -->
+            <!-- FAQ Section (Restored) -->
                 <div class="container faq-section">
                     <h2>คำถามที่พบบ่อย (FAQ)</h2>
                     <div class="faq-list">
                         <div class="faq-item">
                             <div class="faq-question">
-                                เครื่องมือนี้ช่วยให้เว็บไซต์ผ่านเกณฑ์ NCSA Web Standard 1.0
-                                หรือไม่?
+                                เครื่องมือนี้ช่วยให้เว็บไซต์ผ่านเกณฑ์ NCSA Web Standard 1.0 หรือไม่?
                             </div>
                             <div class="faq-answer">
-                                ใช่! SpamWarden มีสถาปัตยกรรมที่สอดคล้องกับ NCSA Web Standard
-                                อย่างมาก โดยเฉพาะในเรื่องของ
-                                <strong>Supply Chain Security</strong>
-                                (เพราะไม่ต้องโหลดไลบรารีภายนอกอื่นๆ เลย) และ
-                                <strong>Data Minimization</strong>
-                                (เพราะวิเคราะห์ข้อความบนเครื่องของผู้ใช้ และเซ็นเซอร์ข้อมูล
-                                PII ทั้งหมดก่อนส่ง Log เข้า SOC ของคุณ)
+                                ใช่! SpamWarden มีสถาปัตยกรรมที่สอดคล้องกับ NCSA Web Standard อย่างมาก โดยเฉพาะในเรื่องของ <strong>Supply Chain Security</strong> (เพราะไม่ต้องโหลดไลบรารีภายนอกอื่นๆ เลย) และ <strong>Data Minimization</strong> (เพราะวิเคราะห์ข้อความบนเครื่องของผู้ใช้ และเซ็นเซอร์ข้อมูล PII ทั้งหมดก่อนส่ง Log เข้า SOC ของคุณ)
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1225,16 +1135,9 @@
                             </div>
                         </div>
                         <div class="faq-item">
-                            <div class="faq-question">
-                                สามารถปรับขนาดข้อมูลที่ส่ง หรือเพิ่ม Blacklist ผ่านโค้ดได้ไหม?
-                            </div>
+                            <div class="faq-question">สามารถปรับขนาดข้อมูลที่ส่ง หรือเพิ่ม Blacklist ผ่านโค้ดได้ไหม?</div>
                             <div class="faq-answer">
-                                ได้ คุณสามารถกำหนดขนาดสูงสุดของข้อความที่จะส่งไปวิเคราะห์ผ่าน
-                                <code>payloadLimit</code> ในเมธอด
-                                <code>configure()</code> (ค่าเริ่มต้น 250 ตัวอักษร)
-                                และสามารถใช้เมธอด
-                                <code>addBlacklist()</code>
-                                เพื่อเพิ่มโดเมนอันตรายใหม่เข้าสู่ระบบได้ทันทีในระหว่างที่โปรแกรมกำลังทำงาน
+                                ได้ คุณสามารถกำหนดขนาดสูงสุดของข้อความที่จะส่งไปวิเคราะห์ผ่าน <code>payloadLimit</code> ในเมธอด <code>configure()</code> (ค่าเริ่มต้น 250 ตัวอักษร) และสามารถใช้เมธอด <code>addBlacklist()</code> เพื่อเพิ่มโดเมนอันตรายใหม่เข้าสู่ระบบได้ทันทีในระหว่างที่โปรแกรมกำลังทำงาน
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1242,8 +1145,7 @@
                             <div class="faq-answer">
                                 โมเดล Machine Learning ของเราถูกเทรนด้วยข้อมูลสแปมภาษาไทยจริง
                                 ผ่านโปรเจกต์
-                                <a href="https://github.com/RedSoCs/spam-labeler" target="_blank"
-                                    style="color: inherit; text-decoration: underline">spam-labeler</a>
+                                <a href="https://github.com/RedSoCs/spam-labeler" target="_blank" style="color: inherit; text-decoration: underline">spam-labeler</a>
                                 เพื่อให้มั่นใจในความแม่นยำและประสิทธิภาพสูงสุดในการตรวจจับแพทเทิร์นการหลอกลวงในประเทศไทย
                             </div>
                         </div>
@@ -1260,8 +1162,7 @@
                         หากเครื่องมือนี้เป็นประโยชน์ในการปกป้องฐานข้อมูลของคุณ
                         ขอเชิญร่วมสนับสนุนทุนวิจัย security และค่าเซิร์ฟเวอร์ของเราได้ที่:
                     </p>
-                    <a href="https://buymeacoffee.com/redsocs" target="_blank" class="btn btn-primary"
-                        style="margin-top: 16px">☕ เลี้ยงกาแฟทีมงาน</a>
+                    <a href="https://buymeacoffee.com/redsocs" target="_blank" class="btn btn-primary" style="margin-top: 16px">☕ เลี้ยงกาแฟทีมงาน</a>
                 </div>
             </div>
 
@@ -1270,20 +1171,16 @@
                     <ul class="footer-links">
                         <li>
                             <div style="display: flex; align-items: center; gap: 8px">
-                                <a target="_blank" rel="noopener noreferrer"
-                                    href="https://redsocs.com/spam-warden">SpamWarden</a>
+                                <a target="_blank" rel="noopener noreferrer" href="https://redsocs.com/spam-warden">SpamWarden</a>
                                 <span id="github-version" class="version-badge">v0.91</span>
-                                <a target="_blank" rel="noopener noreferrer"
-                                    href="https://github.com/RedSoCs/spam-warden" style="
+                                <a target="_blank" rel="noopener noreferrer" href="https://github.com/RedSoCs/spam-warden" style="
                       display: flex;
                       color: inherit;
                       opacity: 0.6;
                       transition: opacity 0.2s;
                     " onmouseover="this.style.opacity = 1" onmouseout="this.style.opacity = 0.6">
-                                    <svg height="16" viewBox="0 0 16 16" version="1.1" width="16" aria-hidden="true"
-                                        style="fill: currentColor">
-                                        <path
-                                            d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.82-.28-1.37-.59-1.63 1.95-.22 3.99-.96 3.99-4.34 0-.96-.34-1.74-.91-2.35.09-.22.4-1.12-.09-2.32 0 0-.74-.24-2.42.91-.7-.2-1.45-.3-2.2-.3-.75 0-1.5.1-2.2.3-1.68-1.15-2.42-.91-2.42-.91-.49 1.2-.18 2.1.09 2.32-.57.61-.91 1.39-.91 2.35 0 3.37 2.03 4.12 3.98 4.34-.23.2-.44.55-.52 1.07-.47.21-1.65.57-2.37-.67-.14-.24-.45-.4-.73-.42-.29 0-.36.19-.01.35.19.08.38.35.51.64.18.53.68.85 1.58.73.01.44.01.88.01 1.25 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8z">
+                                    <svg height="16" viewBox="0 0 16 16" version="1.1" width="16" aria-hidden="true" style="fill: currentColor">
+                                        <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.82-.28-1.37-.59-1.63 1.95-.22 3.99-.96 3.99-4.34 0-.96-.34-1.74-.91-2.35.09-.22.4-1.12-.09-2.32 0 0-.74-.24-2.42.91-.7-.2-1.45-.3-2.2-.3-.75 0-1.5.1-2.2.3-1.68-1.15-2.42-.91-2.42-.91-.49 1.2-.18 2.1.09 2.32-.57.61-.91 1.39-.91 2.35 0 3.37 2.03 4.12 3.98 4.34-.23.2-.44.55-.52 1.07-.47.21-1.65.57-2.37-.67-.14-.24-.45-.4-.73-.42-.29 0-.36.19-.01.35.19.08.38.35.51.64.18.53.68.85 1.58.73.01.44.01.88.01 1.25 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8z">
                                         </path>
                                     </svg>
                                 </a>
@@ -1295,9 +1192,7 @@
                         </li>
                         <li>
                             <button class="ot-sdk-btn">
-                                <img height="14"
-                                    src="data:image/svg+xml;base64,PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAzMCAxNCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzAgMTQiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0ZGRkZGRjt9Cgkuc3Qxe2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6IzAwNjZGRjt9Cgkuc3Qye2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0ZGRkZGRjt9Cgkuc3Qze2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6IzAwNjZGRjt9Cjwvc3R5bGU+CgkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEyNzUgLTIwMCkiPgoJCQk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjc1IDIwMCkiPgoJCQkJPHBhdGggY2xhc3M9InN0MCIgZD0ibTcuNCAxMi44aDYuOGwzLjEtMTEuNmgtOS45Yy0zLjIgMC01LjggMi42LTUuOCA1LjhzMi42IDUuOCA1LjggNS44eiIvPgoJCQk8L2c+CgkJPC9nPgoJCTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMjc1IC0yMDApIj4KCQkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI3NSAyMDApIj4KCQkJCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Im0yMi42IDBoLTE1LjJjLTMuOSAwLTcgMy4xLTcgN3MzLjEgNyA3IDdoMTUuMmMzLjkgMCA3LTMuMSA3LTdzLTMuMi03LTctN3ptLTIxIDdjMC0zLjIgMi42LTUuOCA1LjgtNS44aDkuOWwtMy4xIDExLjZoLTYuOGMtMy4yIDAtNS44LTIuNi01LjgtNS44eiIvPgoJCQkJPHBhdGggY2xhc3M9InN0MiIgZD0ibTI0LjYgNGMwLjIgMC4yIDAuMiAwLjYgMCAwLjhsLTIuMSAyLjIgMi4yIDIuMmMwLjIgMC4yIDAuMiAwLjYgMCAwLjhzLTAuNiAwLjItMC44IDBsLTIuMi0yLjItMi4yIDIuMmMtMC4yIDAuMi0wLjYgMC4yLTAuOCAwcy0wLjItMC42IDAtMC44bDIuMS0yLjItMi4yLTIuMmMtMC4yLTAuMi0wLjItMC42IDAtMC44czAuNi0wLjIgMC44IDBsMi4yIDIuMiAyLjItMi4yYzAuMi0wLjIgMC42LTAuMiAwLjggMHoiLz4KCQkJCTxwYXRoIGNsYXNzPSJzdDMiIGQ9Im0xMi43IDQuMWMwLjIgMC4yIDAuMyAwLjYgMC4xIDAuOGwtNC4yIDQuOWMtMC4xIDAuMS0wLjIgMC4yLTAuMyAwLjItMC4yIDAuMS0wLjUgMC4xLTAuNy0wLjFsLTIuMi0yLjJjLTAuMi0wLjItMC4yLTAuNiAwLTAuOHMwLjYtMC4yIDAuOCAwbDEuOCAxLjcgMy44LTQuNWMwLjItMC4yIDAuNi0wLjIgMC45IDB6Ii8+CgkJCTwvZz4KCQk8L2c+Cjwvc3ZnPg=="
-                                    alt="privacy choices" />Cookie Preferences
+                                <img height="14" src="data:image/svg+xml;base64,PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAzMCAxNCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzAgMTQiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0ZGRkZGRjt9Cgkuc3Qxe2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6IzAwNjZGRjt9Cgkuc3Qye2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0ZGRkZGRjt9Cgkuc3Qze2ZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6IzAwNjZGRjt9Cjwvc3R5bGU+CgkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEyNzUgLTIwMCkiPgoJCQk8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjc1IDIwMCkiPgoJCQkJPHBhdGggY2xhc3M9InN0MCIgZD0ibTcuNCAxMi44aDYuOGwzLjEtMTEuNmgtOS45Yy0zLjIgMC01LjggMi42LTUuOCA1LjhzMi42IDUuOCA1LjggNS44eiIvPgoJCQk8L2c+CgkJPC9nPgoJCTxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMjc1IC0yMDApIj4KCQkJPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI3NSAyMDApIj4KCQkJCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Im0yMi42IDBoLTE1LjJjLTMuOSAwLTcgMy4xLTcgN3MzLjEgNyA3IDdoMTUuMmMzLjkgMCA3LTMuMSA3LTdzLTMuMi03LTctN3ptLTIxIDdjMC0zLjIgMi42LTUuOCA1LjgtNS44aDkuOWwtMy4xIDExLjZoLTYuOGMtMy4yIDAtNS44LTIuNi01LjgtNS44eiIvPgoJCQkJPHBhdGggY2xhc3M9InN0MiIgZD0ibTI0LjYgNGMwLjIgMC4yIDAuMiAwLjYgMCAwLjhsLTIuMSAyLjIgMi4yIDIuMmMwLjIgMC4yIDAuMiAwLjYgMCAwLjhzLTAuNiAwLjItMC44IDBsLTIuMi0yLjItMi4yIDIuMmMtMC4yIDAuMi0wLjYgMC4yLTAuOCAwcy0wLjItMC42IDAtMC44bDIuMS0yLjItMi4yLTIuMmMtMC4yLTAuMi0wLjItMC42IDAtMC44czAuNi0wLjIgMC44IDBsMi4yIDIuMiAyLjItMi4yYzAuMi0wLjIgMC42LTAuMiAwLjggMHoiLz4KCQkJCTxwYXRoIGNsYXNzPSJzdDMiIGQ9Im0xMi43IDQuMWMwLjIgMC4yIDAuMyAwLjYgMC4xIDAuOGwtNC4yIDQuOWMtMC4xIDAuMS0wLjIgMC4yLTAuMyAwLjItMC4yIDAuMS0wLjUgMC4xLTAuNy0wLjFsLTIuMi0yLjJjLTAuMi0wLjItMC4yLTAuNiAwLTAuOHMwLjYtMC4yIDAuOCAwbDEuOCAxLjcgMy44LTQuNWMwLjItMC4yIDAuNi0wLjIgMC45IDB6Ii8+CgkJCTwvZz4KCQk8L2c+Cjwvc3ZnPg==" alt="privacy choices">Cookie Preferences
                             </button>
                         </li>
                         <li><span class="copyright">© 2026 RedSocs.com</span></li>
@@ -1307,7 +1202,7 @@
         </div>
 
         <!-- Script Integration (Synced with v5) -->
-        <script src="js/spamwarden.min.js"></script>
+        <script src="index_files/spamwarden.min.js"></script>
         <script>
             // --- FAQ Toggle Logic ---
             document.querySelectorAll(".faq-question").forEach((question) => {
@@ -1326,19 +1221,6 @@
             const sdFlag = document.getElementById("sd-flag");
             const sdVal = document.getElementById("sd-val");
             const copyBtn = document.getElementById("copy-btn");
-            
-            // Paste tracking DOM elements and state
-            const pasteFlag = document.getElementById("paste-flag");
-            const pasteVal = document.getElementById("paste-val");
-            let hasPasted = false;
-
-            // Status bar DOM elements
-            const statusBar = document.getElementById("status-bar");
-            const statusBarVal = document.getElementById("status-bar-val");
-            
-            input.addEventListener("paste", () => {
-                hasPasted = true;
-            });
 
             function copyCode(btn) {
                 const code = btn.parentElement.innerText.replace("Copy", "").trim();
@@ -1398,45 +1280,22 @@
                     isTrusted: true,
                     siteToken: "WEB_DIAG_LOCAL",
                     customReporter: (payload) => {
-                        // Mock URL for diagnostics display
-                        payload.url = "h_tt_p://xxxxx[.]go[.]th/webboard/create[.]php";
-
                         display.innerHTML = syntaxHighlightJSON(payload);
                         sdVal.innerText = payload.sd;
                         sdFlag.className = payload.sd
                             ? "sd-indicator sd-true"
                             : "sd-indicator sd-false";
-                        
-                        // Update paste flag indicator
-                        if (pasteVal && pasteFlag) {
-                            pasteVal.innerText = payload.paste;
-                            pasteFlag.className = payload.paste
-                                ? "sd-indicator sd-true"
-                                : "sd-indicator sd-false";
-                        }
                     },
                 });
 
                 input.addEventListener("input", () => {
                     const text = input.value;
                     if (!text) {
-                        hasPasted = false; // Reset paste state
                         display.innerText = "// รอการป้อนข้อมูล...";
                         statusPill.innerHTML = "";
                         latVal.innerText = "-";
                         probVal.innerText = "0%";
                         ruleVal.innerText = "-";
-                        
-                        // Reset paste flag indicator
-                        if (pasteVal && pasteFlag) {
-                            pasteVal.innerText = "false";
-                            pasteFlag.className = "sd-indicator sd-false";
-                        }
-                        // Reset status bar indicator
-                        if (statusBar && statusBarVal) {
-                            statusBarVal.innerText = "WAITING";
-                            statusBar.className = "sd-indicator sd-false";
-                        }
                         return;
                     }
 
@@ -1451,21 +1310,12 @@
                     if (res.isSpam) {
                         statusPill.innerHTML =
                             '<span class="status-pill is-spam">BLOCK</span>';
-                        if (statusBar && statusBarVal) {
-                            statusBarVal.innerText = "SPAM";
-                            statusBar.className = "sd-indicator is-spam";
-                        }
                     } else {
                         statusPill.innerHTML =
                             '<span class="status-pill is-safe">PASS</span>';
-                        if (statusBar && statusBarVal) {
-                            statusBarVal.innerText = "SAFE";
-                            statusBar.className = "sd-indicator is-safe";
-                        }
                     }
 
-                    // Pass hasPasted state to telemetry reporter
-                    spamwarden._report(text, res, hasPasted);
+                    spamwarden._report(text, res);
                 });
             }
 
@@ -1487,6 +1337,7 @@
             };
         </script>
     </div>
-</body>
 
-</html>
+
+
+</body></html>

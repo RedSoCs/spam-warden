@@ -32,12 +32,29 @@ if (!fs.existsSync(path.join(ROOT, 'dist'))) {
   fs.mkdirSync(path.join(ROOT, 'dist'), { recursive: true });
 }
 
-// ── Step 1: Bundle model ───────────────────────────────────────────
+// ── Step 1: Bundle model and filter ─────────────────────────────────
 
-console.log('[1/3] Bundling model.json into spamwarden.js...');
+console.log('[1/3] Bundling model and filter list into spamwarden.js...');
 const modelJson = fs.readFileSync(MODEL, 'utf-8');
 const srcCode = fs.readFileSync(SRC, 'utf-8');
-const bundled = srcCode.replace('MODEL_DATA_PLACEHOLDER', modelJson);
+
+// Load filter list
+const filterDataPath = path.join(ROOT, 'src', 'spamwarden-data.js');
+let filterJson = '[]';
+if (fs.existsSync(filterDataPath)) {
+  try {
+    // Clear cache to read fresh filter data
+    delete require.cache[require.resolve(filterDataPath)];
+    filterJson = JSON.stringify(require(filterDataPath));
+  } catch (e) {
+    console.warn('  ⚠️ Warning: Could not read spamwarden-data.js, defaulting to empty list.');
+  }
+}
+
+const bundled = srcCode
+  .replace('MODEL_DATA_PLACEHOLDER', modelJson)
+  .replace('FILTER_DATA_PLACEHOLDER', filterJson);
+
 fs.writeFileSync(OUT, bundled);
 
 const outSize = fs.statSync(OUT).size;
@@ -77,6 +94,18 @@ function reportSizes(outPath, minPath) {
 
   console.log(`  Output: dist/spamwarden.min.js`);
   console.log(`  Size:   ${(minBytes / 1024).toFixed(0)} KB`);
+
+  // Automatically sync to docs/js if docs exists
+  const docsDir = path.join(ROOT, 'docs');
+  if (fs.existsSync(docsDir)) {
+    const docsJs = path.join(docsDir, 'js');
+    if (!fs.existsSync(docsJs)) {
+      fs.mkdirSync(docsJs, { recursive: true });
+    }
+    fs.copyFileSync(outPath, path.join(docsJs, 'spamwarden.js'));
+    fs.copyFileSync(minPath, path.join(docsJs, 'spamwarden.min.js'));
+    console.log('\n  ✓ Automatically copied to docs/js/');
+  }
 
   console.log('\n[3/3] Summary');
   console.log(`  Uncompressed: ${outBytes.toLocaleString()} bytes (${(outBytes / 1024).toFixed(0)} KB)`);
