@@ -29,7 +29,15 @@ if (spamLinks.length === 0) {
 }
 
 // 3. Generate and write the client file
-const clientCode = `module.exports = ${JSON.stringify(spamLinks, null, 2)};`;
+const obfuscatedLinks = spamLinks.map(str => {
+  const codes = [];
+  for (let i = 0; i < str.length; i++) {
+    codes.push(str.charCodeAt(i) - 100);
+  }
+  return codes;
+});
+
+const clientCode = `module.exports = ${JSON.stringify(obfuscatedLinks)};\n`;
 
 // Ensure the target directory exists before writing
 const outputDir = path.dirname(outputFile);
@@ -39,5 +47,5 @@ if (!fs.existsSync(outputDir)) {
 
 fs.writeFileSync(outputFile, clientCode);
 console.log(
-  `✅ Filter list built successfully! Wrote ${spamLinks.length} domains to ${outputFile}`,
+  `✅ Filter list built successfully! Wrote ${spamLinks.length} obfuscated domains to ${outputFile}`,
 );

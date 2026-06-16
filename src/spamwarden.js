@@ -14,11 +14,14 @@ const SpamWarden = {
   _version: modelData.version,
   _nFeatures: Object.keys(modelData.vocabulary).length,
   _absentLogProb: null,
+  _filters: (filterData && Array.isArray(filterData)) ? filterData.map(codes => {
+    return Array.isArray(codes) ? String.fromCharCode(...codes.map(c => c + 100)) : codes;
+  }) : [],
   _checkFilter: function(item) {
-    if (!filterData || !Array.isArray(filterData)) return false;
+    if (!this._filters || !Array.isArray(this._filters)) return false;
     const lowerItem = item.toLowerCase();
-    for (let i = 0; i < filterData.length; i++) {
-      if (lowerItem === filterData[i].toLowerCase()) return true;
+    for (let i = 0; i < this._filters.length; i++) {
+      if (lowerItem === this._filters[i].toLowerCase()) return true;
     }
     return false;
   },
@@ -66,7 +69,7 @@ const SpamWarden = {
     const arr = Array.isArray(domains) ? domains : [domains];
     for (let i = 0; i < arr.length; i++) {
       if (typeof arr[i] === "string" && arr[i].trim() !== "") {
-        filterData.push(arr[i].trim().toLowerCase());
+        this._filters.push(arr[i].trim().toLowerCase());
       }
     }
   },

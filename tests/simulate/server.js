@@ -92,7 +92,7 @@ const server = http.createServer((req, res) => {
         <body>
             <div class="card">
                 <h2>SpamWarden Form Protection Test</h2>
-                <p>Submit a spam comment (e.g. contains <i>$€£฿</i> or links like <i>line.me</i> or Thai loan/gambling words) to test blocking and telemetry.</p>
+                <p>Submit a spam comment (e.g. contains <i>$€£฿</i> or links like <i>line[dot]me</i> or Thai loan/gambling words) to test blocking and telemetry.</p>
                 <form id="postq-form" action="/success" method="GET">
                     <label>Name</label>
                     <input type="text" name="name" placeholder="John Doe" />

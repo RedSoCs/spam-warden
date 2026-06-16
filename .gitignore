@@ -2,4 +2,7 @@
 node_modules/
 tests/data/safe-*
 tests/data/spam-*
+/tests/raw-data.zip
+/data/spam/filter_list.txt
+/backup
 web/

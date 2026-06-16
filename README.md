@@ -78,7 +78,7 @@ SpamWarden is designed for **interactive web elements**:
 # What's inside?
 
 - **Hybrid Detection Engine:**
-  - **Hard Rules:** Instant blocking for currency symbols (`$€£฿`) and known spam link patterns (`line.me`, `bit.ly`).
+  - **Hard Rules:** Instant blocking for currency symbols (`$€£฿`) and known spam link patterns (`line[dot]me`, `bit[dot]ly`).
   - **Thai-Optimized Tokenizer:** Extracts whitespace tokens, **trigrams**, and **quadgrams** to handle the space-less nature of the Thai language.
   - **Present-Only NB Classifier:** A modified Naive Bayes model trained on real-world spam samples. It only evaluates present vocabulary features and utilizes a length-dependent threshold offset ($5.5 + 0.49 \times N$ matched features) to calibrate confidence and prevent false positives on longer clean texts.
 - **Telemetry System:** Optional auto-reporting of spam hits to `api.redsocs.com` for global threat intelligence.
@@ -105,7 +105,7 @@ You can spin up a local simulation server to test the DOM auto-blocking behavior
    ```
 2. **Open the test page** in your browser:
    [http://localhost:3000/](http://localhost:3000/)
-3. **Submit a spam message** (e.g., including currency signs like `฿` or links like `line.me`).
+3. **Submit a spam message** (e.g., including currency signs like `฿` or links like `line[dot]me`).
 4. **Observe the result**:
    - The form submission will be blocked on the page.
    - The terminal will display the defanged and sanitized telemetry payload sent to the SIEM receiver:

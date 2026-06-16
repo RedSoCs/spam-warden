@@ -1180,8 +1180,8 @@
                         <span class="hl-comment">// เปิดใช้งานโหมด DLP Audit</span><br />
                         });<br /><br />
                         <span class="hl-keyword">const</span> result = spamwarden.<span
-                            class="hl-func">spamcheck</span>(<span class="hl-string">"คลิกเพื่อรับเงินด่วน
-                            https://lin.ee/abc"</span>);<br />
+                            class="hl-func">spamcheck</span>(<span class="hl-string">"Thai spamming
+                            https://lin[dot]ee/abc"</span>);<br />
                         console.<span class="hl-func">log</span>(result.isSpam);
                         <span class="hl-comment">// true</span>
                     </div>
@@ -1375,7 +1375,7 @@
                             </div>
                             <div class="faq-answer">
                                 โมเดล Machine Learning ของเราใช้แนวคิดแบบ <strong>Present-Only Naive Bayes</strong> ร่วมกับเทคนิคการประมวลผลภาษาธรรมชาติภาษาไทย (Thai NLP) โดยเฉพาะ:<br /><br />
-                                <strong>• Thai Tokenizer & N-Grams:</strong> เนื่องจากภาษาไทยไม่มีการเว้นวรรคระหว่างคำ เอนจินจึงสร้างคำค้นหาแบบผสมผสานทั้ง Trigrams (กลุ่มคำ 3 ตัวอักษร) และ Quadgrams (กลุ่มคำ 4 ตัวอักษร) ช่วยตรวจจับคำหลบเลี่ยงคำหยาบคายและคำสแปม (เช่น "รับเงินด่วน", "แทงบอล") ได้อย่างแม่นยำ<br /><br />
+                                <strong>• Thai Tokenizer & N-Grams:</strong> เนื่องจากภาษาไทยไม่มีการเว้นวรรคระหว่างคำ เอนจินจึงสร้างคำค้นหาแบบผสมผสานทั้ง Trigrams (กลุ่มคำ 3 ตัวอักษร) และ Quadgrams (กลุ่มคำ 4 ตัวอักษร) ช่วยตรวจจับคำหลบเลี่ยงคำหยาบคายและคำสแปม (เช่น "Thai spamming", "Thai gambling") ได้อย่างแม่นยำ<br /><br />
                                 <strong>• ระบบวิเคราะห์ Present-Only:</strong> โมเดลจะวิเคราะห์เฉพาะคำที่ "ตรวจพบจริง" ในเนื้อหาเท่านั้น เพื่อป้องกันปัญหาความเอนเอียง (Bias) ที่คำปกติทั่วไปโดนจัดประเภทเป็นสแปมเพราะไม่เคยมีอยู่ในชุดข้อมูลฝึกฝน<br /><br />
                                 <strong>• Length-Calibrated Offset:</strong> มีการปรับเกณฑ์การตัดสินใจแบบแปรผันตามความยาวของข้อความจริง ($5.5 + 0.49 \times N$ ของคำที่ตรงกับฟีเจอร์) เพื่อชดเชยค่าความมั่นใจ ส่งผลให้ข้อความยาวๆ เช่น การพิมพ์บทความหรือการเขียนคำร้องเรียนปกติทางภาครัฐไม่ถูกบล็อกโดยสิ้นเชิง ในขณะที่สแปมลิงก์สั้นๆ จะถูกคัดกรองออกทันที
                             </div>
