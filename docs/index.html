@@ -175,7 +175,7 @@
             padding: 20px;
             border-radius: 6px;
             font-family: "SFMono-Regular", Consolas, monospace;
-            font-size: 0.85rem;
+            font-size: 1rem;
             overflow-x: auto;
             margin: 16px 0;
             position: relative;
@@ -221,7 +221,8 @@
         }
 
         .hl-attr {
-            color: #b392f0;
+            color: #fff01d;
+            font-weight: 600;
         }
 
         .hl-tag {
@@ -646,7 +647,31 @@
 
         .footer-content {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-inquiry {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .footer-inquiry a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted var(--primary);
+            transition:
+                color 0.15s ease,
+                border-color 0.15s ease;
+        }
+
+        .footer-inquiry a:hover {
+            color: var(--primary-hover);
+            border-bottom-style: solid;
         }
 
         .footer-links {
@@ -725,11 +750,13 @@
         .integrator-section {
             margin-top: 40px;
         }
+
         .url-bar {
             display: flex;
             gap: 12px;
             margin-bottom: 24px;
         }
+
         .url-bar input {
             flex: 1;
             padding: 14px 16px;
@@ -739,6 +766,7 @@
             border: 1px solid var(--border-light);
             border-radius: 6px;
         }
+
         .scan-terminal {
             background: #0d1117;
             border-radius: 6px;
@@ -750,35 +778,43 @@
             display: none;
             text-align: left;
         }
+
         .scan-line {
             margin: 0 0 8px 0;
             opacity: 0;
             animation: scanFadeIn 0.3s forwards;
         }
+
         .scan-line.success {
             color: #3fb950;
         }
+
         .scan-line.highlight {
             color: #58a6ff;
         }
+
         .scan-line.warning {
             color: #d29922;
         }
+
         @keyframes scanFadeIn {
             to {
                 opacity: 1;
             }
         }
+
         .snippet-result {
             margin-top: 24px;
             display: none;
             animation: scanFadeIn 0.5s forwards;
             text-align: left;
         }
+
         .snippet-result p {
             margin: 0 0 12px 0;
             color: var(--text-main);
         }
+
         .snippet-result code {
             background: var(--spam-bg);
             color: var(--spam-text);
@@ -795,10 +831,14 @@
             <div class="container-main">
                 <!-- Hero Section (Synced with v5) -->
                 <div class="container cta-section">
-                    <div class="rh-banner">
-                        <span><strong>Free JS Integration:</strong>
-                            รับโค้ดติดตั้งสำหรับเว็บไซต์ของคุณได้ทันที</span>
-                        <a href="https://redsocs.com/spam-warden" target="_blank">รับ Snippet →</a>
+                    <div class="rh-banner" style="background-color: #fef2f2; border: 1px solid #fee2e2;">
+                        <span style="color: #991b1b; line-height: 1.5;">
+                            <strong style="display: inline-block; background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; margin-right: 8px; transform: translateY(-2px);">Premium</strong>
+                            ยกระดับความปลอดภัยให้เว็บไซต์ WordPress ของคุณด้วย SpamWarden Plugin
+                        </span>
+                        <a href="https://redsocs.com/spam-warden" target="_blank" style="color: #b91c1c; font-weight: bold; white-space: nowrap;">
+                            อัปเกรดการป้องกัน →
+                        </a>
                     </div>
 
                     <div class="rh-grid">
@@ -836,14 +876,13 @@
                                     </svg>
                                     รับการป้องกันสแปมขั้นพื้นฐาน
                                 </a>
-                                <a href="https://github.com/RedSoCs/spam-warden" target="_blank"
+                                <a href="https://gitlab.com/redsocs/spam-warden" target="_blank"
                                     class="btn btn-secondary">
-                                    <svg height="20" viewBox="0 0 16 16" width="20" style="fill: currentColor">
+                                    <svg viewBox="0 0 16 16" width="20" height="20" style="fill: currentColor">
                                         <path
-                                            d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.82-.28-1.37-.59-1.63 1.95-.22 3.99-.96 3.99-4.34 0-.96-.34-1.74-.91-2.35.09-.22.4-1.12-.09-2.32 0 0-.74-.24-2.42.91-.7-.2-1.45-.3-2.2-.3-.75 0-1.5.1-2.2.3-1.68-1.15-2.42-.91-2.42-.91-.49 1.2-.18 2.1.09 2.32-.57.61-.91 1.39-.91 2.35 0 3.37 2.03 4.12 3.98 4.34-.23.2-.44.55-.52 1.07-.47.21-1.65.57-2.37-.67-.14-.24-.45-.4-.73-.42-.29 0-.36.19-.01.35.19.08.38.35.51.64.18.53.68.85 1.58.73.01.44.01.88.01 1.25 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8z">
-                                        </path>
+                                            d="m15.97 9.079-1.88-5.786a.48.48 0 0 0-.156-.226.474.474 0 0 0-.528-.02.476.476 0 0 0-.174.22L11.512 8.5H4.488L2.768 3.267a.475.475 0 0 0-.174-.22.474.474 0 0 0-.528.02.48.48 0 0 0-.156.227L.03 9.079a.78.78 0 0 0 .28.868l7.306 5.309a.608.608 0 0 0 .717 0l7.306-5.31a.782.782 0 0 0 .33-.867z" />
                                     </svg>
-                                    GitHub
+                                    GitLab
                                 </a>
                             </div>
                         </div>
@@ -864,7 +903,7 @@
                     <header>
                         <h1>Interactive Diagnostics Console</h1>
                         <div id="engine-info" class="engine-badge">
-                            Engine: v1.0.4 | 28177 Features
+                            Engine: v11.06 | 28106 Features
                         </div>
                     </header>
 
@@ -874,36 +913,7 @@
                                 ป้อนข้อความเพื่อทดสอบ
                                 <div id="status-pill"></div>
                             </div>
-                            <textarea id="input-field" placeholder="วางข้อความที่นี่เพื่อตรวจสอบ...">
-                                บแทงหวยออนไลน์
-                                จ่ายจริง เชื่อถือได้ ที่ดีที่สุดในปี 2026
-                                การเลือกเว็บไซต์แทงหวยออนไลน์ที่น่าเชื่อถือ
-                                และมีคุณภาพเป็นสิ่งสำคัญที่ผู้เล่นทุกคนควรให้ความสำคัญ
-                                เพื่อให้มั่นใจได้ว่าการลงทุนของคุณจะปลอดภัย
-                                และได้รับประสบการณ์การแทงหวยที่ดีที่สุด ดังนั้น เราได้รวบรวม 10
-                                เว็บแทงหวยออนไลน์ยอดนิยมที่ดีที่สุดในปี 2026
-                                ซึ่งได้รับการรีวิวและการยอมรับจากผู้ใช้งานมากมาย ดังนี้: รัฐบาลไทย,
-                                หวยลาว, หวยฮานอย, หวยยี่กี, หวยหุ้น, หวยมาเลย์, หวยใต้ดิน, หวยออมสิน,
-                                และหวย ธ.ก.ส.
-
-                                แนะนำ 10 เว็บแทงหวยออนไลน์ ที่ดีที่สุด ได้แก่ 77LOTTO,Huay
-                                Ork,UFALOTTO,POWERBALL,lotto.net, SBO2UPOP1
-                                , SBO123, Thai09, lotto888 และ แทงหวย24 ซื้อหวยออนไลน์ ที่ไหนดี ,
-                                เว็บหวย ดีที่สุด ,เว็บหวยออนไลน์ , เป็นหนึ่งใน เว็บหวย
-                                ที่ให้บริการผ่านทางออนไลน์ โดยเปิดให้ แทงหวย ตลอด 24 ชั่วโมง ความโดดเด่น
-                                ของ เรา คือ แทงหวยออนไลน์ ไม่มีขั้นต่ำ การซื้อหวย , การแทงหวย ,
-                                กับเรามีความลื่นไหล ,ไม่สดุดหวยรวย ‘, ซื้อหวยบาลละ 950
-                                ,เว็บหวยใหม่มาเเรง ,ในปีนี้ , ซื้อหวยรัฐบาล ซเท่าไรจ่ายไม่อั้น ,
-                                เล่นได้ทุกวัน มีหวยออนไลน์ มากมาย ,
-                                เว็บแท่งหวย , เว็บแท่งหวยออนไลน์ , แท่งหวย , ซือหวย , ให้เลือกซื้อ
-                                ซื้อหวยVIP จ่ายเติม , ชื้อหวยไม่อั้น , หวยออก , เว็บรวย , สมัครเว็บรวย ,
-                                แทงหวยเว็บรวย , ซื้อหวยเว็บรวย , เว็บรวยจ่ายดีไหม , เว็บหวยโกง ,
-                                เว็บไหนโกงบ้าง , เว็บหวยเว็บไหนจ่ายจริงบ้างครับ , แฉเว็บหวยโกง , แทงหวย
-                                ใต้ดิน ,
-                                หวยลาว ซื้อหวยลาว , ซื้อหวย 3 ตัวบน , สมัครหวย สมัครแทงหวยออนไลน์ ,
-                                ซื้อหวยหุ้น ,ซื้อหวยรัฐบาล,ซื้อหวยกับเราไม่ยากเลย,
-                                lottoweekly , lucky , lucky77 , luckyvip77 , ซื้อหวยผ่านเเอพ
-                                ,มีหวยมากมาย, หว</textarea>
+                            <textarea id="input-field" placeholder="วางข้อความที่นี่เพื่อตรวจสอบ..."></textarea>
                             <p style="
                     font-size: 0.75rem;
                     color: var(--text-muted);
@@ -946,18 +956,26 @@
                             <div class="section-label">Raw SIEM Payload</div>
                             <div class="payload-container">
                                 <button id="copy-btn" class="copy-btn">Copy</button>
-                                <pre id="payload-display" class="app-pre">
-                                    // รอการป้อนข้อมูล...</pre>
+                                <pre id="payload-display" class="app-pre">// รอการป้อนข้อมูล...</pre>
                             </div>
 
-                            <div id="status-bar" class="sd-indicator sd-false" style="margin-top: 8px; text-align: center; font-weight: bold; font-size: 0.95rem; padding: 10px 12px;">
-                                สถานะข้อความ (Status): <span id="status-bar-val">WAITING</span>
+                            <div id="status-bar" class="sd-indicator sd-false" style="
+                    margin-top: 8px;
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 0.95rem;
+                    padding: 10px 12px;
+                  ">
+                                สถานะข้อความ (Status):
+                                <span id="status-bar-val">WAITING</span>
                             </div>
-                            <div style="display: flex; gap: 8px; margin-top: 8px;">
-                                <div id="sd-flag" class="sd-indicator sd-false" style="flex: 1; margin: 0; text-align: center;">
+                            <div style="display: flex; gap: 8px; margin-top: 8px">
+                                <div id="sd-flag" class="sd-indicator sd-false"
+                                    style="flex: 1; margin: 0; text-align: center">
                                     พบข้อมูลส่วนตัว (sd): <b id="sd-val">false</b>
                                 </div>
-                                <div id="paste-flag" class="sd-indicator sd-false" style="flex: 1; margin: 0; text-align: center;">
+                                <div id="paste-flag" class="sd-indicator sd-false"
+                                    style="flex: 1; margin: 0; text-align: center">
                                     มีการคัดลอกวาง (paste): <b id="paste-val">false</b>
                                 </div>
                             </div>
@@ -985,6 +1003,29 @@
                             คนที่มีความรู้ทางเทคนิคสักหน่อยสามารถดักดู Network Traffic
                             แล้วยิง POST Request ตรงเข้า Server
                             ของคุณได้เลยโดยไม่ต้องเปิดหน้าเว็บด้วยซ้ำ
+                        </p>
+                    </div>
+
+                    <h3>ทำไมเราต้องทำ Obfuscation และ Active Defense แบบ "Brutal"? (ความโปร่งใสเรื่องความปลอดภัย)</h3>
+                    <p>
+                        ในเวอร์ชันการใช้งานจริง (<code>min.js</code>) เรามีการทำ <b>JavaScript Obfuscation</b> ขั้นสูง และใช้สถาปัตยกรรม <b>Hostile Active Defense</b> 
+                        เหตุผลที่เราต้องทำแบบนี้คือ:
+                    </p>
+                    <ul style="color: var(--text-muted); line-height: 1.8; margin-bottom: 24px;">
+                        <li><strong>กับดักหลุมพราง (The Ghost Tarpit):</strong> หากบอทพยายามแทรกแซงหรือข้ามการทำงานของสคริปต์ ระบบจะดึงการโจมตีเข้าสู่ "เหยื่อล่อ" ที่ออกแบบมาเพื่อตอบโต้และทำให้โปรแกรมของแฮกเกอร์ค้างและพังลงทันที (Crash Headless Browsers)</li>
+                        <li><strong>ซ่อนเอนจินจริง (Build-Time Randomization):</strong> เอนจินตรวจจับของจริงจะถูกซ่อนไว้ใน Closure ที่ปิดตาย และเชื่อมต่อกับ DOM ด้วยคีย์แบบสุ่มที่เปลี่ยนไปทุกครั้งที่มีการปล่อยเวอร์ชันใหม่ ทำให้สคริปต์แฮ็กเกอร์ที่เขียนแบบตายตัวใช้งานไม่ได้</li>
+                        <li><strong>ปกป้องโมเดลไอพาส:</strong> โมเดลการตรวจจับถูกฝังอยู่ในสคริปต์ การทำ Obfuscation ชั้นสูงช่วยป้องกันไม่ให้คู่แข่งหรือผู้พัฒนาสแปมบอทดึงข้อมูลชุดคำศัพท์ (Vocabulary) ออกไปศึกษาได้โดยง่าย</li>
+                        <li><strong>เพิ่มต้นทุนในการโจมตี (Cost of Attack):</strong> แม้จะไม่มีระบบ Client-side ใดที่ปลอดภัย 100% แต่เทคนิคเหล่านี้จะเปลี่ยนงานแฮ็กที่เคยใช้เวลา 5 วินาที ให้กลายเป็นความน่ารำคาญขั้นสุด ซึ่งเพียงพอที่จะทำให้สแปมเมอร์ส่วนใหญ่เปลี่ยนไปหาเป้าหมายอื่นที่ "ง่ายกว่า"</li>
+                    </ul>
+                    
+                    <div class="alert-warning" style="background-color: #fff3cd; color: #856404; border-color: #ffeeba; margin-bottom: 24px;">
+                        <p style="margin: 0;">
+                            <strong>🛡️ ต้องการความปลอดภัยแบบ 100%?</strong><br />
+                            หากระบบของคุณต้องการความปลอดภัยที่ห้ามมีข้อผิดพลาด คุณ<b>ต้อง</b>ตรวจสอบข้อมูลซ้ำที่ระบบหลังบ้าน (Backend Validation) เสมอ:
+                            <ul style="margin-top: 8px; margin-bottom: 0;">
+                                <li><strong>สำหรับ WordPress:</strong> แนะนำให้ใช้ <a href="https://redsocs.com/spam-warden" target="_blank" style="color: #856404; text-decoration: underline; font-weight: bold;">SpamWarden WP Plugin (รุ่นเสียเงิน)</a> เพื่อป้องกันระดับ PHP ก่อนลงฐานข้อมูล</li>
+                                <li><strong>สำหรับ Node.js / Custom Stack:</strong> คุณสามารถนำ Library นี้ไปรันฝั่ง Server ก่อนบันทึกข้อมูลได้ฟรีๆ โดยไม่ต้องผ่านเบราว์เซอร์</li>
+                            </ul>
                         </p>
                     </div>
 
@@ -1071,57 +1112,136 @@
                 <div class="container content-section integrator-section">
                     <h2>🛡️ Zero-Code Webboard Integration (ระบบจำลอง)</h2>
                     <p>
-                        วาง URL ของเว็บฟอร์ม/เว็บบอร์ดของคุณเพื่อวิเคราะห์โครงสร้าง DOM และสร้างสคริปต์กรองสแปมอัตโนมัติ (Auto-Blocking Drop-in Script) ที่ผูกกับโดเมนของคุณโดยเฉพาะ
-                    </p>
-                    <p style="color: #d9534f; font-weight: bold; font-size: 0.95rem; margin-top: -12px;">
-                        ⚠️ หมายเหตุ: ส่วนนี้เป็นแบบจำลอง (Mockup) และรองรับการสแกนเฉพาะเว็บไซต์ที่มีโดเมนลงท้ายด้วย .ac.th และ .go.th เท่านั้น
+                        วาง URL ของเว็บฟอร์ม/เว็บบอร์ดของคุณเพื่อวิเคราะห์โครงสร้าง DOM
+                        และสร้างสคริปต์กรองสแปมอัตโนมัติ (Auto-Blocking Drop-in Script)
+                        ที่ผูกกับโดเมนของคุณโดยเฉพาะ
                     </p>
 
+
                     <!-- Live Demo Preview -->
-                    <div style="margin: 24px 0 32px; text-align: center;">
-                        <img src="https://cdn.redsocs.com/assets/siem-endpoint-spamblock-demo.gif" alt="SIEM Endpoint & Spam Block Demo" style="width: 100%; max-width: 900px; border-radius: 6px; display: block; margin: 0 auto;" />
+                    <div style="margin: 24px 0 32px; text-align: center">
+                        <img src="https://cdn.redsocs.com/assets/siem-endpoint-spamblock-demo.gif"
+                            alt="SIEM Endpoint & Spam Block Demo" style="
+                  width: 100%;
+                  max-width: 900px;
+                  border-radius: 6px;
+                  display: block;
+                  margin: 0 auto;
+                " />
                     </div>
 
                     <div class="url-bar">
                         <input type="text" id="target-url"
-                            placeholder="เช่น http://www.baannongbuaschool.ac.th/webboard/postq.php" autocomplete="off" />
-                        <button id="scan-btn" class="btn btn-primary" style="padding: 12px 24px;">
+                            placeholder="เช่น http://www.baannongbuaschool.ac.th/webboard/postq.php"
+                            autocomplete="off" />
+                        <button id="scan-btn" class="btn btn-primary" style="padding: 12px 24px">
                             สแกนและสร้างสคริปต์
                         </button>
                     </div>
 
                     <!-- Config Parameters Grid -->
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; background: var(--bg-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-light); text-align: left;">
+                    <div style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 16px;
+                margin-bottom: 24px;
+                background: var(--bg-color);
+                padding: 20px;
+                border-radius: 8px;
+                border: 1px solid var(--border-light);
+                text-align: left;
+              ">
                         <div>
-                            <label style="display: block; font-weight: bold; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-main);">PII / DLP Auditing (sdFlag)</label>
-                            <select id="config-sd-flag" style="width: 100%; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-light); background: var(--surface); color: var(--text-main); font-size: 0.9rem;">
+                            <label style="
+                    display: block;
+                    font-weight: bold;
+                    font-size: 0.85rem;
+                    margin-bottom: 6px;
+                    color: var(--text-main);
+                  ">PII / DLP Auditing (sdFlag)</label>
+                            <select id="config-sd-flag" style="
+                    width: 100%;
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    border: 1px solid var(--border-light);
+                    background: var(--surface);
+                    color: var(--text-main);
+                    font-size: 0.9rem;
+                  ">
                                 <option value="1">1 (เปิดใช้งาน DLP - แนะนำ)</option>
                                 <option value="0">0 (ตรวจสอบ Spam อย่างเดียว)</option>
                             </select>
                         </div>
                         <div>
-                            <label style="display: block; font-weight: bold; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-main);">SIEM Endpoint (Optional)</label>
-                            <input type="text" id="config-siem-endpoint" placeholder="เช่น api.yourdomain.com/v1/telemetry" style="width: 100%; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-light); background: var(--surface); color: var(--text-main); font-size: 0.9rem;" />
+                            <label style="
+                    display: block;
+                    font-weight: bold;
+                    font-size: 0.85rem;
+                    margin-bottom: 6px;
+                    color: var(--text-main);
+                  ">SIEM Endpoint (Optional)</label>
+                            <input type="text" id="config-siem-endpoint"
+                                placeholder="เช่น api.yourdomain.com/v1/telemetry" style="
+                    width: 100%;
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    border: 1px solid var(--border-light);
+                    background: var(--surface);
+                    color: var(--text-main);
+                    font-size: 0.9rem;
+                  " />
                         </div>
                     </div>
 
-                    <div id="scan-error-bar" class="sd-indicator is-spam" style="display: none; margin-top: -12px; margin-bottom: 24px; font-size: 0.95rem; padding: 12px 16px; border-radius: 6px; border: 1px solid rgba(220, 36, 76, 0.25); font-weight: 500; text-align: left; align-items: center; gap: 8px;">
+                    <div id="scan-error-bar" class="sd-indicator is-spam" style="
+                display: none;
+                margin-top: -12px;
+                margin-bottom: 24px;
+                font-size: 0.95rem;
+                padding: 12px 16px;
+                border-radius: 6px;
+                border: 1px solid rgba(220, 36, 76, 0.25);
+                font-weight: 500;
+                text-align: left;
+                align-items: center;
+                gap: 8px;
+              ">
                         <span>⚠️</span>
                         <span id="scan-error-msg"></span>
                     </div>
 
-                    <div id="scan-terminal" class="scan-terminal" style="margin-bottom: 24px;"></div>
+                    <div id="scan-terminal" class="scan-terminal" style="margin-bottom: 24px"></div>
 
                     <div id="snippet-result" class="snippet-result">
                         <p>
-                            วิเคราะห์สำเร็จ! คัดลอกและนำสคริปต์นี้ไปวางก่อนแท็กปิด <code>&lt;/body&gt;</code> ของโดเมน <span id="domain-highlight" style="color: var(--primary); font-weight: bold;">your site</span>:
+                            วิเคราะห์สำเร็จ! คัดลอกและนำสคริปต์นี้ไปวางก่อนแท็กปิด
+                            <code>&lt;/body&gt;</code> ของโดเมน
+                            <span id="domain-highlight" style="color: var(--primary); font-weight: bold">your
+                                site</span>:
                         </p>
-                        <div class="payload-container">
-                            <button class="copy-btn" id="copy-snippet-btn">Copy</button>
-                            <pre id="snippet-display" style="background: transparent; color: var(--code-text); padding: 16px; margin: 0; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.85rem; overflow-x: auto; text-align: left; border: none; white-space: pre;"></pre>
+                        <div class="payload-container" style="background: #ffffff; border: 1px solid var(--border-light);">
+                            <button class="copy-btn" id="copy-snippet-btn" style="background: #f6f8fa; color: #24292f; border: 1px solid var(--border-light);">Copy</button>
+                            <pre id="snippet-display" style="
+                    background: transparent;
+                    color: #24292f;
+                    padding: 16px;
+                    margin: 0;
+                    font-family: 'Ubuntu', sans-serif;
+                    font-size: 1.05rem;
+                    font-weight: 600;
+                    overflow-x: auto;
+                    text-align: left;
+                    border: none;
+                    white-space: pre;
+                  "></pre>
                         </div>
-                        <div style="margin-top: 24px; text-align: center;">
-                            <a href="https://redsocs.com/spam-warden" target="_blank" class="btn btn-primary" style="font-size: 1.05rem; padding: 14px 28px; justify-content: center; box-shadow: 0 4px 12px rgba(220, 36, 76, 0.25);">
+                        <div style="margin-top: 24px; text-align: center">
+                            <a href="https://redsocs.com/spam-warden" target="_blank" class="btn btn-primary" style="
+                    font-size: 1.05rem;
+                    padding: 14px 28px;
+                    justify-content: center;
+                    box-shadow: 0 4px 12px rgba(220, 36, 76, 0.25);
+                  ">
                                 รับการป้องกันฟรี
                             </a>
                         </div>
@@ -1132,19 +1252,18 @@
                 <div id="installation" class="container content-section">
                     <h2>ตัวเลือกการติดตั้ง (Installation)</h2>
 
-                    <h3>1. แบบ "No-Code" ผ่าน CDN (แนะนำ)</h3>
+                    <h3>1. แบบ "No-Code" ผ่าน CDN (คัดลอกและใช้งานได้ทันที)</h3>
                     <p>
-                        สร้างค่าคอนฟิก Base64 จากด้านบน แล้วใส่ลงในสคริปต์
-                        ระบบจะทำการเชื่อมต่อกับ DOM อัตโนมัติ
-                        เพื่อสกัดกั้นการส่งข้อมูลที่ไม่เหมาะสมและส่งรายงานไปยัง SIEM
-                        ของคุณ
+                        เพียงคัดลอกโค้ดด้านล่างไปวางในส่วน <code>&lt;head&gt;</code> ของเว็บไซต์คุณ
+                        ระบบจะเริ่มทำงานและปกป้องเว็บไซต์จากการสแปมและเนื้อหาที่ไม่เหมาะสมโดยอัตโนมัติ
+                        ตามมาตรฐาน NCSA
                     </p>
                     <div class="code-block">
                         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                         <span class="hl-tag">&lt;script</span>
                         <span class="hl-attr">src</span>=<span
-                            class="hl-string">"https://cdn.redsocs.com/js/spamwarden.min.js?client=<span
-                                style="color: #fff; font-weight: bold">BASE64_CONFIG_STRING</span>"</span><span
+                            class="hl-string">"https://cdn.redsocs.com/js/spamwarden.min.js"</span>
+                        <span class="hl-attr">data-auto-protect</span><span
                             class="hl-tag">&gt;&lt;/script&gt;</span>
                     </div>
                     <div style="margin-top: -10px; margin-bottom: 24px">
@@ -1157,7 +1276,7 @@
                   align-items: center;
                   gap: 4px;
                 ">
-                            <span>→</span> รับ Token การตั้งค่าเพื่อปกป้องเว็บไซต์ของคุณฟรี
+                            <span>→</span> รับ Token การตั้งค่าขั้นสูง (Advanced Configuration) เพื่อส่ง Log ไปยัง SIEM ของคุณเอง
                         </a>
                     </div>
 
@@ -1189,15 +1308,56 @@
 
                 <!-- NCSA Compliance Section -->
                 <div class="container content-section">
-                    <h2>🛡️ สอดคล้องกับมาตรฐาน NCSA Web Standard 1.0 <span style="color: #d9534f; font-size: 1.3rem;">(จะครบกำหนดใน 92 วัน)</span></h2>
-                    <p style="color: #d9534f; font-weight: bold; margin-bottom: 4px;">
-                        ⚠️ วันครบกำหนดตามข้อบังคับ: 16 กันยายน 2569 (เหลือเวลาดำเนินการอีก 92 วัน)
+                    <h2>
+                        🛡️ สอดคล้องกับมาตรฐาน NCSA Web Standard 1.0
+                        <span id="ncsa-countdown-header" style="color: #d9534f; font-size: 1.3rem"></span>
+                    </h2>
+                    <p style="color: #d9534f; font-weight: bold; margin-bottom: 4px">
+                        ⚠️ วันครบกำหนดตามข้อบังคับ: 16 กันยายน 2569 (<span id="ncsa-countdown-text"></span>)
                     </p>
-                    <p style="color: darkblue; font-size: 0.95rem; margin-top: 0; margin-bottom: 16px; font-weight: bold; line-height: 1.6;">
+                    <script>
+                        (function() {
+                            const deadline = new Date('2026-09-16T00:00:00');
+                            const today = new Date();
+                            const diffTime = deadline - today;
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            
+                            const headerEl = document.getElementById('ncsa-countdown-header');
+                            const textEl = document.getElementById('ncsa-countdown-text');
+                            
+                            if (diffDays > 0) {
+                                headerEl.innerText = `(จะครบกำหนดใน ${diffDays} วัน)`;
+                                textEl.innerText = `เหลือเวลาดำเนินการอีก ${diffDays} วัน`;
+                            } else if (diffDays === 0) {
+                                headerEl.innerText = `(ครบกำหนดวันนี้)`;
+                                textEl.innerText = `ครบกำหนดวันนี้`;
+                            } else {
+                                headerEl.innerText = `(พ้นกำหนดระยะเวลาปรับปรุงแล้ว)`;
+                                headerEl.style.color = '#721c24';
+                                textEl.innerText = `พ้นกำหนดระยะเวลาปรับปรุงแล้ว`;
+                            }
+                        })();
+                    </script>
+                    <p style="
+                color: darkblue;
+                font-size: 0.95rem;
+                margin-top: 0;
+                margin-bottom: 16px;
+                font-weight: bold;
+                line-height: 1.6;
+              ">
                         อ้างอิง:<br />
-                        • <a href="https://cdn.redsocs.com/assets/NCSA_Website_Security_Standard_2568.pdf" target="_blank" style="color: darkblue; text-decoration: underline;">NCSA_Website_Security_Standard_2568.pdf</a><br />
-                        • <a href="https://cdn.redsocs.com/assets/2025-%E0%B8%A1%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%90%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%A7%E0%B9%87%E0%B8%9A%E0%B9%84%E0%B8%8B%E0%B8%95%E0%B9%8C%20%E0%B8%9E.%E0%B8%A8.%202668-%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%2047-69.docx" target="_blank" style="color: darkblue; text-decoration: underline;">มาตรฐานเว็บไซต์ พ.ศ. 2568 (หน้า 47-69)</a><br />
-                        • <a href="https://cdn.redsocs.com/html/ncsa-check.html" target="_blank" style="color: darkblue; text-decoration: underline;">แบบฟอร์มเพื่อใช้ในการตรวจสอบ ภาคผนวก ค</a>
+                        •
+                        <a href="https://cdn.redsocs.com/assets/NCSA_Website_Security_Standard_2568.pdf" target="_blank"
+                            style="color: darkblue; text-decoration: underline">NCSA_Website_Security_Standard_2568.pdf</a><br />
+                        •
+                        <a href="https://cdn.redsocs.com/assets/2025-%E0%B8%A1%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%90%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%A7%E0%B9%87%E0%B8%9A%E0%B9%84%E0%B8%8B%E0%B8%95%E0%B9%8C%20%E0%B8%9E.%E0%B8%A8.%202668-%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%2047-69.docx"
+                            target="_blank" style="color: darkblue; text-decoration: underline">มาตรฐานเว็บไซต์ พ.ศ.
+                            2568 (หน้า 47-69)</a><br />
+                        •
+                        <a href="https://cdn.redsocs.com/html/ncsa-check.html" target="_blank"
+                            style="color: darkblue; text-decoration: underline">แบบฟอร์มเพื่อใช้ในการตรวจสอบ ภาคผนวก
+                            ค</a>
                     </p>
                     <p>
                         SpamWarden
@@ -1295,52 +1455,179 @@
                     <div class="faq-list">
                         <div class="faq-item">
                             <div class="faq-question">
-                                เครื่องมือนี้ช่วยให้เว็บไซต์ผ่านเกณฑ์ NCSA Web Standard หรือการประเมินสถานะความมั่นคงปลอดภัยสำหรับเว็บไซต์ภาครัฐหรือไม่?
+                                เครื่องมือนี้ช่วยให้เว็บไซต์ผ่านเกณฑ์ NCSA Web Standard
+                                หรือการประเมินสถานะความมั่นคงปลอดภัยสำหรับเว็บไซต์ภาครัฐหรือไม่?
                             </div>
                             <div class="faq-answer">
-                                <p style="margin-top: 0; margin-bottom: 16px; font-weight: 500; color: var(--text-main); line-height: 1.6;">
-                                    ช่วยได้โดยตรงและตรงจุดมากครับ! สถาปัตยกรรมของ SpamWarden ถูกออกแบบมาเพื่อตอบรับกับแบบตรวจรายการความมั่นคงปลอดภัยฯ โดยเฉพาะในประเด็นต่อไปนี้:
+                                <p style="
+                      margin-top: 0;
+                      margin-bottom: 16px;
+                      font-weight: 500;
+                      color: var(--text-main);
+                      line-height: 1.6;
+                    ">
+                                    ช่วยได้โดยตรงและตรงจุดมากครับ! สถาปัตยกรรมของ SpamWarden
+                                    ถูกออกแบบมาเพื่อตอบรับกับแบบตรวจรายการความมั่นคงปลอดภัยฯ
+                                    โดยเฉพาะในประเด็นต่อไปนี้:
                                 </p>
-                                
-                                <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+
+                                <div style="
+                      display: flex;
+                      flex-direction: column;
+                      gap: 12px;
+                      margin-bottom: 16px;
+                    ">
                                     <!-- Item 1 -->
-                                    <div style="background: var(--bg-color); border-left: 4px solid var(--primary); padding: 14px 16px; border-radius: 0 6px 6px 0; border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
-                                        <div style="font-weight: 600; color: var(--text-main); margin-bottom: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                            <span style="background: rgba(220, 36, 76, 0.1); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; letter-spacing: 0.03em;">GOV-SEC-04</span>
+                                    <div style="
+                        background: var(--bg-color);
+                        border-left: 4px solid var(--primary);
+                        padding: 14px 16px;
+                        border-radius: 0 6px 6px 0;
+                        border-top: 1px solid var(--border-light);
+                        border-right: 1px solid var(--border-light);
+                        border-bottom: 1px solid var(--border-light);
+                      ">
+                                        <div style="
+                          font-weight: 600;
+                          color: var(--text-main);
+                          margin-bottom: 6px;
+                          font-size: 0.9rem;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                          flex-wrap: wrap;
+                        ">
+                                            <span style="
+                            background: rgba(220, 36, 76, 0.1);
+                            color: var(--primary);
+                            padding: 2px 8px;
+                            border-radius: 4px;
+                            font-size: 0.72rem;
+                            font-weight: bold;
+                            letter-spacing: 0.03em;
+                          ">GOV-SEC-04</span>
                                             <span>ตอบโจทย์ข้อ 6.4 (ป้องกันภัยหน้าบ้าน)</span>
                                         </div>
-                                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
-                                            โมเดลของเราที่ถูกฝึกด้วยข้อมูลสแปมกว่า 30 หมวดหมู่ครอบคลุมภัยคุกคามของปี 2026 จะช่วยสกัดกั้นและป้องกัน SEO Hijacking รวมถึงการฝังบทความเว็บพนัน บนหน้าเว็บรัฐได้อย่างเด็ดขาดตั้งแต่ระดับหน้าบ้าน
+                                        <div style="
+                          font-size: 0.85rem;
+                          color: var(--text-muted);
+                          line-height: 1.6;
+                        ">
+                                            โมเดลของเราที่ถูกฝึกด้วยข้อมูลสแปมกว่า 30
+                                            หมวดหมู่ครอบคลุมภัยคุกคามของปี 2026
+                                            จะช่วยสกัดกั้นและป้องกัน SEO Hijacking
+                                            รวมถึงการฝังบทความเว็บพนัน
+                                            บนหน้าเว็บรัฐได้อย่างเด็ดขาดตั้งแต่ระดับหน้าบ้าน
                                         </div>
                                     </div>
 
                                     <!-- Item 2 -->
-                                    <div style="background: var(--bg-color); border-left: 4px solid #3fb950; padding: 14px 16px; border-radius: 0 6px 6px 0; border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
-                                        <div style="font-weight: 600; color: var(--text-main); margin-bottom: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                            <span style="background: rgba(63, 185, 80, 0.1); color: #2ea44f; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; letter-spacing: 0.03em;">GOV-SEC-09</span>
+                                    <div style="
+                        background: var(--bg-color);
+                        border-left: 4px solid #3fb950;
+                        padding: 14px 16px;
+                        border-radius: 0 6px 6px 0;
+                        border-top: 1px solid var(--border-light);
+                        border-right: 1px solid var(--border-light);
+                        border-bottom: 1px solid var(--border-light);
+                      ">
+                                        <div style="
+                          font-weight: 600;
+                          color: var(--text-main);
+                          margin-bottom: 6px;
+                          font-size: 0.9rem;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                          flex-wrap: wrap;
+                        ">
+                                            <span style="
+                            background: rgba(63, 185, 80, 0.1);
+                            color: #2ea44f;
+                            padding: 2px 8px;
+                            border-radius: 4px;
+                            font-size: 0.72rem;
+                            font-weight: bold;
+                            letter-spacing: 0.03em;
+                          ">GOV-SEC-09</span>
                                             <span>ตอบโจทย์ข้อ 6.9 (Data Minimization)</span>
                                         </div>
-                                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
-                                            ระบบทำงานด้วยหลัก Data Minimization แบบ 100% ผ่านการเซ็นเซอร์ข้อมูลอ่อนไหว (PII Masking) ฝั่ง Client ก่อนส่ง Log เข้า SOC ทำให้การบริหารจัดการ Log ของคุณสะอาดและปลอดภัย
+                                        <div style="
+                          font-size: 0.85rem;
+                          color: var(--text-muted);
+                          line-height: 1.6;
+                        ">
+                                            ระบบทำงานด้วยหลัก Data Minimization แบบ 100%
+                                            ผ่านการเซ็นเซอร์ข้อมูลอ่อนไหว (PII Masking) ฝั่ง Client
+                                            ก่อนส่ง Log เข้า SOC ทำให้การบริหารจัดการ Log
+                                            ของคุณสะอาดและปลอดภัย
                                         </div>
                                     </div>
 
                                     <!-- Item 3 -->
-                                    <div style="background: var(--bg-color); border-left: 4px solid #0969da; padding: 14px 16px; border-radius: 0 6px 6px 0; border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
-                                        <div style="font-weight: 600; color: var(--text-main); margin-bottom: 6px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                            <span style="background: rgba(9, 105, 218, 0.1); color: #0969da; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; letter-spacing: 0.03em;">SUPPLY-CHAIN</span>
+                                    <div style="
+                        background: var(--bg-color);
+                        border-left: 4px solid #0969da;
+                        padding: 14px 16px;
+                        border-radius: 0 6px 6px 0;
+                        border-top: 1px solid var(--border-light);
+                        border-right: 1px solid var(--border-light);
+                        border-bottom: 1px solid var(--border-light);
+                      ">
+                                        <div style="
+                          font-weight: 600;
+                          color: var(--text-main);
+                          margin-bottom: 6px;
+                          font-size: 0.9rem;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                          flex-wrap: wrap;
+                        ">
+                                            <span style="
+                            background: rgba(9, 105, 218, 0.1);
+                            color: #0969da;
+                            padding: 2px 8px;
+                            border-radius: 4px;
+                            font-size: 0.72rem;
+                            font-weight: bold;
+                            letter-spacing: 0.03em;
+                          ">SUPPLY-CHAIN</span>
                                             <span>โปร่งใสระดับโครงสร้าง (Supply Chain Security)</span>
                                         </div>
-                                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
-                                            สคริปต์ทำงานแบบ Standalone ไม่ดึงไลบรารีภายนอกมาโหลดให้เสี่ยงช่องโหว่ แถมยังเป็น Open Source 100% ทำให้ทีม Security Advisor ของคุณตรวจสอบซอร์สโค้ดได้อย่างโปร่งใส
+                                        <div style="
+                          font-size: 0.85rem;
+                          color: var(--text-muted);
+                          line-height: 1.6;
+                        ">
+                                            สคริปต์ทำงานแบบ Standalone
+                                            ไม่ดึงไลบรารีภายนอกมาโหลดให้เสี่ยงช่องโหว่ แถมยังเป็น
+                                            Open Source 100% ทำให้ทีม Security Advisor
+                                            ของคุณตรวจสอบซอร์สโค้ดได้อย่างโปร่งใส
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <p style="margin-bottom: 0; font-weight: 600; color: var(--primary); font-size: 0.95rem; line-height: 1.6;">
-                                    คุณสามารถนำไปใช้ปกป้องเว็บไซต์หน่วยงานได้ทันที แบบไม่มีค่าใช้จ่ายครับ<br />
-                                    <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">
-                                        ดูรายละเอียดเพิ่มเติม: <a href="https://cdn.redsocs.com/html/ncsa-check.html" target="_blank" style="color: darkblue; text-decoration: underline; font-weight: 600;">แบบฟอร์มเพื่อใช้ในการตรวจสอบ ภาคผนวก ค</a>
+
+                                <p style="
+                      margin-bottom: 0;
+                      font-weight: 600;
+                      color: var(--primary);
+                      font-size: 0.95rem;
+                      line-height: 1.6;
+                    ">
+                                    คุณสามารถนำไปใช้ปกป้องเว็บไซต์หน่วยงานได้ทันที
+                                    แบบไม่มีค่าใช้จ่ายครับ<br />
+                                    <span style="
+                        font-size: 0.85rem;
+                        font-weight: normal;
+                        color: var(--text-muted);
+                      ">
+                                        ดูรายละเอียดเพิ่มเติม:
+                                        <a href="https://cdn.redsocs.com/html/ncsa-check.html" target="_blank" style="
+                          color: darkblue;
+                          text-decoration: underline;
+                          font-weight: 600;
+                        ">แบบฟอร์มเพื่อใช้ในการตรวจสอบ ภาคผนวก ค</a>
                                     </span>
                                 </p>
                             </div>
@@ -1359,25 +1646,57 @@
                         </div>
                         <div class="faq-item">
                             <div class="faq-question">
-                                ทำไมต้องใช้ระบบการตรวจจับฝั่ง Client-side (เบราว์เซอร์) แทนที่จะไปตรวจจับที่ Server-side หรือใช้บริการอย่าง reCAPTCHA?
+                                ทำไมต้องใช้ระบบการตรวจจับฝั่ง Client-side (เบราว์เซอร์)
+                                แทนที่จะไปตรวจจับที่ Server-side หรือใช้บริการอย่าง reCAPTCHA?
                             </div>
                             <div class="faq-answer">
-                                มีประโยชน์หลัก 4 ประการที่ตอบโจทย์ภารกิจความมั่นคงปลอดภัยและประสบการณ์ผู้ใช้งานเว็บไซต์ในปัจจุบัน:<br /><br />
-                                <strong>• บล็อกก่อนถึงฐานข้อมูล (Resource Saving):</strong> การสกัดกั้นสแปมและบอทตั้งแต่เบราว์เซอร์ทำให้ไม่มีข้อมูลขยะถูกบันทึกหรือส่งคำขอที่เป็นอันตรายเข้าสู่ระบบหลังบ้าน ช่วยลดภาระฐานข้อมูลและ Bandwidth ของเซิร์ฟเวอร์หลักได้อย่างมหาศาล<br /><br />
-                                <strong>• ความเป็นส่วนตัวสูงสุด (Privacy-First):</strong> การประมวลผลเกิดขึ้นภายในระบบจำลองฝั่งผู้ใช้ทั้งหมด 100% ไม่มีการส่งเนื้อหาข้อความหรือพฤติกรรมส่วนบุคคลของผู้ใช้งานไปยังบริการคลาวด์ภายนอก ช่วยให้องค์กรปฏิบัติตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA) ได้อย่างไร้รอยต่อ<br /><br />
-                                <strong>• ไม่มีผลกระทบด้านความเร็ว (Zero Latency):</strong> เอนจินทำงานเสร็จสิ้นภายในเสี้ยววินาที (&lt; 1 มิลลิวินาที) ทันทีที่ผู้ใช้ป้อนข้อมูล โดยไม่ต้องรอการเชื่อมต่อเครือข่ายข้ามประเทศ (Round-trip)<br /><br />
-                                <strong>• เป็นมิตรต่อผู้ใช้งาน (Zero Friction):</strong> แตกต่างจากบริการ reCAPTCHA/CAPTCHA ทั่วไปที่บังคับให้ผู้ใช้ต้องคลิกรูปภาพหรือตอบคำถามน่ารำคาญ ซึ่งทำให้ผู้เข้าชมเว็บไซต์ทั่วไปกรอกข้อมูลไม่สำเร็จหรือละทิ้งเว็บไป
+                                มีประโยชน์หลัก 4
+                                ประการที่ตอบโจทย์ภารกิจความมั่นคงปลอดภัยและประสบการณ์ผู้ใช้งานเว็บไซต์ในปัจจุบัน:<br /><br />
+                                <strong>• บล็อกก่อนถึงฐานข้อมูล (Resource Saving):</strong>
+                                การสกัดกั้นสแปมและบอทตั้งแต่เบราว์เซอร์ทำให้ไม่มีข้อมูลขยะถูกบันทึกหรือส่งคำขอที่เป็นอันตรายเข้าสู่ระบบหลังบ้าน
+                                ช่วยลดภาระฐานข้อมูลและ Bandwidth
+                                ของเซิร์ฟเวอร์หลักได้อย่างมหาศาล<br /><br />
+                                <strong>• ความเป็นส่วนตัวสูงสุด (Privacy-First):</strong>
+                                การประมวลผลเกิดขึ้นภายในระบบจำลองฝั่งผู้ใช้ทั้งหมด 100%
+                                ไม่มีการส่งเนื้อหาข้อความหรือพฤติกรรมส่วนบุคคลของผู้ใช้งานไปยังบริการคลาวด์ภายนอก
+                                ช่วยให้องค์กรปฏิบัติตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA)
+                                ได้อย่างไร้รอยต่อ<br /><br />
+                                <strong>• ไม่มีผลกระทบด้านความเร็ว (Zero Latency):</strong>
+                                เอนจินทำงานเสร็จสิ้นภายในเสี้ยววินาที (&lt; 1 มิลลิวินาที)
+                                ทันทีที่ผู้ใช้ป้อนข้อมูล
+                                โดยไม่ต้องรอการเชื่อมต่อเครือข่ายข้ามประเทศ (Round-trip)<br /><br />
+                                <strong>• เป็นมิตรต่อผู้ใช้งาน (Zero Friction):</strong>
+                                แตกต่างจากบริการ reCAPTCHA/CAPTCHA
+                                ทั่วไปที่บังคับให้ผู้ใช้ต้องคลิกรูปภาพหรือตอบคำถามน่ารำคาญ
+                                ซึ่งทำให้ผู้เข้าชมเว็บไซต์ทั่วไปกรอกข้อมูลไม่สำเร็จหรือละทิ้งเว็บไป
                             </div>
                         </div>
                         <div class="faq-item">
                             <div class="faq-question">
-                                โมเดลของ SpamWarden มีวิธีการอย่างไรในการแยกแยะสแปมภาษาไทย และป้องกันไม่ให้บล็อกข้อความปกติผิดพลาด (False Positives)?
+                                โมเดลของ SpamWarden มีวิธีการอย่างไรในการแยกแยะสแปมภาษาไทย
+                                และป้องกันไม่ให้บล็อกข้อความปกติผิดพลาด (False Positives)?
                             </div>
                             <div class="faq-answer">
-                                โมเดล Machine Learning ของเราใช้แนวคิดแบบ <strong>Present-Only Naive Bayes</strong> ร่วมกับเทคนิคการประมวลผลภาษาธรรมชาติภาษาไทย (Thai NLP) โดยเฉพาะ:<br /><br />
-                                <strong>• Thai Tokenizer & N-Grams:</strong> เนื่องจากภาษาไทยไม่มีการเว้นวรรคระหว่างคำ เอนจินจึงสร้างคำค้นหาแบบผสมผสานทั้ง Trigrams (กลุ่มคำ 3 ตัวอักษร) และ Quadgrams (กลุ่มคำ 4 ตัวอักษร) ช่วยตรวจจับคำหลบเลี่ยงคำหยาบคายและคำสแปม (เช่น "Thai spamming", "Thai gambling") ได้อย่างแม่นยำ<br /><br />
-                                <strong>• ระบบวิเคราะห์ Present-Only:</strong> โมเดลจะวิเคราะห์เฉพาะคำที่ "ตรวจพบจริง" ในเนื้อหาเท่านั้น เพื่อป้องกันปัญหาความเอนเอียง (Bias) ที่คำปกติทั่วไปโดนจัดประเภทเป็นสแปมเพราะไม่เคยมีอยู่ในชุดข้อมูลฝึกฝน<br /><br />
-                                <strong>• Length-Calibrated Offset:</strong> มีการปรับเกณฑ์การตัดสินใจแบบแปรผันตามความยาวของข้อความจริง ($5.5 + 0.49 \times N$ ของคำที่ตรงกับฟีเจอร์) เพื่อชดเชยค่าความมั่นใจ ส่งผลให้ข้อความยาวๆ เช่น การพิมพ์บทความหรือการเขียนคำร้องเรียนปกติทางภาครัฐไม่ถูกบล็อกโดยสิ้นเชิง ในขณะที่สแปมลิงก์สั้นๆ จะถูกคัดกรองออกทันที
+                                โมเดล Machine Learning ของเราใช้แนวคิดแบบ
+                                <strong>Present-Only Naive Bayes</strong>
+                                ร่วมกับเทคนิคการประมวลผลภาษาธรรมชาติภาษาไทย (Thai NLP)
+                                โดยเฉพาะ:<br /><br />
+                                <strong>• Thai Tokenizer & N-Grams:</strong>
+                                เนื่องจากภาษาไทยไม่มีการเว้นวรรคระหว่างคำ
+                                เอนจินจึงสร้างคำค้นหาแบบผสมผสานทั้ง Trigrams (กลุ่มคำ 3
+                                ตัวอักษร) และ Quadgrams (กลุ่มคำ 4 ตัวอักษร)
+                                ช่วยตรวจจับคำหลบเลี่ยงคำหยาบคายและคำสแปม (เช่น "Thai
+                                spamming", "Thai gambling") ได้อย่างแม่นยำ<br /><br />
+                                <strong>• ระบบวิเคราะห์ Present-Only:</strong>
+                                โมเดลจะวิเคราะห์เฉพาะคำที่ "ตรวจพบจริง" ในเนื้อหาเท่านั้น
+                                เพื่อป้องกันปัญหาความเอนเอียง (Bias)
+                                ที่คำปกติทั่วไปโดนจัดประเภทเป็นสแปมเพราะไม่เคยมีอยู่ในชุดข้อมูลฝึกฝน<br /><br />
+                                <strong>• Length-Calibrated Offset:</strong>
+                                มีการปรับเกณฑ์การตัดสินใจแบบแปรผันตามความยาวของข้อความจริง
+                                ($5.5 + 0.49 \times N$ ของคำที่ตรงกับฟีเจอร์)
+                                เพื่อชดเชยค่าความมั่นใจ ส่งผลให้ข้อความยาวๆ เช่น
+                                การพิมพ์บทความหรือการเขียนคำร้องเรียนปกติทางภาครัฐไม่ถูกบล็อกโดยสิ้นเชิง
+                                ในขณะที่สแปมลิงก์สั้นๆ จะถูกคัดกรองออกทันที
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1448,28 +1767,28 @@
 
             <footer id="site-footer">
                 <div class="footer-content">
-                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; text-align: center; line-height: 1.5;">
-                        สำหรับติดต่อสอบถามและการสนับสนุนระดับองค์กร (Inquiry & Enterprise Support): 
-                        <a href="mailto:pichit@redsocs.com" style="color: var(--primary); text-decoration: underline; font-weight: 500;">pichit[at]redsocs.com</a>
+                    <div class="footer-inquiry">
+                        สำหรับติดต่อสอบถามและการสนับสนุนระดับองค์กร (Inquiry & Enterprise
+                        Support):
+                        <a href="mailto:pichit@redsocs.com">pichit[at]redsocs.com</a>
                     </div>
                     <ul class="footer-links">
                         <li>
                             <div style="display: flex; align-items: center; gap: 8px">
                                 <a target="_blank" rel="noopener noreferrer"
                                     href="https://redsocs.com/spam-warden">SpamWarden</a>
-                                <span id="github-version" class="version-badge">v1.0.4</span>
+                                <span id="gitlab-version" class="version-badge">v1.1.7</span>
                                 <a target="_blank" rel="noopener noreferrer"
-                                    href="https://github.com/RedSoCs/spam-warden" style="
+                                    href="https://gitlab.com/redsocs/spam-warden" style="
                       display: flex;
                       color: inherit;
                       opacity: 0.6;
                       transition: opacity 0.2s;
                     " onmouseover="this.style.opacity = 1" onmouseout="this.style.opacity = 0.6">
-                                    <svg height="16" viewBox="0 0 16 16" version="1.1" width="16" aria-hidden="true"
+                                    <svg height="16" viewBox="0 0 16 16" width="16" aria-hidden="true"
                                         style="fill: currentColor">
                                         <path
-                                            d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.82-.28-1.37-.59-1.63 1.95-.22 3.99-.96 3.99-4.34 0-.96-.34-1.74-.91-2.35.09-.22.4-1.12-.09-2.32 0 0-.74-.24-2.42.91-.7-.2-1.45-.3-2.2-.3-.75 0-1.5.1-2.2.3-1.68-1.15-2.42-.91-2.42-.91-.49 1.2-.18 2.1.09 2.32-.57.61-.91 1.39-.91 2.35 0 3.37 2.03 4.12 3.98 4.34-.23.2-.44.55-.52 1.07-.47.21-1.65.57-2.37-.67-.14-.24-.45-.4-.73-.42-.29 0-.36.19-.01.35.19.08.38.35.51.64.18.53.68.85 1.58.73.01.44.01.88.01 1.25 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8z">
-                                        </path>
+                                            d="m15.97 9.079-1.88-5.786a.48.48 0 0 0-.156-.226.474.474 0 0 0-.528-.02.476.476 0 0 0-.174.22L11.512 8.5H4.488L2.768 3.267a.475.475 0 0 0-.174-.22.474.474 0 0 0-.528.02.48.48 0 0 0-.156.227L.03 9.079a.78.78 0 0 0 .28.868l7.306 5.309a.608.608 0 0 0 .717 0l7.306-5.31a.782.782 0 0 0 .33-.867z" />
                                     </svg>
                                 </a>
                             </div>
@@ -1492,7 +1811,7 @@
         </div>
 
         <!-- Script Integration (Synced with v5) -->
-        <script src="js/spamwarden.min.js"></script>
+        <script src="js/spamwarden.min.js" data-sw-dev="true"></script>
         <script>
             // --- FAQ Toggle Logic ---
             document.querySelectorAll(".faq-question").forEach((question) => {
@@ -1511,7 +1830,7 @@
             const sdFlag = document.getElementById("sd-flag");
             const sdVal = document.getElementById("sd-val");
             const copyBtn = document.getElementById("copy-btn");
-            
+
             // Paste tracking DOM elements and state
             const pasteFlag = document.getElementById("paste-flag");
             const pasteVal = document.getElementById("paste-val");
@@ -1520,7 +1839,7 @@
             // Status bar DOM elements
             const statusBar = document.getElementById("status-bar");
             const statusBarVal = document.getElementById("status-bar-val");
-            
+
             input.addEventListener("paste", () => {
                 hasPasted = true;
             });
@@ -1591,7 +1910,7 @@
                         sdFlag.className = payload.sd
                             ? "sd-indicator sd-true"
                             : "sd-indicator sd-false";
-                        
+
                         // Update paste flag indicator
                         if (pasteVal && pasteFlag) {
                             pasteVal.innerText = payload.paste;
@@ -1611,7 +1930,7 @@
                         latVal.innerText = "-";
                         probVal.innerText = "0%";
                         ruleVal.innerText = "-";
-                        
+
                         // Reset paste flag indicator
                         if (pasteVal && pasteFlag) {
                             pasteVal.innerText = "false";
@@ -1717,7 +2036,10 @@
                         return;
                     }
 
-                    if (!rawUrl.startsWith("http://") && !rawUrl.startsWith("https://")) {
+                    if (
+                        !rawUrl.startsWith("http://") &&
+                        !rawUrl.startsWith("https://")
+                    ) {
                         rawUrl = "http://" + rawUrl;
                     }
 
@@ -1726,12 +2048,9 @@
                         const urlObj = new URL(rawUrl);
                         domain = urlObj.hostname;
                     } catch (e) {
-                        showScanError("รูปแบบ URL ไม่ถูกต้อง กรุณากรอก URL ที่ถูกต้อง (เช่น example.ac.th)");
-                        return;
-                    }
-
-                    if (!domain.endsWith(".ac.th") && !domain.endsWith(".go.th")) {
-                        showScanError("ระบบจำลองนี้รองรับเฉพาะโดเมนที่ลงท้ายด้วย .ac.th และ .go.th เท่านั้น");
+                        showScanError(
+                            "รูปแบบ URL ไม่ถูกต้อง กรุณากรอก URL ที่ถูกต้อง",
+                        );
                         return;
                     }
 
@@ -1745,27 +2064,60 @@
                     const formIdVal = "postq-form";
                     const inputIdVal = "message-input";
                     const sdFlagVal = document.getElementById("config-sd-flag").value;
-                    const siemEndpointVal = document.getElementById("config-siem-endpoint").value.trim();
+                    const siemEndpointVal = document
+                        .getElementById("config-siem-endpoint")
+                        .value.trim();
 
                     // Simulate scanning sequence
-                    await addTerminalLine(`Establishing connection to ${domain}...`, "", 200);
+                    await addTerminalLine(
+                        `Establishing connection to ${domain}...`,
+                        "",
+                        200,
+                    );
                     await addTerminalLine(`Analyzing DOM structure...`, "", 600);
-                    await addTerminalLine(`Found form element [id="${formIdVal}"].`, "highlight", 800);
-                    await addTerminalLine(`Located input field [id="${inputIdVal}"].`, "highlight", 500);
+                    await addTerminalLine(
+                        `Found form element [id="${formIdVal}"].`,
+                        "highlight",
+                        800,
+                    );
+                    await addTerminalLine(
+                        `Located input field [id="${inputIdVal}"].`,
+                        "highlight",
+                        500,
+                    );
                     if (siemEndpointVal) {
-                        await addTerminalLine(`Configuring SIEM endpoint: ${siemEndpointVal}`, "highlight", 400);
+                        await addTerminalLine(
+                            `Configuring SIEM endpoint: ${siemEndpointVal}`,
+                            "highlight",
+                            400,
+                        );
                     }
-                    await addTerminalLine(`Generating client config key (sdFlag: ${sdFlagVal})...`, "", 700);
-                    await addTerminalLine(`Configuration ready. Auto-Interceptor enabled.`, "success", 600);
+                    await addTerminalLine(
+                        `Generating client config key (sdFlag: ${sdFlagVal})...`,
+                        "",
+                        700,
+                    );
+                    await addTerminalLine(
+                        `Configuration ready. Auto-Interceptor enabled.`,
+                        "success",
+                        600,
+                    );
 
-                    // Create real pipe-delimited client configuration token: formId|inputId|sdFlag|siemEndpoint
-                    const configParts = [formIdVal, inputIdVal, sdFlagVal];
+                    let htmlScriptTag = "";
+
                     if (siemEndpointVal) {
-                        configParts.push(siemEndpointVal);
+                        // Telemetry Mode (Base64)
+                        const configParts = [sdFlagVal, siemEndpointVal];
+                        const configStr = configParts.join("|");
+                        const base64Token = btoa(
+                            unescape(encodeURIComponent(configStr)),
+                        ).replace(/=/g, "");
+                        htmlScriptTag = `&lt;script src="https://cdn.redsocs.com/js/spamwarden.min.js?client=<span style="color: #3fb950; font-size: 1.05rem; font-weight: bold; word-break: break-all;">${base64Token}</span>"&gt;&lt;/script&gt;`;
+                    } else {
+                        // Local Zero-Config Mode
+                        const sdAttr = sdFlagVal === "0" ? ' data-sd="0"' : "";
+                        htmlScriptTag = `&lt;script src="https://cdn.redsocs.com/js/spamwarden.min.js" <span style="color: #3fb950; font-weight: bold;">data-auto-protect</span>${sdAttr}&gt;&lt;/script&gt;`;
                     }
-                    const configStr = configParts.join("|");
-                    const base64Token = btoa(unescape(encodeURIComponent(configStr))).replace(/=/g, "");
-                    const htmlScriptTag = `&lt;script src="https://cdn.redsocs.com/js/spamwarden.min.js?client=<span style="color: #3fb950; font-size: 1.05rem; font-weight: bold; word-break: break-all;">${base64Token}</span>"&gt;&lt;/script&gt;`;
 
                     domainHighlight.innerText = domain;
                     snippetDisplay.innerHTML = htmlScriptTag;

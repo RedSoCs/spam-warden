@@ -6,3 +6,10 @@ tests/data/spam-*
 /data/spam/filter_list.txt
 /backup
 web/
+*.log
+
+model.json
+
+# CI/CD
+.gitlab-ci.yml
+.github/workflows/

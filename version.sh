@@ -1,101 +1,89 @@
 #!/bin/bash
-# Bump version, rebuild, run tests, and create git tag for spam-warden
-# Syncs with model version from model.json
+# Option 1: Parallel Versioning
+# Bumps JS library version, aligns documentation with model version, and triggers release.
 # Usage:
-#   ./version.sh          → run automated release flow (uses model version)
-#   ./version.sh 1.0.4    → run automated release flow with explicit version
-
+#   ./version.sh          → auto-bump JS patch version (e.g. 1.1.1 -> 1.1.2)
+#   ./version.sh 1.2.0    → explicit JS version
 set -e
 
 # Make sure we are in the repository root
 cd "$(dirname "$0")"
 
-# 1. Extract model version and features count
-if [ ! -f "model.json" ]; then
-  echo "Error: model.json not found."
+# 1. Load versions
+if [ ! -f "model_version.txt" ]; then
+  echo "Error: model_version.txt not found. Run lazy/build first."
   exit 1
 fi
+MODEL_VERSION=$(cat model_version.txt)
+FEATURES_COUNT=$(cat model_features.txt || echo "unknown")
 
-MODEL_VERSION=$(node -e "console.log(require('./model.json').version)")
-FEATURES_COUNT=$(node -e "console.log(Object.keys(require('./model.json').vocabulary).length)")
+# Determine new JS version
+if [ -z "$1" ]; then
+  # Auto-bump patch version using npm
+  CURRENT_JS=$(node -e "console.log(require('./package.json').version)")
+  echo "Current JS Version: $CURRENT_JS"
+  NEW_JS=$(npm version patch --no-git-tag-version)
+  # Strip leading 'v' if npm version adds it
+  NEW_JS="${NEW_JS#v}"
+else
+  NEW_JS="$1"
+  # Strip leading 'v' for package.json alignment
+  NEW_JS="${NEW_JS#v}"
+  npm version "$NEW_JS" --no-git-tag-version --allow-same-version
+fi
 
-# If version argument is provided, use it. Otherwise, use model version (removing 'v' prefix if present)
-VERSION="${1:-$MODEL_VERSION}"
-# Ensure VERSION does not have leading 'v' for package.json / npm version
-VERSION="${VERSION#v}"
-
-TAG_NAME="v$VERSION"
+TAG_NAME="v$NEW_JS"
 
 echo "========================================="
-echo "  SpamWarden Automation Release Flow"
-echo "  Target Version: $VERSION (Tag: $TAG_NAME)"
+echo "  SpamWarden Version Synchronization"
+echo "  JS Library: v$NEW_JS"
+echo "  Model Engine: $MODEL_VERSION"
 echo "  Model Features: $FEATURES_COUNT"
 echo "========================================="
 
-# 2. Check git status for uncommitted changes (excluding specific untracked demo/log files)
-# Check for modified tracked files
+# 2. Check git status
 if ! git diff --quiet; then
   echo "⚠️ Warning: You have uncommitted changes in your git workspace."
   echo "Please stash or commit them before running the release script."
   exit 1
 fi
 
-# 3. Update package.json and package-lock.json version
-echo "Updating package.json & package-lock.json..."
-npm version "$VERSION" --no-git-tag-version --allow-same-version
-
-# 4. Update version in README.md
+# 3. Update README.md (Parallel display)
 echo "Updating README.md..."
 node -e "
 const fs = require('fs');
 let readme = fs.readFileSync('README.md', 'utf8');
-readme = readme.replace(/- \*\*Version:\*\* \d+\.\d+\.\d+/g, '- **Version:** $VERSION');
+// Update JS Version line
+readme = readme.replace(/- \*\*Version:\*\* .*/g, '- **Version:** $NEW_JS (Engine $MODEL_VERSION)');
+// Update Vocabulary line in technical specs
+readme = readme.replace(/\| \*\*Vocabulary\*\*    \| \d+,?\d* features/g, '| **Vocabulary**    | $FEATURES_COUNT features');
 fs.writeFileSync('README.md', readme);
 "
 
-# 5. Update version and feature count in docs/index.html
+# 4. Update docs/index.html (Parallel display)
 echo "Updating docs/index.html..."
 node -e "
 const fs = require('fs');
 let html = fs.readFileSync('docs/index.html', 'utf8');
-html = html.replace(/Engine: v\d+\.\d+\.\d+ \| \d+ Features/g, 'Engine: $TAG_NAME | $FEATURES_COUNT Features');
-html = html.replace(/class=\"version-badge\">v\d+\.\d+\.\d+<\/span>/g, 'class=\"version-badge\">$TAG_NAME</span>');
+// Update Engine info badge
+html = html.replace(/Engine: v\d+\.\d+(\.\d+)? \| \d+ Features/g, 'Engine: $MODEL_VERSION | $FEATURES_COUNT Features');
+// Update Footer version
+html = html.replace(/class=\"version-badge\">v\d+\.\d+(\.\d+)?<\/span>/g, 'class=\"version-badge\">$TAG_NAME</span>');
 fs.writeFileSync('docs/index.html', html);
 "
 
-# 6. Run build
-echo "Running build..."
-npm run build
+# 5. Run build
+if [ -f "model.json" ]; then
+  echo "Running build..."
+  npm run build
+else
+  echo "ℹ Skipping build (model.json not found). Assuming dist/ is already updated."
+fi
 
-# 7. Run test suite
+# 6. Run test suite
 echo "Running tests..."
 npm test
 
-# 8. Git Commit & Tag
-echo "Staging files..."
-git add package.json package-lock.json README.md docs/index.html docs/js/
-
-# Check if there are changes to commit
-if git diff --cached --quiet; then
-  echo "No changes to commit. Version is already up to date."
-else
-  echo "Committing release changes..."
-  git commit -m "release: bump version to $VERSION and align assets"
-fi
-
-# Delete tag if it already exists locally
-if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-  echo "Removing existing local tag $TAG_NAME..."
-  git tag -d "$TAG_NAME"
-fi
-
-echo "Creating git tag $TAG_NAME..."
-git tag -a "$TAG_NAME" -m "Release $TAG_NAME (model v$MODEL_VERSION)"
-
-echo ""
-echo "========================================="
-echo "  Success! Release $TAG_NAME prepared."
-echo "========================================="
-echo "To push the commits and the tag to GitHub, run:"
-echo "  git push origin main --follow-tags"
-echo "========================================="
+# 7. Trigger Git Release
+chmod +x ./version_release.sh
+./version_release.sh

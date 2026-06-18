@@ -84,29 +84,32 @@ elif [[ $SUBMIT_RES == NAME:* ]]; then
 fi
 
 echo "------------------------------------------------"
-echo "SPAMWARDEN CONFIGURATION CONCEPT:"
+echo "SPAMWARDEN CONFIGURATION:"
 echo "------------------------------------------------"
-echo "Based on spamwarden.js configuration, you should use the Form ID, Input ID, and specify flags/endpoints."
+echo "SpamWarden will automatically protect your form using its built-in heuristic engine."
 echo ""
 
 # Configuration Flags
 SD_FLAG="1"       # 1 = Enable PII/DLP auditing (Recommended), 0 = Spam only
 SIEM_ENDPOINT=""  # Optional custom SIEM endpoint
 
-# Generate actual Base64 format: formId|inputId|sdFlag[|siemEndpoint]
+# Mode B: Auto-Bind (sdFlag|siemEndpoint)
 if [ -n "$SIEM_ENDPOINT" ]; then
-    RAW_CLIENT="$FINAL_FORM_ID|$FINAL_INPUT_ID|$SD_FLAG|$SIEM_ENDPOINT"
+    RAW_AUTO="$SD_FLAG|$SIEM_ENDPOINT"
 else
-    RAW_CLIENT="$FINAL_FORM_ID|$FINAL_INPUT_ID|$SD_FLAG"
+    RAW_AUTO="$SD_FLAG"
 fi
 
-B64_CLIENT=$(echo -n "$RAW_CLIENT" | base64)
+B64_AUTO=$(echo -n "$RAW_AUTO" | base64)
 
-echo "Suggested Client Values:"
-echo "  Raw:    $RAW_CLIENT"
-echo "  Base64: $B64_CLIENT"
+echo "Suggested Client Scripts:"
 echo ""
-echo "Example Script Tag:"
-echo "<script src=\"https://cdn.redsocs.com/js/spamwarden.min.js?client=$B64_CLIENT\"></script>"
+echo "Option 1: Local-Only Auto-Protect (No Telemetry)"
+echo "  Script: <script src=\"https://cdn.redsocs.com/js/spamwarden.min.js\" data-auto-protect></script>"
+echo ""
+echo "Option 2: Enterprise Telemetry (Auto-Bind + SIEM)"
+echo "  Raw:    $RAW_AUTO"
+echo "  Base64: $B64_AUTO"
+echo "  Script: <script src=\"https://cdn.redsocs.com/js/spamwarden.min.js?client=$B64_AUTO\"></script>"
 echo "------------------------------------------------"
-echo "Note: Ensure elements with IDs '$FINAL_FORM_ID' and '$FINAL_INPUT_ID' exist in your DOM."
+echo "Note: SpamWarden automatically detects your form and protects all fields."

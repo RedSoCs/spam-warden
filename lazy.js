@@ -24,14 +24,14 @@ if (!fs.existsSync(TARGET_DIR)) {
   process.exit(1);
 }
 
-// 2. Scan Downloads for files matching spam.\d+.txt or safe.\d+.txt
+// 2. Scan Downloads for files matching spam.\d+.txt or safe.\d+.txt (including .t.txt variants)
 console.log(`[1/6] Scanning ${DOWNLOADS_DIR} for raw download files...`);
 const files = fs.readdirSync(DOWNLOADS_DIR);
-const targetPattern = /^(spam|safe)\.\d+\.txt$/;
+const targetPattern = /^(spam|safe)\.\d+\.(t\.)?txt$/;
 const filesToMove = files.filter(file => targetPattern.test(file));
 
 if (filesToMove.length === 0) {
-  console.log('  ℹ No new spam.*.txt or safe.*.txt files found in Downloads. Skipping import.');
+  console.log('  ℹ No new spam.*.txt or safe.*.txt files (including .t.txt variants) found in Downloads. Skipping import.');
 } else {
   console.log(`  Found ${filesToMove.length} files to import.`);
   
@@ -139,8 +139,7 @@ if (!fs.existsSync(retrainScript)) {
 
 const retrainResult = spawnSync('./retrain.sh', [], {
   cwd: SPAM_LABELER_DIR,
-  stdio: 'inherit',
-  shell: true
+  stdio: 'inherit'
 });
 
 if (retrainResult.status !== 0) {
@@ -164,6 +163,18 @@ try {
   const jsonBuffer = zlib.gunzipSync(gzBuffer);
   fs.writeFileSync(destModelPath, jsonBuffer);
   console.log(`  ✓ Decompressed and copied model.json to: ${destModelPath}`);
+
+  // Extract and save model version & feature count for version.sh
+  try {
+    const model = JSON.parse(jsonBuffer.toString());
+    const version = model.version || '0.0.0';
+    const features = Object.keys(model.vocabulary || {}).length;
+    fs.writeFileSync(path.join(__dirname, 'model_version.txt'), version);
+    fs.writeFileSync(path.join(__dirname, 'model_features.txt'), features.toString());
+    console.log(`  ✓ Saved model version (${version}) and features (${features}) to tracking files.`);
+  } catch (err) {
+    console.warn(`  ⚠️ Warning: Could not extract version/features from model.json: ${err.message}`);
+  }
 } catch (err) {
   console.error(`  ❌ Failed to decompress/copy model: ${err.message}`);
   process.exit(1);
@@ -173,8 +184,7 @@ try {
 console.log('\n[5/6] Rebuilding spam-warden with the new model...');
 const buildResult = spawnSync('npm', ['run', 'build'], {
   cwd: __dirname,
-  stdio: 'inherit',
-  shell: true
+  stdio: 'inherit'
 });
 
 if (buildResult.status !== 0) {
@@ -187,8 +197,7 @@ console.log('  ✓ Rebuild completed successfully.');
 console.log('\n[6/6] Running tests in spam-warden...');
 const testResult = spawnSync('npm', ['test'], {
   cwd: __dirname,
-  stdio: 'inherit',
-  shell: true
+  stdio: 'inherit'
 });
 
 if (testResult.status !== 0) {

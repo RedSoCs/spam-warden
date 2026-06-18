@@ -70,9 +70,9 @@ const server = http.createServer((req, res) => {
 
     // 3. Serve Test HTML Page
     if (req.method === 'GET' && (req.url === '/' || req.url === '/index.html')) {
-        // Base64 Token representing "postq-form|message-input|1|http://localhost:3000/v1/telemetry"
-        // Raw token: postq-form|message-input|1|http://localhost:3000/v1/telemetry
-        const configStr = "postq-form|message-input|1|http://localhost:3000/v1/telemetry";
+        // Base64 Token representing "1|http://localhost:3000/v1/telemetry" (Heuristic Mode)
+        // Raw token: 1|http://localhost:3000/v1/telemetry
+        const configStr = "1|http://localhost:3000/v1/telemetry";
         const clientToken = Buffer.from(configStr).toString('base64').replace(/=/g, '');
 
         const html = `
@@ -102,7 +102,7 @@ const server = http.createServer((req, res) => {
                 </form>
             </div>
             <!-- Auto-binding Script Tag with encoded local client key -->
-            <script src="/js/spamwarden.min.js?client=${clientToken}"></script>
+            <script src="/js/spamwarden.min.js?client=${clientToken}" data-sw-dev="true"></script>
         </body>
         </html>
         `;

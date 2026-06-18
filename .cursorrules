@@ -1,0 +1,9 @@
+# Assistant Rules for SpamWarden
+
+## Git Diff Command Constraints
+- **CRITICAL LIFELINE RULE:** If any terminal command runs `git diff`, it must be constrained to a maximum duration of **500ms**.
+- If it exceeds 500ms, it **MUST** be force-stopped immediately.
+- To guarantee this at the shell level, always wrap `git diff` commands with the Linux `timeout` utility, specifying a 0.5-second limit:
+  ```bash
+  timeout 0.5 git diff
+  ```

@@ -52,7 +52,6 @@ function assert(condition, label) {
   } else {
     fail++;
     failures.push(label);
-    console.error(`  ✗ ${label}`);
   }
 }
 
@@ -169,17 +168,17 @@ if (!spamFile || !fs.existsSync(spamFile)) {
 }
 const spamLines = fs.readFileSync(spamFile, 'utf-8')
   .split('\n')
-  .map(l => l.trim())
-  .filter(l => l.length > 0 && !l.startsWith('#'));
+  .map((l, idx) => ({ text: l.trim(), lineNum: idx + 1 }))
+  .filter(item => item.text.length > 0 && !item.text.startsWith('#'));
 
 let spamDetected = 0;
 let spamTotalProb = 0;
 
-spamLines.forEach((line, i) => {
-  const result = sw.spamcheck(line);
+spamLines.forEach((item) => {
+  const result = sw.spamcheck(item.text);
   if (result.isSpam) spamDetected++;
   spamTotalProb += result.prob;
-  assert(result.isSpam === true, `spam line ${i + 1} detected`);
+  assert(result.isSpam === true, `${path.basename(spamFile)}:${item.lineNum}:${item.text}`);
 });
 
 const spamAvg = spamLines.length > 0 ? spamTotalProb / spamLines.length : 0;
@@ -195,8 +194,8 @@ if (!safeFile || !fs.existsSync(safeFile)) {
 }
 const safeLines = fs.readFileSync(safeFile, 'utf-8')
   .split('\n')
-  .map(l => l.trim())
-  .filter(l => l.length > 0 && !l.startsWith('#'));
+  .map((l, idx) => ({ text: l.trim(), lineNum: idx + 1 }))
+  .filter(item => item.text.length > 0 && !item.text.startsWith('#'));
 
 // Known false positives: texts that are safe but contain spam-like vocabulary.
 // Line 9: anti-scam service ("เช็กคนโกง") — contains words like โอน, โกง
@@ -206,15 +205,15 @@ const knownFalsePositives = new Set([8]); // 0-based index
 let safeDetected = 0;
 let safeTotalProb = 0;
 
-safeLines.forEach((line, i) => {
-  const result = sw.spamcheck(line);
+safeLines.forEach((item, i) => {
+  const result = sw.spamcheck(item.text);
   if (!result.isSpam) safeDetected++;
   safeTotalProb += result.prob;
   if (knownFalsePositives.has(i)) {
     // Track but don't fail
-    console.log(`  ⚠ Known FP line ${i + 1}: "${line.slice(0, 40)}..." (prob: ${result.prob.toFixed(3)})`);
+    console.log(`  ⚠ Known FP line ${item.lineNum}: "${item.text.slice(0, 40)}..." (prob: ${result.prob.toFixed(3)})`);
   } else {
-    assert(result.isSpam === false, `safe line ${i + 1} classified safe`);
+    assert(result.isSpam === false, `${path.basename(safeFile)}:${item.lineNum}:${item.text}`);
   }
 });
 
@@ -234,9 +233,7 @@ console.log(`  Results: ${pass} passed, ${fail} failed`);
 console.log('=========================================\n');
 
 if (failures.length > 0) {
-  console.error('Failures:');
-  failures.forEach((f, i) => console.error(`  ${i + 1}. ${f}`));
-  console.error('');
+  failures.forEach(f => console.error(f));
   process.exit(1);
 } else {
   console.log(`All ${pass} tests passed!`);

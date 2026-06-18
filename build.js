@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
+const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname);
 const MODEL = path.join(ROOT, 'model.json');
@@ -35,8 +36,20 @@ if (!fs.existsSync(path.join(ROOT, 'dist'))) {
 // ── Step 1: Bundle model and filter ─────────────────────────────────
 
 console.log('[1/3] Bundling model and filter list into spamwarden.js...');
-const modelJson = fs.readFileSync(MODEL, 'utf-8');
+const modelRaw = fs.readFileSync(MODEL, 'utf-8');
+const modelJson = JSON.parse(modelRaw);
 const srcCode = fs.readFileSync(SRC, 'utf-8');
+
+// Extract and save model version & feature count for version.sh
+try {
+  const version = modelJson.version || '0.0.0';
+  const features = Object.keys(modelJson.vocabulary || {}).length;
+  fs.writeFileSync(path.join(ROOT, 'model_version.txt'), version);
+  fs.writeFileSync(path.join(ROOT, 'model_features.txt'), features.toString());
+  console.log(`  ✓ Tracked model version (${version}) and features (${features})`);
+} catch (err) {
+  console.warn(`  ⚠️ Warning: Could not extract version/features from model.json: ${err.message}`);
+}
 
 // Load filter list
 const filterDataPath = path.join(ROOT, 'src', 'spamwarden-data.js');
@@ -52,33 +65,77 @@ if (fs.existsSync(filterDataPath)) {
 }
 
 const bundled = srcCode
-  .replace('MODEL_DATA_PLACEHOLDER', modelJson)
+  .replace('MODEL_DATA_PLACEHOLDER', JSON.stringify(modelJson))
   .replace('FILTER_DATA_PLACEHOLDER', filterJson);
 
-fs.writeFileSync(OUT, bundled);
+// Generate build-time randomized secret key for the real engine
+const secretKey = '_sw_' + crypto.randomBytes(4).toString('hex');
+const finalBundled = bundled.replace('__SECRET_FN_NAME__', `"${secretKey}"`);
+
+fs.writeFileSync(OUT, finalBundled);
 
 const outSize = fs.statSync(OUT).size;
 console.log(`  Output: dist/spamwarden.js`);
 console.log(`  Size:   ${(outSize / 1024).toFixed(0)} KB`);
+console.log(`  Secret Key: ${secretKey} (Injected)`);
 
-// ── Step 2: Minify ─────────────────────────────────────────────────
+// ── Step 2: Obfuscate & Minify ───────────────────────────────────────
 
-console.log('\n[2/3] Minifying...');
+console.log('\n[2/3] Obfuscating and Minifying...');
 
 async function build() {
   try {
-    // Try terser
-    const { minify } = require('terser');
-    const result = await minify(bundled, { 
-      compress: true, 
-      mangle: true,
-      format: { comments: false }
+    const JavaScriptObfuscator = require('javascript-obfuscator');
+    const obfuscationResult = JavaScriptObfuscator.obfuscate(finalBundled, {
+      compact: true,
+      controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 0.75,
+      deadCodeInjection: true,
+      deadCodeInjectionThreshold: 0.4,
+      debugProtection: false,
+      disableConsoleOutput: false,
+      identifierNamesGenerator: 'hexadecimal',
+      log: false,
+      numbersToExpressions: true,
+      renameGlobals: false,
+      selfDefending: true,
+      simplify: true,
+      splitStrings: true,
+      splitStringsChunkLength: 10,
+      stringArray: true,
+      stringArrayCallsTransform: true,
+      stringArrayCallsTransformThreshold: 0.75,
+      stringArrayEncoding: ['base64'],
+      stringArrayIndexShift: true,
+      stringArrayRotate: true,
+      stringArrayShuffle: true,
+      stringArrayWrappersCount: 2,
+      stringArrayWrappersChainedCalls: true,
+      stringArrayWrappersParametersMaxCount: 4,
+      stringArrayWrappersType: 'function',
+      stringArrayThreshold: 0.75,
+      transformObjectKeys: true,
+      unicodeEscapeSequence: false
     });
-    fs.writeFileSync(MIN, result.code);
+    
+    fs.writeFileSync(MIN, obfuscationResult.getObfuscatedCode());
+    console.log(`  ✓ Obfuscation complete.`);
   } catch (e) {
-    // Fallback: Safe copy (no minification)
-    console.log(`  Terser not available, using unminified copy.`);
-    fs.writeFileSync(MIN, bundled);
+    console.warn(`  ⚠️ Warning: Obfuscation failed: ${e.message}`);
+    // Fallback: Try terser if available
+    try {
+      const { minify } = require('terser');
+      const result = await minify(finalBundled, { 
+        compress: true, 
+        mangle: true,
+        format: { comments: false }
+      });
+      fs.writeFileSync(MIN, result.code);
+      console.log(`  ✓ Fallback to Terser minification complete.`);
+    } catch (te) {
+      console.log(`  Terser not available, using unminified copy.`);
+      fs.writeFileSync(MIN, finalBundled);
+    }
   }
   
   reportSizes(OUT, MIN);
@@ -128,6 +185,7 @@ function reportSizes(outPath, minPath) {
 
   console.log('\n=========================================');
   console.log('  Done! Include dist/spamwarden.min.js in your page.');
-  console.log('  Usage: window.spamwarden.spamcheck(text)');
+  console.log('  Usage: Ensure data-auto-protect is active.');
+  console.log('  ⚠️ WARNING: Do NOT call window.spamwarden directly (Ghost Tarpit Active).');
   console.log('=========================================');
 }

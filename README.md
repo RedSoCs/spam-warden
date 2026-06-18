@@ -2,7 +2,7 @@
 
 Lightweight, client-side JavaScript library for real-time spam detection and automated form protection. Optimized for Thai text and high-performance browser environments.
 
-[![CI](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml/badge.svg)](https://github.com/RedSocs/spam-warden/actions/workflows/ci.yml)
+[![CI](https://gitlab.com/redsocs/spam-warden/badges/main/pipeline.svg)](https://gitlab.com/redsocs/spam-warden/-/pipelines)
 [![npm](https://img.shields.io/npm/v/%40redsocs%2Fspam-warden.svg)](https://www.npmjs.com/package/@redsocs/spam-warden)
 [![Sponsor](https://img.shields.io/badge/Sponsor-Buy%20Me%20a%20Coffee-ffdd00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/redsocs?new=1)
 
@@ -16,9 +16,9 @@ By running in the browser, it allows you to **block spam before it ever hits you
 
 # Live Demo & Scanner
 
-You can test the spam engine interactively, analyze your forms, and generate auto-blocking script configurations directly on our GitHub Pages site:
+You can test the spam engine interactively, analyze your forms, and generate auto-blocking script configurations directly on our GitLab Pages site:
 
-👉 **[Live Demo & Generator](https://redsocs.github.io/spam-warden/)**
+👉 **[Live Demo & Generator](https://spam-warden-js-527b79.gitlab.io/)**
 
 # Quickstart
 
@@ -26,40 +26,30 @@ You can test the spam engine interactively, analyze your forms, and generate aut
 > **Are you a Thai government agency or public sector website administrator?**
 > Get your free token configuration and drop-in script to protect your online portals from annoying gambling/loan ads and spam campaigns at [redsocs.com/spam-warden](https://redsocs.com/spam-warden).
 
-### 1. The "No-Code" Way (Auto-Blocking)
+### 1. Zero-Config Local Protection (No Telemetry)
 
-Add this script to your page. It will automatically find your form and block submission if spam is detected.
+Add this script to your page with the `data-auto-protect` attribute. It will automatically find your most significant forms (using an intelligent heuristic: top 2 forms with >= 2 inputs) and block submission if spam is detected.
 
-```html
-<script src="https://cdn.redsocs.com/js/spamwarden.min.js?client=cG9zdHEtZm9ybXxtZXNzYWdlLWlucHV0fDE"></script>
-```
-
-_Note: The `client` parameter is a Base64 configuration string of `formId|inputId|sdFlag|siemEndpoint` (e.g., `postq-form|message-input|1` encoded)._
-
-### 2. Manual Configuration
+By default, this mode also enables PII masking (DLP). To disable PII masking, add `data-sd="0"`.
 
 ```html
-<script src="dist/spamwarden.min.js"></script>
-<script>
-  spamwarden.configure({
-    siteToken: "YOUR_TOKEN",
-    formId: "contact-form",
-    inputId: "message-field",
-    autoReport: true,
-    isTrusted: true, // Required to authorize telemetry reporting
-    reportSD: true,  // Optional: Enable PII/DLP leak telemetry auditing
-    siemEndpoint: "https://api.yourdomain.com/v1/telemetry", // Optional: Custom secondary SIEM/SOC endpoint
-    onSpam: (result) => {
-      alert("Please do not send spam!");
-    },
-  });
-</script>
+<script src="https://cdn.redsocs.com/js/spamwarden.min.js" data-auto-protect></script>
 ```
+
+### 2. Enterprise Telemetry (SIEM Integration)
+
+If you need to report blocked spam payloads to a central SIEM/SOC, provide a Base64 configuration string via the `client` parameter.
+
+```html
+<script src="https://cdn.redsocs.com/js/spamwarden.min.js?client=MHxzaWVtLnJlZHNvY3MuY29tL3Yx"></script>
+```
+
+_Note: The `client` parameter is a Base64 encoded string of `sdFlag|siemEndpoint` (e.g., `0|siem.redsocs.com/v1`)._
 
 ### 3. API Usage (Node or Browser)
 
 ```javascript
-const result = spamwarden.spamcheck("สมัครสมาชิกวันนี้ รับโบนัส ฟรี!");
+const result = spamwarden.spamcheck("[Hello, this is a Thai casino & scam ads — and guess what? Your tax pays for my traffic.]");
 if (result.isSpam) {
   console.log("Blocked:", result.reason || "AI match");
   console.log("Confidence:", result.prob);
@@ -95,6 +85,22 @@ Traditional spam filters (like Akismet or ReCaptcha) often:
 
 **SpamWarden** exists to provide a **local, fast, and Thai-centric** alternative that stops spam at the source: the user's input field.
 
+# Security & Active Defense
+
+> [!WARNING]
+> **Honesty First:** All client-side code is inherently bypassable by a sufficiently motivated human. However, we have engineered this library to be an absolute nightmare for automated bots and script kiddies.
+
+We do not rely solely on "Security through Obscurity." SpamWarden employs a **Hostile Active Defense** architecture:
+
+1. **The Ghost Tarpit (Honeypot):** We intentionally deploy a "Poison Pill" decoy. If a bot or attacker attempts to bypass or tamper with the script, they are redirected into this trap, which is designed to actively retaliate by crashing headless browsers (Puppeteer/Playwright) and wasting attacker compute credits.
+2. **Build-Time Randomization (The Moving Target):** The real machine-learning engine is hidden inside an isolated closure and bound to the DOM using a randomized cryptographic key generated during compilation. The internal execution path changes on every release, defeating static bypass scripts.
+3. **Brutal DOM Protection:** By utilizing Document-Level Capturing Phase listeners, Prototype Monkey-Patching, and MutationObservers, SpamWarden intercepts submissions before they reach the form element. This defeats trivial bypasses like form cloning or direct `document.forms[0].submit()` calls.
+4. **Aggressive Obfuscation:** The final distribution is run through high-entropy obfuscation (Control Flow Flattening, String Shifting) to protect the model weights and heavily penalize reverse engineers trying to step through the code.
+
+If you require absolute, mathematically unbroken security, client-side protection will never be enough. You **must** validate payloads on your backend:
+- **For WordPress:** Use our [SpamWarden WP Plugin](https://redsocs.com/spam-warden) to protect your server at the PHP layer (Paid).
+- **For Node.js/Custom Stacks:** Grab this NPM package directly, bundle it internally, and run the `spamcheck()` function on your backend server before hitting your database (Free).
+
 # Local Simulation & Testing
 
 You can spin up a local simulation server to test the DOM auto-blocking behavior and inspect the SIEM telemetry payloads in real time:
@@ -112,7 +118,7 @@ You can spin up a local simulation server to test the DOM auto-blocking behavior
      ```text
      🚨 [SIEM RECEIVER] Blocked Payload Received!
      ================================================
-     Client Token: cG9zdHEtZm9ybXxtZXNzYWdlLWlucHV0fDF8aHR0cDovL2xvY2FsaG9zdDozMDAwL3YxL3RlbGVtZXRyeQ
+     Client Token: MXxodHRwOi8vbG9jYWxob3N0OjMwMDAvdjEvdGVsZW1ldHJ5
      URL:          h_tt_p://localhost:3000/
      Rule Matched: currency_symbol
      Confidence:   100%
@@ -125,7 +131,7 @@ You can spin up a local simulation server to test the DOM auto-blocking behavior
 
 # About
 
-- **Version:** 1.0.4 (v2 Engine)
+- **Version:** 1.1.7 (Engine v11.06)
 - **Author:** [RedSocs](https://github.com/RedSocs)
 - **License:** MIT
 - **Model Origin:** Trained via [RedSocs/spam-labeler](https://github.com/RedSocs/spam-labeler)
@@ -141,4 +147,4 @@ You can spin up a local simulation server to test the DOM auto-blocking behavior
 | **Minified Size** | ~2.0 MB (including model) |
 | **Gzipped Size**  | **~341 KB**               |
 | **Dependencies**  | 0 (Vanilla JS)            |
-| **Vocabulary**    | 36,017 features           |
+| **Vocabulary**    | 28106 features           |

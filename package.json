@@ -1,6 +1,6 @@
 {
   "name": "@redsocs/spam-warden",
-  "version": "1.0.4",
+  "version": "1.1.7",
   "description": "Lightweight client-side JavaScript library for real-time spam detection. Trained on Thai spam data using Bernoulli Naive Bayes.",
   "main": "dist/spamwarden.min.js",
   "browser": "dist/spamwarden.min.js",
@@ -10,7 +10,10 @@
   ],
   "scripts": {
     "build": "node build.js",
+    "dev:build": "if [ -z \"$MODEL_DECRYPTION_KEY\" ]; then echo \"Error: MODEL_DECRYPTION_KEY environment variable is required\"; exit 1; fi && openssl enc -d -pbkdf2 -in model.json.enc -out model.json -k \"$MODEL_DECRYPTION_KEY\" && (npm run build; status=$?; openssl enc -e -pbkdf2 -in model.json -out model.json.enc -k \"$MODEL_DECRYPTION_KEY\"; rm -f model.json; exit $status) && echo \"✅ Build and re-encryption complete.\"",
+    "dev:test": "if [ -z \"$MODEL_DECRYPTION_KEY\" ]; then echo \"Error: MODEL_DECRYPTION_KEY environment variable is required\"; exit 1; fi && openssl enc -d -pbkdf2 -in model.json.enc -out model.json -k \"$MODEL_DECRYPTION_KEY\" && (npm run build; build_status=$?; rm -f model.json; if [ $build_status -ne 0 ]; then exit $build_status; fi; npm test)",
     "lazy": "node lazy.js",
+    "dev:lazy": "if [ -z \"$MODEL_DECRYPTION_KEY\" ]; then echo \"Error: MODEL_DECRYPTION_KEY environment variable is required\"; exit 1; fi && openssl enc -d -pbkdf2 -in model.json.enc -out model.json -k \"$MODEL_DECRYPTION_KEY\" && (npm run lazy && npm run build; status=$?; openssl enc -e -pbkdf2 -in model.json -out model.json.enc -k \"$MODEL_DECRYPTION_KEY\"; rm -f model.json; exit $status) && echo \"✅ Lazy import, build, and re-encryption complete.\"",
     "test": "node tests/test.js",
     "test-server": "node tests/simulate/server.js",
     "version": "node -e \"console.log(require('./dist/spamwarden.min.js').version)\""
@@ -29,13 +32,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RedSocs/spam-warden.git"
+    "url": "git+https://gitlab.com/redsocs/spam-warden.git"
   },
-  "homepage": "https://github.com/RedSocs/spam-warden#readme",
+  "homepage": "https://gitlab.com/redsocs/spam-warden#readme",
   "bugs": {
-    "url": "https://github.com/RedSocs/spam-warden/issues"
+    "url": "https://gitlab.com/redsocs/spam-warden/-/issues"
   },
   "devDependencies": {
+    "javascript-obfuscator": "^5.4.3",
     "terser": "^5.48.0"
   }
 }
